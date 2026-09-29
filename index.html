@@ -447,8 +447,9 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
           </select></div>
         <div class="field"><label for="r-phone">연락처</label><input id="r-phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
         <div class="field"><label for="r-focus">꼭 확인할 점 (선택)</label><input id="r-focus" placeholder="누수, 주차, 학교 거리 등"></div>
+        <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
         <label class="agree field full"><input type="checkbox" required><span>개인정보 수집·이용에 동의합니다. 임장 진행과 연락 목적으로만 사용하며 3개월 뒤 파기합니다.</span></label>
-        <div class="field full"><button class="btn btn-white" type="submit" style="width:100%">임장 요청하기</button></div>
+        <div class="field full"><button class="btn btn-white" type="submit" style="width:100%">임장 요청하기</button><p class="err" role="alert" style="color:#f0a08f;font-size:14px;margin:6px 0 0"></p></div>
       </form>
     </div>
   </div>
@@ -488,7 +489,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
   </div>
 </footer>
 
-<div class="demo">데모 · 예시 물건, 결제 없음</div>
+<div class="demo">목록의 물건은 예시입니다</div>
 
 <div class="ov" id="ov" role="dialog" aria-modal="true">
   <div class="panel" id="panel"></div>
@@ -598,6 +599,26 @@ $('hero-search').addEventListener('submit', e => {
   renderList(); $('list').scrollIntoView();
 });
 
+// 신청 접수 (구글 Apps Script → 시트 저장 + 메일 알림)
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzHqw1TadGxsVEYpnsnaBl2ZzXr0Ohn5uJ7bSRHe6LDLrDCNOPXfknYazCJImYj7QnvXQ/exec';
+async function send(data) {
+  const res = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ ...data, page: location.href }) });
+  const j = await res.json();
+  if (!j.ok) throw new Error(j.error || 'fail');
+}
+async function submitting(form, fn) {
+  const btn = form.querySelector('button[type=submit], button:not([type])');
+  const err = form.querySelector('.err');
+  const label = btn.textContent;
+  btn.disabled = true; btn.textContent = '접수 중…'; if (err) err.textContent = '';
+  try { await fn(); return true; }
+  catch (e) {
+    if (err) err.textContent = e.message === 'phone' ? '휴대폰 번호를 다시 확인해 주세요.' : '접수에 실패했습니다. 잠시 뒤 다시 시도해 주세요.';
+    btn.disabled = false; btn.textContent = label; return false;
+  }
+}
+const phoneOk = v => /^01\d{8,9}$/.test(v.replace(/[^0-9]/g, ''));
+
 // 사이드 패널
 function openPanel(html) { $('panel').innerHTML = html; $('panel').scrollTop = 0; $('ov').classList.add('open'); document.body.classList.add('lock'); }
 function closePanel() { $('ov').classList.remove('open'); document.body.classList.remove('lock'); }
@@ -607,7 +628,9 @@ addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
 const contact = `
   <div class="pf"><label for="m-phone">연락처</label><input id="m-phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
-  <label class="agree"><input type="checkbox" required><span>개인정보 수집·이용(임장 진행 연락 목적, 3개월 보관)에 동의합니다.</span></label>`;
+  <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+  <label class="agree"><input type="checkbox" required><span>개인정보 수집·이용(임장 진행 연락 목적, 3개월 보관)에 동의합니다.</span></label>
+  <p class="err" role="alert" style="color:var(--red);font-size:14px;margin:10px 0 0"></p>`;
 
 function openItem(id) {
   const v = view(ITEMS.find(i => i.id === id));
@@ -626,7 +649,7 @@ function openItem(id) {
   if (v.joined) {
     const isReport = v.joined.kind === 'report';
     html += `<div class="done-note"><b>${isReport ? '구매한 리포트입니다' : v.joined.kind === 'urgent' ? '긴급 임장을 문의했습니다' : '신청한 물건입니다'}</b>
-      <p>${isReport ? '실제 서비스에서는 이 자리에서 전체 리포트를 열람합니다.' : '출발이 확정되면 문자로 결제 안내를 드립니다. 확정 전에는 비용이 발생하지 않습니다.'}</p></div>
+      <p>${isReport ? '담당자가 연락드려 결제를 안내하고, 결제가 확인되면 리포트를 보내드립니다.' : v.joined.kind === 'urgent' ? '담당자가 가능 여부를 확인해 연락드립니다.' : '출발이 확정되면 문자로 결제를 안내해 드립니다. 확정 전에는 비용이 발생하지 않습니다.'}</p></div>
       ${isReport ? '' : `<button class="btn btn-line" style="width:100%;margin-top:14px" data-cancel>신청 취소</button>`}`;
   } else if (v.status === 'done') {
     html += `<div class="block"><h4>현장 확인 리포트 · ${fmt(dateOf(v.visited))} 확인</h4>
@@ -660,14 +683,24 @@ function openItem(id) {
   openPanel(html + '</div>');
 
   const f = $('m-form');
-  if (f) f.addEventListener('submit', e => {
+  if (f) f.addEventListener('submit', async e => {
     e.preventDefault();
     const kind = v.status === 'done' ? 'report' : f.dataset.kind || f.querySelector('input[name=kind]:checked').value;
-    mine.push({ itemId: v.id, kind, at: new Date().toISOString() });
+    const phone = $('m-phone').value;
+    const ok = await submitting(f, () => {
+      if (!phoneOk(phone)) throw new Error('phone');
+      return send({ kind: KIND[kind], item: `${v.addr} ${v.name} (예시 목록)`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), mode: kind, phone, website: f.website.value });
+    });
+    if (!ok) return;
+    mine.push({ itemId: v.id, kind, phone, at: new Date().toISOString() });
     saveMine(); renderList(); openItem(v.id);
   });
   const c = document.querySelector('[data-cancel]');
-  if (c) c.onclick = () => { mine = mine.filter(m => m.itemId !== v.id); saveMine(); renderList(); closePanel(); };
+  if (c) c.onclick = async () => {
+    c.disabled = true; c.textContent = '취소 중…';
+    try { await send({ kind: '신청 취소', item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), phone: v.joined.phone || '' }); } catch (_) {}
+    mine = mine.filter(m => m.itemId !== v.id); saveMine(); renderList(); closePanel();
+  };
 }
 
 // 내 신청
@@ -688,11 +721,18 @@ $('my-open').onclick = () => {
 // 물건 요청
 $('r-date').min = dateOf(1).toISOString().slice(0, 10);
 document.querySelectorAll('[data-mode]').forEach(a => a.addEventListener('click', () => { $('r-mode').value = a.dataset.mode; }));
-$('req-form').addEventListener('submit', e => {
+$('req-form').addEventListener('submit', async e => {
   e.preventDefault();
+  const f = e.target;
   const title = `${$('r-court').value} ${$('r-case').value}`;
   const modeText = $('r-mode').selectedOptions[0].text;
   const days = Math.round((new Date($('r-date').value) - today) / DAY);
+  const phone = $('r-phone').value;
+  const ok = await submitting(f, () => {
+    if (!phoneOk(phone)) throw new Error('phone');
+    return send({ kind: '물건 요청', court: $('r-court').value, caseNo: $('r-case').value, date: $('r-date').value, mode: modeText, phone, memo: $('r-focus').value, website: f.website.value });
+  });
+  if (!ok) return;
   mine.push({ itemId: null, kind: 'request', title, at: new Date().toISOString() });
   saveMine();
   $('req-wrap').innerHTML = `<div class="okbox"><div class="label">접수 완료</div><h3 style="margin-top:12px">요청을 받았습니다</h3>
