@@ -259,6 +259,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
 .myrow img{width:72px;height:54px;object-fit:cover;border-radius:4px;flex:none;background:var(--bg2)}
 .myrow div{flex:1;font-size:14px}
 .myrow b{display:block;font-size:15px}
+.ref{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;padding:3px 7px;border-radius:3px}
 .demo{position:fixed;left:16px;bottom:16px;z-index:25;background:var(--ink);color:#fff;font-size:12px;padding:8px 12px;border-radius:4px;opacity:.85}
 </style>
 </head>
@@ -314,7 +315,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
       <div class="label">요금</div>
       <h2 class="h2">인원이 모이면 함께 가고,<br>다녀온 리포트는 누구나 열람합니다</h2>
       <p class="sub">같은 물건에 관심 있는 사람이 3명 이상 모이면 파트너가 출발합니다. 출발 뒤에도 인원 제한 없이 합류할 수 있고, 1인 요금은 인원과 관계없이 같습니다.</p>
-      <p class="sub">결제는 출발이 확정된 다음에 합니다. 매각기일 7일 전까지 3명이 모이지 않으면 단독 임장으로 바꾸거나 전액 취소할 수 있습니다.</p>
+      <p class="sub">결제는 출발이 확정된 다음에 합니다. 매각기일 5일 전까지 3명이 모이지 않으면 단독 임장으로 바꾸거나 전액 취소할 수 있습니다.</p>
     </div>
     <div>
       <table class="table num">
@@ -373,7 +374,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
     <div class="label">진행 과정</div>
     <h2 class="h2">신청부터 리포트까지</h2>
     <div class="steps">
-      <div><em>01</em><h3>물건 선택</h3><p>매각기일 2~3주 전 물건이 올라옵니다. 목록에 없다면 사건번호로 직접 요청하세요.</p></div>
+      <div><em>01</em><h3>물건 선택</h3><p>법원 공고(매각기일 2주 전)가 나오면 바로 올라옵니다. 목록에 없다면 사건번호로 직접 요청하세요.</p></div>
       <div><em>02</em><h3>함께 신청</h3><p>같은 물건을 보는 사람이 모이면 비용을 나눕니다. 급하다면 혼자 바로 출발할 수도 있습니다.</p></div>
       <div><em>03</em><h3>현장 확인</h3><p>출발이 확정되면 해당 지역 파트너가 체크리스트에 따라 현장을 확인합니다.</p></div>
       <div><em>04</em><h3>리포트 전달</h3><p>현장 확인 후 48시간 안에 사진, 영상, 확인 결과를 정리해 전달합니다.</p></div>
@@ -412,7 +413,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
     <h2 class="h2">분명하게 약속하는 것</h2>
     <div class="rules">
       <div><h3>임장 전 취하되면 전액 환불</h3><p>경매가 취하·변경되어 현장에 가지 않았다면 받은 비용을 모두 돌려드립니다.</p></div>
-      <div><h3>모집 마감은 매각기일 7일 전</h3><p>입찰 준비 시간을 확보할 수 있도록 리포트는 늦어도 매각기일 3일 전까지 전달합니다.</p></div>
+      <div><h3>모집 마감은 매각기일 5일 전</h3><p>입찰 준비 시간을 확보할 수 있도록 리포트는 늦어도 매각기일 2일 전까지 전달합니다.</p></div>
       <div><h3>무단 진입하지 않습니다</h3><p>점유자 동의 없이 집 안에 들어가지 않고, 외부·공용부·관리사무소를 통해 확인합니다.</p></div>
       <div><h3>사실만 기록합니다</h3><p>입찰가 추천이나 법률 판단은 하지 않습니다. 현장에서 확인한 사실만 날짜와 함께 남깁니다.</p></div>
     </div>
@@ -464,7 +465,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
       <details><summary>같은 리포트를 여러 명이 보면 경쟁이 심해지지 않나요?</summary><p>인기 물건은 리포트와 관계없이 입찰자가 많습니다. 리포트는 현장 사실을 확인하는 자료이고 입찰가는 각자 판단합니다. 공유를 원하지 않으면 단독 임장을 선택하세요. 단독 임장 리포트는 다른 사람에게 판매하지 않습니다.</p></details>
       <details><summary>집 내부도 확인해 주나요?</summary><p>점유자 동의 없이는 내부에 들어갈 수 없습니다. 같은 단지·같은 평형의 매물 확인, 관리사무소 문의, 외부·공용부 점검으로 상태를 최대한 파악합니다.</p></details>
       <details><summary>입찰이나 명도도 맡길 수 있나요?</summary><p>발품옥션은 현장 확인만 합니다. 입찰 대리는 법원에 등록된 매수신청대리인이, 명도 대리는 변호사가 할 수 있는 업무라 직접 하지 않습니다.</p></details>
-      <details><summary>모집이 안 되면 어떻게 되나요?</summary><p>매각기일 7일 전에 안내드립니다. 단독 임장(150,000원)으로 바꾸거나 전액 취소 중에서 고를 수 있고, 취소하면 비용이 발생하지 않습니다.</p></details>
+      <details><summary>모집이 안 되면 어떻게 되나요?</summary><p>매각기일 5일 전에 안내드립니다. 단독 임장(150,000원)으로 바꾸거나 전액 취소 중에서 고를 수 있고, 취소하면 비용이 발생하지 않습니다.</p></details>
     </div>
     <div class="partner" style="margin-top:96px">
       <div><h2>발품 파트너를 찾습니다</h2><p>내 지역 경매 물건을 확인하고 건당 수익을 받으세요. 공인중개사와 부동산 실무 경력자를 우대합니다.</p></div>
@@ -489,7 +490,6 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
   </div>
 </footer>
 
-<div class="demo">목록의 물건은 예시입니다</div>
 
 <div class="ov" id="ov" role="dialog" aria-modal="true">
   <div class="panel" id="panel"></div>
@@ -516,33 +516,45 @@ addEventListener('scroll', onScroll, { passive: true }); onScroll();
 const PRICE = { group: 7, report: 4.9, solo: 15, urgent: 20 };
 const GOAL = 3;
 
-// 예시 물건 (매각기일 = 오늘 + off일)
-const ITEMS = [
-  { id: 1, region: '서울', addr: '서울 노원구 상계동', name: '상계 ○○아파트', type: '아파트', size: '59㎡', floor: '9층', court: '서울북부지법', caseNo: '2026타경10231', appr: 61000, min: 48800, fail: 1, off: 18, status: 'rec', count: 2, photo: '1593726222205-21404ff4e5fd' },
-  { id: 2, region: '경기', addr: '경기 수원시 영통구', name: '영통 ○○아파트', type: '아파트', size: '84㎡', floor: '15층', court: '수원지법', caseNo: '2026타경20877', appr: 54000, min: 37800, fail: 2, off: 12, status: 'done', count: 4, sold: 7, visited: -3, photo: '1677076212506-a2c960901bd7' },
-  { id: 3, region: '인천', addr: '인천 연수구 송도동', name: '송도 ○○오피스텔', type: '오피스텔', size: '29㎡', floor: '21층', court: '인천지법', caseNo: '2026타경31540', appr: 22000, min: 10780, fail: 3, off: 21, status: 'rec', count: 1, photo: '1710418555472-e812e83ea103' },
-  { id: 4, region: '지방', addr: '부산 해운대구 우동', name: '해운대 ○○아파트', type: '아파트', size: '101㎡', floor: '27층', court: '부산지법', caseNo: '2026타경40612', appr: 72000, min: 50400, fail: 1, off: 25, status: 'rec', count: 0, photo: '1587830343816-09edcc513e57' },
-  { id: 5, region: '서울', addr: '서울 강서구 화곡동', name: '화곡동 ○○빌라', type: '다세대', size: '46㎡', floor: '3층', court: '서울남부지법', caseNo: '2026타경11908', appr: 29000, min: 18560, fail: 2, off: 15, status: 'go', count: 3, photo: '1744273876148-71718f401231' },
-  { id: 6, region: '지방', addr: '대전 유성구 봉명동', name: '봉명 ○○아파트', type: '아파트', size: '84㎡', floor: '6층', court: '대전지법', caseNo: '2026타경52233', appr: 43000, min: 30100, fail: 1, off: 9, status: 'done', count: 3, sold: 3, visited: -2, photo: '1576613443548-c586abb1e2f4' },
-  { id: 7, region: '경기', addr: '경기 고양시 일산동구', name: '일산 ○○아파트', type: '아파트', size: '84㎡', floor: '11층', court: '의정부지법 고양지원', caseNo: '2026타경23019', appr: 48000, min: 33600, fail: 1, off: 16, status: 'rec', count: 2, photo: '1710418561655-7a9460df902b' },
-  { id: 8, region: '지방', addr: '대구 수성구 범어동', name: '범어 ○○아파트', type: '아파트', size: '84㎡', floor: '18층', court: '대구지법', caseNo: '2026타경60488', appr: 66000, min: 46200, fail: 1, off: 23, status: 'rec', count: 1, photo: '1708242152350-4c34d2ee5a4d' },
-  { id: 9, region: '경기', addr: '경기 화성시 오산동', name: '동탄 ○○아파트', type: '아파트', size: '74㎡', floor: '20층', court: '수원지법', caseNo: '2026타경24455', appr: 59000, min: 41300, fail: 1, off: 7, status: 'done', count: 5, sold: 11, visited: -4, photo: '1691071102169-1b821a252f0e' },
-  { id: 10, region: '서울', addr: '서울 은평구 불광동', name: '불광 ○○아파트', type: '아파트', size: '59㎡', floor: '4층', court: '서울서부지법', caseNo: '2026타경12764', appr: 52000, min: 41600, fail: 1, off: 4, status: 'rec', count: 1, photo: '1761199663791-3b8c1fe956e4' },
-];
+// 물건 목록: 구글 시트 '물건' 탭에서 불러온다 (관리자 페이지에서 등록)
+const CUTOFF = 5; // 매각기일 5일 전 모집 마감
+const PHOTOS = ['1593726222205-21404ff4e5fd', '1677076212506-a2c960901bd7', '1710418555472-e812e83ea103', '1587830343816-09edcc513e57',
+  '1706534272739-3ee946364de0', '1710418561655-7a9460df902b', '1708242152350-4c34d2ee5a4d', '1691071102169-1b821a252f0e',
+  '1761199663791-3b8c1fe956e4', '1554782647-42840d3c766f', '1710418580052-76a9f33d749c', '1576613443548-c586abb1e2f4'];
+const STATUS_CODE = { '모집': 'rec', '확정': 'go', '리포트': 'done' };
+const hash = str => [...str].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+let ITEMS = [], loadState = 'loading';
+
+function toItem(r, i) {
+  const date = new Date(r.date + 'T00:00:00');
+  return {
+    id: i + 1, caseNo: r.caseNo, court: r.court, region: r.region || '지방', addr: r.addr, name: r.name,
+    type: r.type || '아파트', size: r.size, appr: Math.round(r.appr / 10000), min: Math.round(r.min / 10000), fail: r.fail,
+    date, off: Math.round((date - today) / DAY), status: STATUS_CODE[r.status] || 'rec', count: r.count || 0, sold: r.sold || 0,
+    visited: r.visited ? new Date(r.visited + 'T00:00:00') : null, photo: r.photo || PHOTOS[hash(r.caseNo) % PHOTOS.length],
+  };
+}
+
+async function loadItems() {
+  try {
+    const j = await (await fetch(ENDPOINT + '?action=items')).json();
+    ITEMS = (j.items || []).map(toItem);
+    loadState = 'ok';
+  } catch (_) { loadState = 'error'; }
+  renderList();
+}
 
 let mine = [];
-try { mine = JSON.parse(localStorage.getItem('balpum_mine') || '[]'); } catch (_) {}
-const saveMine = () => { try { localStorage.setItem('balpum_mine', JSON.stringify(mine)); } catch (_) {} renderMyCount(); };
-const myFor = id => mine.find(m => m.itemId === id);
+try { mine = JSON.parse(localStorage.getItem('balpum_mine2') || '[]'); } catch (_) {}
+const saveMine = () => { try { localStorage.setItem('balpum_mine2', JSON.stringify(mine)); } catch (_) {} renderMyCount(); };
+const myFor = it => mine.find(m => m.caseNo === it.caseNo);
 
 function view(it) {
-  const p = PRICE;
-  const joined = myFor(it.id);
-  const count = it.count + (joined && joined.kind !== 'report' && joined.kind !== 'urgent' ? 1 : 0);
+  const joined = myFor(it);
   let status = it.status;
-  if (status === 'rec' && it.off < 7) status = 'closed';
-  else if (status === 'rec' && (count >= GOAL || (joined && joined.kind === 'solo'))) status = 'go';
-  return { ...it, p, count, status, joined, date: dateOf(it.off) };
+  if (status === 'rec' && it.off < CUTOFF) status = 'closed';
+  else if (status === 'rec' && (it.count >= GOAL || (joined && joined.kind === 'solo'))) status = 'go';
+  return { ...it, p: PRICE, status, joined };
 }
 
 const STATUS = { rec: '모집 중', go: '출발 확정', done: '리포트 열람 가능', closed: '모집 마감' };
@@ -564,6 +576,10 @@ function renderList() {
     .filter(v => !region || v.region === region)
     .filter(v => !q || (v.addr + v.name + v.caseNo).replace(/\s/g, '').includes(q))
     .sort((a, b) => (a.status === 'closed') - (b.status === 'closed') || a.off - b.off);
+  if (loadState !== 'ok') {
+    $('items').innerHTML = `<div class="empty">${loadState === 'loading' ? '물건 목록을 불러오는 중입니다…' : '목록을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.'}</div>`;
+    return;
+  }
   $('items').innerHTML = rows.length ? rows.map(v => {
     let prog;
     if (v.status === 'done') prog = `<span class="t">리포트 ${v.sold}건 열람</span><span class="p num">${won(v.p.report)}</span>`;
@@ -575,19 +591,19 @@ function renderList() {
     }
     return `<article class="card" tabindex="0" data-id="${v.id}">
       <div class="ph">
-        <img src="${img(v.photo, 800)}" alt="${esc(v.name)} 외관 (예시 사진)" loading="lazy">
+        <img src="${img(v.photo, 800)}" alt="" loading="lazy"><span class="ref">참고 이미지</span>
         <span class="chip ${v.status}"><span class="dot"></span>${STATUS[v.status]}</span>
-        <span class="dd ${v.off <= 7 ? 'hot' : ''}">D-${v.off}</span>
+        <span class="dd ${v.off <= CUTOFF + 2 ? 'hot' : ''}">D-${v.off}</span>
         ${v.joined ? '<span class="mine">내 신청</span>' : ''}
       </div>
       <div class="info">
         <div class="case">${esc(v.court)} · ${esc(v.caseNo)}</div>
         <h3>${esc(v.addr)} ${esc(v.name)}</h3>
-        <div class="spec">${esc(v.type)} · ${esc(v.size)} · ${esc(v.floor)} · 매각기일 ${fmt(v.date)}</div>
+        <div class="spec">${esc(v.type)} · ${esc(v.size)} · 매각기일 ${fmt(v.date)}</div>
         <div class="money num"><span>감정가<b>${eok(v.appr)}</b></span><span>최저가<b>${eok(v.min)}</b></span><span>${v.fail}회 유찰</span></div>
         <div class="progress">${prog}</div>
       </div></article>`;
-  }).join('') : '<div class="empty">조건에 맞는 물건이 없습니다. 아래에서 사건번호로 직접 요청해 주세요.</div>';
+  }).join('') : `<div class="empty">${ITEMS.length ? '조건에 맞는 물건이 없습니다.' : '이번 주 물건을 준비하고 있습니다.'} 아래에서 사건번호로 직접 요청해 주세요.</div>`;
 }
 
 $('tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; filter = b.dataset.f; renderList(); });
@@ -638,7 +654,7 @@ function openItem(id) {
   <div class="pbody">
     <div class="case" style="font-size:13px;color:var(--muted)">${esc(v.court)} · ${esc(v.caseNo)} · ${STATUS[v.status]}</div>
     <h2>${esc(v.addr)} ${esc(v.name)}</h2>
-    <div style="color:var(--muted);font-size:15px">${esc(v.type)} · ${esc(v.size)} · ${esc(v.floor)}</div>
+    <div style="color:var(--muted);font-size:15px">${esc(v.type)} · ${esc(v.size)} · 사진은 참고 이미지</div>
     <dl class="kv num">
       <div><dt>매각기일</dt><dd>${fmt(v.date)} · D-${v.off}</dd></div>
       <div><dt>감정가</dt><dd>${eok(v.appr)}원</dd></div>
@@ -652,7 +668,7 @@ function openItem(id) {
       <p>${isReport ? '담당자가 연락드려 결제를 안내하고, 결제가 확인되면 리포트를 보내드립니다.' : v.joined.kind === 'urgent' ? '담당자가 가능 여부를 확인해 연락드립니다.' : '출발이 확정되면 문자로 결제를 안내해 드립니다. 확정 전에는 비용이 발생하지 않습니다.'}</p></div>
       ${isReport ? '' : `<button class="btn btn-line" style="width:100%;margin-top:14px" data-cancel>신청 취소</button>`}`;
   } else if (v.status === 'done') {
-    html += `<div class="block"><h4>현장 확인 리포트 · ${fmt(dateOf(v.visited))} 확인</h4>
+    html += `<div class="block"><h4>현장 확인 리포트${v.visited ? ' · ' + fmt(v.visited) + ' 확인' : ''}</h4>
       <div class="sheet-doc" style="padding:6px 20px;box-shadow:none">
         <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>점유 상태</dt><dd>거주 중으로 보임</dd><span class="st ok">확인</span></div>
         <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>관리비</dt><dd>체납 있음</dd><span class="st warn">주의</span></div>
@@ -664,13 +680,13 @@ function openItem(id) {
       </div></div>
       <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 구매 · ${won(v.p.report)}</button></form>`;
   } else if (v.status === 'closed') {
-    html += `<div class="done-note"><b>함께 신청이 마감되었습니다</b><p>매각기일이 7일 안으로 남아 모집을 마감했습니다. 긴급 단독 임장(${won(v.p.urgent)})이 가능한지 확인해 드립니다.</p></div>
+    html += `<div class="done-note"><b>함께 신청이 마감되었습니다</b><p>매각기일이 ${CUTOFF}일 안으로 남아 모집을 마감했습니다. 긴급 단독 임장(${won(v.p.urgent)})이 가능한지 확인해 드립니다.</p></div>
       <form id="m-form" data-kind="urgent">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">긴급 임장 문의</button></form>`;
   } else {
     const next = v.count + 1;
     const going = v.status === 'go';
     const meter = Array.from({ length: GOAL }, (_, i) => `<i class="${i < v.count ? 'f' : ''}"></i>`).join('');
-    html += `<div class="block"><h4>${going ? '출발이 확정된 임장입니다' : `${v.count}/${GOAL}명 모집 중 · ${fmt(dateOf(v.off - 7))} 마감`}</h4>
+    html += `<div class="block"><h4>${going ? '출발이 확정된 임장입니다' : `${v.count}/${GOAL}명 모집 중 · ${fmt(dateOf(v.off - CUTOFF))} 마감`}</h4>
       <div class="meter">${meter}</div>
       <p style="margin:0;color:var(--muted);font-size:14.5px">${going ? `출발이 확정된 임장입니다. 지금 합류하면 같은 리포트를 <b style="color:var(--ink)">${won(v.p.group)}</b>에 받습니다.` : next >= GOAL ? `지금 신청하면 ${GOAL}명이 되어 바로 출발이 확정됩니다.` : `지금 신청하면 ${next}명입니다. ${GOAL - next}명 더 모이면 출발합니다.`} 결제는 출발 확정 후에 합니다.</p></div>
     <form id="m-form" class="block">
@@ -689,17 +705,19 @@ function openItem(id) {
     const phone = $('m-phone').value;
     const ok = await submitting(f, () => {
       if (!phoneOk(phone)) throw new Error('phone');
-      return send({ kind: KIND[kind], item: `${v.addr} ${v.name} (예시 목록)`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), mode: kind, phone, website: f.website.value });
+      return send({ kind: KIND[kind], item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), mode: kind, phone, website: f.website.value });
     });
     if (!ok) return;
-    mine.push({ itemId: v.id, kind, phone, at: new Date().toISOString() });
+    mine.push({ caseNo: v.caseNo, title: `${v.addr} ${v.name}`, kind, phone, at: new Date().toISOString() });
+    if (kind === 'group') ITEMS.find(i => i.id === v.id).count++;
     saveMine(); renderList(); openItem(v.id);
   });
   const c = document.querySelector('[data-cancel]');
   if (c) c.onclick = async () => {
     c.disabled = true; c.textContent = '취소 중…';
     try { await send({ kind: '신청 취소', item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), phone: v.joined.phone || '' }); } catch (_) {}
-    mine = mine.filter(m => m.itemId !== v.id); saveMine(); renderList(); closePanel();
+    if (v.joined.kind === 'group') ITEMS.find(i => i.id === v.id).count--;
+    mine = mine.filter(m => m.caseNo !== v.caseNo); saveMine(); renderList(); closePanel();
   };
 }
 
@@ -708,10 +726,10 @@ const KIND = { group: '함께 신청', solo: '단독 임장', report: '리포트
 function renderMyCount() { $('my-count').hidden = !mine.length; $('my-count').textContent = mine.length; }
 $('my-open').onclick = () => {
   const rows = mine.map(m => {
-    const it = ITEMS.find(i => i.id === m.itemId);
+    const it = m.caseNo && ITEMS.find(i => i.caseNo === m.caseNo);
     return `<div class="myrow" ${it ? `data-open="${it.id}"` : ''}>
       ${it ? `<img src="${img(it.photo, 200)}" alt="">` : '<img alt="">'}
-      <div><b>${it ? esc(it.addr + ' ' + it.name) : esc(m.title || '요청한 물건')}</b>${KIND[m.kind] || ''} · ${new Date(m.at).toLocaleDateString('ko-KR')}</div></div>`;
+      <div><b>${it ? esc(it.addr + ' ' + it.name) : esc(m.title || m.caseNo || '요청한 물건')}</b>${KIND[m.kind] || ''} · ${new Date(m.at).toLocaleDateString('ko-KR')}</div></div>`;
   }).join('');
   openPanel(`<div class="pbody" style="padding-top:40px"><div class="label">신청 내역</div><h2 style="margin-top:10px">내 신청</h2>
     <div style="margin-top:20px;border-top:1px solid var(--ink)">${rows || '<p style="color:var(--muted);padding:20px 0">아직 신청한 물건이 없습니다.</p>'}</div></div>`);
@@ -733,13 +751,13 @@ $('req-form').addEventListener('submit', async e => {
     return send({ kind: '물건 요청', court: $('r-court').value, caseNo: $('r-case').value, date: $('r-date').value, mode: modeText, phone, memo: $('r-focus').value, website: f.website.value });
   });
   if (!ok) return;
-  mine.push({ itemId: null, kind: 'request', title, at: new Date().toISOString() });
+  mine.push({ caseNo: null, kind: 'request', title, at: new Date().toISOString() });
   saveMine();
   $('req-wrap').innerHTML = `<div class="okbox"><div class="label">접수 완료</div><h3 style="margin-top:12px">요청을 받았습니다</h3>
-    <p class="sub" style="margin:0">${esc(title)} · ${esc(modeText)}<br>담당자가 2시간 안에 연락드립니다.${days < 7 ? ' 매각기일이 7일 안이라 긴급 임장 가능 여부부터 확인하겠습니다.' : ''}</p></div>`;
+    <p class="sub" style="margin:0">${esc(title)} · ${esc(modeText)}<br>담당자가 2시간 안에 연락드립니다.${days < CUTOFF ? ' 매각기일이 5일 안이라 긴급 임장 가능 여부부터 확인하겠습니다.' : ''}</p></div>`;
 });
 
-renderList(); renderMyCount();
+renderList(); renderMyCount(); loadItems();
 </script>
 </body>
 </html>

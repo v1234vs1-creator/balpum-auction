@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>발품옥션 관리 | 물건 등록</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--ink:#121417;--muted:#6c7178;--bg:#f6f5f2;--line:#e2dfd8;--green:#1f5c46;--red:#a23b2a;--amber:#9a6b1f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;font-size:15px;line-height:1.6;word-break:keep-all}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+h2{font-size:17px;margin:0 0 12px}
+.muted{color:var(--muted)}
+.box{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px;margin-top:20px}
+ol{margin:0;padding-left:20px;color:var(--muted)}
+ol b{color:var(--ink)}
+textarea{width:100%;height:180px;border:1px solid var(--line);border-radius:6px;padding:12px;font:inherit;font-size:13px;resize:vertical}
+input[type=password]{height:44px;border:1px solid var(--line);border-radius:6px;padding:0 12px;font:inherit;width:220px}
+.btn{height:44px;padding:0 20px;border-radius:6px;border:0;background:var(--ink);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.btn.line{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.tablewrap{overflow-x:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:860px}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px;border-bottom:1px solid var(--ink)}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td small{display:block;color:var(--muted);font-size:12px}
+tr.off td{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.flag{display:inline-block;background:#f6e3df;color:var(--red);font-size:11px;font-weight:600;border-radius:3px;padding:1px 6px;margin:2px 2px 0 0}
+.why{display:inline-block;background:#f3ecdf;color:var(--amber);font-size:11px;border-radius:3px;padding:1px 6px;margin:2px 2px 0 0}
+.msg{margin-top:12px;font-weight:600}
+.msg.ok{color:var(--green)}.msg.err{color:var(--red)}
+a{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>물건 등록</h1>
+  <p class="muted" style="margin:0">법원경매정보 검색 결과를 붙여넣으면 사이트 목록에 올릴 물건을 자동으로 골라 드립니다. 자동으로 법원 사이트를 조회하지 않습니다.</p>
+
+  <div class="box">
+    <h2>1. 법원 사이트에서 복사하기</h2>
+    <ol>
+      <li><a href="https://www.courtauction.go.kr" target="_blank" rel="noopener">법원경매정보</a> → <b>경매물건 → 물건상세검색</b></li>
+      <li>법원 선택(서울·경기·인천 법원을 하나씩), 용도 <b>건물 → 주거용건물 → 아파트</b>, 검색</li>
+      <li>결과 아래 <b>페이지당 40</b>으로 늘리고, 화면에서 <b>Ctrl+A → Ctrl+C</b></li>
+      <li>아래 칸에 <b>Ctrl+V</b>. 여러 법원 결과를 이어서 붙여넣어도 됩니다.</li>
+    </ol>
+    <textarea id="src" placeholder="여기에 붙여넣기"></textarea>
+    <div class="row"><button class="btn" id="run">분석하기</button><span class="muted" id="found"></span></div>
+  </div>
+
+  <div class="box" id="result" hidden>
+    <h2>2. 올릴 물건 고르기</h2>
+    <p class="muted" style="margin:0">수도권 아파트, 매각기일 6일 이상 남음, 유찰 0~2회, 위험 표시 없음을 자동으로 체크했습니다. 관심 등록이 많은 순서입니다.</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th>사건번호</th><th>사이트에 표시될 이름</th><th>감정가 / 최저가</th><th>매각기일</th><th>유찰</th><th>관심</th><th>확인할 점</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="row">
+      <input type="password" id="key" placeholder="관리자 비밀번호" autocomplete="current-password">
+      <button class="btn" id="save">선택한 물건 올리기</button>
+      <a href="https://docs.google.com/spreadsheets/d/1HoNs8gFBo5GEMyfAQCWDVck1Qzsr1DYz_vkO40Jul4U/edit" target="_blank" rel="noopener">시트 열기</a>
+      <a href="./" target="_blank">사이트 보기</a>
+    </div>
+    <p class="msg" id="msg"></p>
+  </div>
+</div>
+
+<script src="parser.js"></script>
+<script>
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzHqw1TadGxsVEYpnsnaBl2ZzXr0Ohn5uJ7bSRHe6LDLrDCNOPXfknYazCJImYj7QnvXQ/exec';
+const CUTOFF = 5;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const eok = v => { v = Math.round(v / 10000); const e = Math.floor(v / 10000), m = v % 10000; return (e ? e + '억' : '') + (m ? ' ' + m.toLocaleString() + '만' : ''); };
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const dday = d => Math.round((new Date(d + 'T00:00:00') - today) / 864e5);
+let items = [];
+
+try { $('key').value = sessionStorage.getItem('balpum_admin') || ''; } catch (_) {}
+
+function reasons(it) {
+  const r = [];
+  if (it.region === '지방') r.push('지방');
+  if (it.type !== '아파트') r.push(it.type || '용도 불명');
+  if (!it.date || dday(it.date) <= CUTOFF) r.push('매각기일 임박');
+  if (it.fail > 2) r.push(`유찰 ${it.fail}회`);
+  return r;
+}
+
+$('run').onclick = () => {
+  items = parseCourtText($('src').value)
+    .map(it => ({ ...it, pick: !it.flags.length && !reasons(it).length }))
+    .sort((a, b) => b.pick - a.pick || b.interest - a.interest || dday(a.date) - dday(b.date));
+  $('found').textContent = items.length ? `${items.length}건 찾음 · ${items.filter(i => i.pick).length}건 추천` : '물건을 찾지 못했습니다. 검색 결과 화면 전체를 복사했는지 확인해 주세요.';
+  $('result').hidden = !items.length;
+  $('msg').textContent = '';
+  $('rows').innerHTML = items.map((it, i) => `
+    <tr class="${it.pick ? '' : 'off'}">
+      <td><input type="checkbox" data-i="${i}" ${it.pick ? 'checked' : ''}></td>
+      <td class="num">${esc(it.caseNo)}<small>${esc(it.court)}</small></td>
+      <td>${esc(it.addr)} ${esc(it.name)}<small>${esc(it.type)} · ${esc(it.size)}</small></td>
+      <td class="num">${eok(it.appr)}<small>${eok(it.min)} (${it.appr ? Math.round(it.min / it.appr * 100) : 0}%)</small></td>
+      <td class="num">${esc(it.date)}<small>D-${dday(it.date)}</small></td>
+      <td class="num">${it.fail}회</td>
+      <td class="num">${it.interest || '-'}</td>
+      <td>${it.flags.map(f => `<span class="flag">${esc(f)}</span>`).join('')}${reasons(it).map(f => `<span class="why">${esc(f)}</span>`).join('')}</td>
+    </tr>`).join('');
+  updateCount();
+};
+
+$('rows').addEventListener('change', e => { if (e.target.dataset.i) { items[+e.target.dataset.i].pick = e.target.checked; updateCount(); } });
+function updateCount() { const n = items.filter(i => i.pick).length; $('save').textContent = `선택한 ${n}개 올리기`; $('save').disabled = !n; }
+
+$('save').onclick = async () => {
+  const key = $('key').value.trim();
+  if (!key) { $('msg').className = 'msg err'; $('msg').textContent = '관리자 비밀번호를 입력해 주세요.'; return; }
+  const pick = items.filter(i => i.pick).map(({ flags, pick, fullAddr, ...rest }) => rest);
+  $('save').disabled = true; $('msg').className = 'msg'; $('msg').textContent = '올리는 중…';
+  try {
+    const j = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'addItems', key, items: pick }) })).json();
+    if (!j.ok) throw new Error(j.error);
+    try { sessionStorage.setItem('balpum_admin', key); } catch (_) {}
+    $('msg').className = 'msg ok';
+    $('msg').textContent = `${j.added}개를 올렸습니다.${j.skipped ? ` (이미 있는 ${j.skipped}개는 건너뜀)` : ''} 사이트에 바로 반영됩니다.`;
+  } catch (e) {
+    $('msg').className = 'msg err';
+    $('msg').textContent = e.message === 'key' ? '비밀번호가 맞지 않습니다.' : '올리지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+  }
+  updateCount();
+};
+</script>
+</body>
+</html>
