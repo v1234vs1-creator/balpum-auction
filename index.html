@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발품옥션 | 경매 물건 현장 임장 리포트</title>
+<meta name="description" content="지역 파트너가 경매 물건 현장에 직접 가서 점유 상태, 관리비 체납, 건물 상태, 주변 시세를 사진과 함께 기록해 드립니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="발품옥션 | 경매 물건 현장 임장 리포트">
+<meta property="og:description" content="입찰하기 전에, 현장부터 확인하세요. 함께 신청하면 1인 7만 원.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1743906487902-a9ce042ecc5c?w=1200&h=630&q=80&auto=format&fit=crop">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23121417'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%EB%B0%9C%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&display=swap">
+<style>
+:root{
+  --ink:#121417; --ink2:#2a2e33; --muted:#6c7178; --faint:#9aa0a6;
+  --bg:#ffffff; --bg2:#f6f5f2; --line:#e7e5e0; --line2:#d9d6cf;
+  --green:#1f5c46; --green-bg:#e8f0ec; --amber:#9a6b1f; --amber-bg:#f6eedf; --red:#a23b2a;
+  --r:6px; --serif:"Noto Serif KR",serif; --max:1240px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;font-size:16px;line-height:1.65;letter-spacing:-.01em;word-break:keep-all;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+.num{font-feature-settings:"tnum";font-variant-numeric:tabular-nums}
+.label{font-size:14px;font-weight:600;color:var(--green)}
+.h2{font-family:var(--serif);font-size:clamp(25px,2.9vw,36px);font-weight:500;letter-spacing:-.02em;line-height:1.4;margin:12px 0 0}
+.sub{color:var(--muted);font-size:17px;margin:16px 0 0;max-width:560px}
+section{padding:120px 0}
+@media (max-width:760px){section{padding:80px 0}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 26px;border-radius:var(--r);border:1px solid transparent;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn-ink{background:var(--ink);color:#fff}.btn-ink:hover{background:#000}
+.btn-line{border-color:var(--line2);background:#fff}.btn-line:hover{border-color:var(--ink)}
+.btn-white{background:#fff;color:var(--ink)}.btn-white:hover{background:#eee}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.arrow{width:16px;height:16px}
+
+/* header */
+header.top{position:fixed;inset:0 0 auto 0;z-index:30;transition:background .25s,border-color .25s,color .25s;border-bottom:1px solid transparent;color:#fff}
+header.top.solid{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(10px);border-color:var(--line);color:var(--ink)}
+.top .wrap{display:flex;align-items:center;height:72px;gap:40px}
+.brand{display:flex;align-items:baseline;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.03em}
+.brand small{font-size:11px;font-weight:600;letter-spacing:.18em;opacity:.6}
+.menu{display:flex;gap:30px;font-size:15px;font-weight:500;flex:1}
+.menu a{opacity:.82}.menu a:hover{opacity:1}
+.top .my{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;background:none;border:1px solid currentColor;border-radius:99px;height:38px;padding:0 16px;cursor:pointer;opacity:.9}
+.top .my b[hidden]{display:none}
+.top .my b{background:var(--green);color:#fff;border-radius:99px;font-size:11px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px}
+@media (max-width:900px){.menu{display:none}.top .wrap{justify-content:space-between}}
+
+/* hero */
+.hero{position:relative;min-height:min(92vh,820px);display:flex;align-items:flex-end;color:#fff;padding:0 0 64px;background:#1a1d21}
+.hero-img{position:absolute;inset:0;background:url("https://images.unsplash.com/photo-1743906487902-a9ce042ecc5c?w=2000&q=80&auto=format&fit=crop") center 60%/cover}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,15,.45) 0%,rgba(10,12,15,.15) 35%,rgba(10,12,15,.72) 100%)}
+.hero .wrap{position:relative;z-index:1;width:100%}
+.hero h1{font-family:var(--serif);font-size:clamp(30px,4vw,50px);line-height:1.35;font-weight:500;letter-spacing:-.02em;margin:0;max-width:760px}
+.hero .kicker{font-size:14px;font-weight:600;opacity:.8;margin-bottom:18px}
+.hero p{font-size:clamp(16px,1.5vw,19px);opacity:.86;margin:22px 0 0;max-width:560px}
+.search{margin-top:40px;display:flex;background:#fff;border-radius:var(--r);overflow:hidden;max-width:720px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.search select,.search input{border:0;height:64px;padding:0 20px;font:inherit;font-size:16px;color:var(--ink);background:#fff;outline:0}
+.search select{border-right:1px solid var(--line);width:150px;cursor:pointer}
+.search input{flex:1;min-width:0}
+.search button{border:0;background:var(--ink);color:#fff;padding:0 28px;font-weight:600;cursor:pointer}
+@media (max-width:640px){.search{flex-wrap:wrap}.search select{width:100%;border-right:0;border-bottom:1px solid var(--line);height:54px}.search input{height:54px}.search button{height:54px}}
+.facts{display:flex;gap:56px;margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,.25);flex-wrap:wrap}
+.facts div{font-size:14px;opacity:.78}
+.facts b{display:block;font-size:26px;font-weight:700;opacity:1;letter-spacing:-.03em;margin-bottom:2px}
+@media (max-width:640px){.facts{gap:28px}.facts b{font-size:21px}}
+
+/* listings */
+.listhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.filters{display:flex;gap:28px;border-bottom:1px solid var(--line);margin-top:48px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{background:none;border:0;padding:0 0 14px;font-size:15px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.filters button.on{color:var(--ink);border-color:var(--ink);font-weight:600}
+.filters button span{color:var(--faint);margin-left:4px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px 28px;margin-top:36px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.grid{grid-template-columns:1fr;gap:40px}}
+.card{cursor:pointer;outline:0}
+.card .ph{position:relative;aspect-ratio:3/2;overflow:hidden;border-radius:var(--r);background:var(--bg2)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.card:hover .ph img,.card:focus-visible .ph img{transform:scale(1.04)}
+.card:focus-visible .ph{outline:2px solid var(--ink);outline-offset:3px}
+.chip{position:absolute;top:14px;left:14px;background:#fff;color:var(--ink);font-size:12px;font-weight:600;padding:5px 10px;border-radius:4px;display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.rec .dot{background:var(--amber)}.chip.go .dot{background:#2f6fb5}.chip.done .dot{background:var(--green)}.chip.closed{color:var(--muted)}
+.dd{position:absolute;top:14px;right:14px;background:rgba(18,20,23,.78);color:#fff;font-size:12px;font-weight:600;padding:5px 10px;border-radius:4px}
+.dd.hot{background:var(--red)}
+.mine{position:absolute;bottom:14px;left:14px;background:var(--ink);color:#fff;font-size:12px;font-weight:600;padding:5px 10px;border-radius:4px}
+.card .info{padding-top:18px}
+.card .case{font-size:13px;color:var(--muted)}
+.card h3{font-size:19px;font-weight:600;letter-spacing:-.025em;margin:4px 0 2px;line-height:1.4}
+.card .spec{font-size:14px;color:var(--muted)}
+.card .money{display:flex;gap:18px;margin-top:14px;font-size:14px;color:var(--muted)}
+.card .money b{color:var(--ink);font-weight:600;margin-left:6px}
+.progress{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:center;gap:14px}
+.seats{display:flex;gap:4px}
+.seats i{width:22px;height:4px;border-radius:2px;background:var(--line2)}
+.seats i.f{background:var(--ink)}
+.progress .t{flex:1;font-size:14px;color:var(--muted)}
+.progress .p{font-weight:700;font-size:17px;letter-spacing:-.02em}
+.progress .p small{font-size:13px;font-weight:500;color:var(--muted);margin-left:2px}
+.empty{grid-column:1/-1;padding:60px 0;text-align:center;color:var(--muted)}
+
+/* model */
+.alt{background:var(--bg2)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr;gap:48px}}
+.table{width:100%;border-collapse:collapse;font-size:16px}
+.table th{font-size:13px;font-weight:600;color:var(--muted);text-align:left;padding:0 0 14px;border-bottom:1px solid var(--ink)}
+.table th:not(:first-child),.table td:not(:first-child){text-align:right}
+.table td{padding:22px 0;border-bottom:1px solid var(--line2)}
+.table td:first-child{font-weight:600}
+.table td small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+.table tr.best td{color:var(--green)}
+.table tr.best td small{color:var(--green);opacity:.8}
+.fine{font-size:13px;color:var(--muted);margin-top:20px;line-height:1.7}
+
+/* report */
+.report{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center}
+@media (max-width:900px){.report{grid-template-columns:1fr;gap:48px}}
+.collage{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;aspect-ratio:5/4}
+.collage img{width:100%;height:100%;object-fit:cover;border-radius:var(--r)}
+.collage img:first-child{grid-row:1/3}
+.sheet-doc{border:1px solid var(--line2);border-radius:var(--r);background:#fff;padding:28px 30px;box-shadow:0 30px 60px -30px rgba(0,0,0,.18)}
+.doc-head{display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--ink)}
+.doc-head b{font-size:18px;letter-spacing:-.02em}
+.doc-head span{font-size:12px;color:var(--muted);text-align:right}
+.doc-row{display:grid;grid-template-columns:120px 1fr auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px;align-items:center}
+.doc-row:last-child{border:0}
+.doc-row dt{color:var(--muted)}
+.doc-row dd{margin:0}
+.st{font-size:12px;font-weight:600;padding:3px 8px;border-radius:4px;white-space:nowrap}
+.st.ok{background:var(--green-bg);color:var(--green)}.st.warn{background:var(--amber-bg);color:var(--amber)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;margin-top:36px}
+.checks div{padding:14px 0;border-top:1px solid var(--line);font-size:15px;display:flex;gap:12px}
+.checks div span{color:var(--faint);font-size:13px;font-weight:600;min-width:22px;padding-top:1px}
+@media (max-width:520px){.checks{grid-template-columns:1fr}}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:64px}
+@media (max-width:900px){.steps{grid-template-columns:1fr 1fr;gap:40px 24px}}
+@media (max-width:520px){.steps{grid-template-columns:1fr}}
+.steps div{border-top:1px solid var(--ink);padding-top:22px}
+.steps em{font-style:normal;font-size:13px;font-weight:600;color:var(--muted)}
+.steps h3{font-size:20px;font-weight:600;letter-spacing:-.025em;margin:10px 0 8px}
+.steps p{margin:0;color:var(--muted);font-size:15px}
+
+/* services */
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:56px}
+@media (max-width:900px){.svc{grid-template-columns:1fr}}
+.svc article{position:relative;min-height:520px;border-radius:var(--r);overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:40px}
+@media (max-width:640px){.svc article{min-height:440px;padding:28px}}
+.svc article img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.svc article::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(0,0,0,.78) 100%);z-index:0}
+.svc article>*{position:relative;z-index:1}
+.svc h3{font-family:var(--serif);font-size:28px;font-weight:500;letter-spacing:-.02em;margin:8px 0 12px}
+.svc p{margin:0;opacity:.85;max-width:440px}
+.svc ul{list-style:none;padding:0;margin:20px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+.svc li{font-size:13px;border:1px solid rgba(255,255,255,.4);border-radius:99px;padding:5px 12px}
+.svc .price{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.3);display:flex;justify-content:space-between;align-items:center}
+.svc .price b{font-size:22px;letter-spacing:-.02em}
+.svc .price a{font-size:14px;font-weight:600;border-bottom:1px solid}
+
+/* principles */
+.rules{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:56px}
+@media (max-width:900px){.rules{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.rules{grid-template-columns:1fr}}
+.rules h3{font-size:17px;font-weight:600;margin:0 0 8px;letter-spacing:-.02em}
+.rules p{margin:0;color:var(--muted);font-size:14.5px}
+.rules div{border-left:1px solid var(--line2);padding-left:20px}
+
+/* request */
+.dark{background:var(--ink);color:#fff}
+.dark .label{color:rgba(255,255,255,.6)}
+.dark .sub{color:rgba(255,255,255,.65)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:640px){.form{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+.field label{font-size:13px;font-weight:600;color:rgba(255,255,255,.6)}
+.dark input,.dark select{height:52px;border:0;border-bottom:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;font:inherit;font-size:16px;padding:0 2px;outline:0;border-radius:0}
+.dark input::placeholder{color:rgba(255,255,255,.35)}
+.dark input:focus,.dark select:focus{border-color:#fff}
+.dark select option{color:var(--ink)}
+.dark input[type=date]{color-scheme:dark}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:rgba(255,255,255,.7);cursor:pointer}
+.agree.field{flex-direction:row}
+.agree input{width:18px;height:18px;margin:2px 0 0;accent-color:#fff;flex:none}
+.okbox{padding:40px 0}
+.okbox h3{font-size:28px;letter-spacing:-.03em;margin:0 0 10px}
+
+/* faq */
+.faq{border-top:1px solid var(--ink);margin-top:48px}
+.faq details{border-bottom:1px solid var(--line2)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:20px;padding:26px 0;font-size:18px;font-weight:600;letter-spacing:-.02em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";width:14px;height:14px;flex:none;margin-top:6px;background:linear-gradient(var(--ink),var(--ink)) center/14px 1.5px no-repeat,linear-gradient(var(--ink),var(--ink)) center/1.5px 14px no-repeat;transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq p{margin:0 0 26px;color:var(--muted);max-width:760px}
+
+/* partner */
+.partner{display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;padding:56px 0;border-top:1px solid var(--line)}
+.partner h2{font-size:26px;letter-spacing:-.03em;margin:0 0 6px}
+.partner p{margin:0;color:var(--muted)}
+
+footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--muted)}
+.fcols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+@media (max-width:760px){.fcols{grid-template-columns:1fr 1fr}}
+.fcols h4{color:var(--ink);font-size:14px;margin:0 0 14px}
+.fcols a{display:block;margin-bottom:8px}.fcols a:hover{color:var(--ink)}
+.fbottom{border-top:1px solid var(--line2);margin-top:48px;padding-top:24px;font-size:12.5px;line-height:1.9}
+
+/* modal */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(12,14,17,.55);display:none;justify-content:flex-end}
+.ov.open{display:flex}
+.panel{background:#fff;width:100%;max-width:520px;height:100%;overflow:auto;animation:slide .28s cubic-bezier(.2,.7,.2,1)}
+@keyframes slide{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.panel .pimg{aspect-ratio:16/10;object-fit:cover;width:100%}
+.pbody{padding:28px 32px 40px}
+@media (max-width:520px){.pbody{padding:24px 20px 36px}}
+.pclose{position:fixed;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.18);display:grid;place-items:center}
+.pbody h2{font-size:26px;letter-spacing:-.035em;margin:6px 0 4px;line-height:1.3}
+.kv{margin:24px 0 0;border-top:1px solid var(--ink)}
+.kv div{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+.kv dt{color:var(--muted)}.kv dd{margin:0;font-weight:500}
+.block{margin-top:28px}
+.block h4{font-size:15px;margin:0 0 12px}
+.opt{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line2);border-radius:var(--r);padding:18px;margin-bottom:10px;cursor:pointer;transition:border-color .15s}
+.opt:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt input{margin:4px 0 0;accent-color:var(--ink);width:18px;height:18px;flex:none}
+.opt .t{flex:1;font-weight:600}
+.opt .t small{display:block;color:var(--muted);font-weight:400;font-size:13.5px;margin-top:2px}
+.opt .p{font-weight:700;white-space:nowrap}
+.pf{display:flex;flex-direction:column;gap:8px;margin-top:18px}
+.pf label{font-size:13px;font-weight:600;color:var(--muted)}
+.pf input[type=tel]{height:52px;border:1px solid var(--line2);border-radius:var(--r);padding:0 16px;font:inherit;outline:0}
+.pf input[type=tel]:focus{border-color:var(--ink)}
+.panel .agree{color:var(--muted);margin-top:14px}
+.panel .agree input{accent-color:var(--ink)}
+.meter{display:flex;gap:6px;margin:14px 0 10px}
+.meter i{flex:1;height:4px;border-radius:2px;background:var(--line2)}
+.meter i.f{background:var(--ink)}
+.locked{position:relative;margin-top:4px}
+.locked .blur{filter:blur(6px);user-select:none;pointer-events:none}
+.locked .lk{position:absolute;inset:0;display:grid;place-items:center;font-size:14px;font-weight:600}
+.done-note{background:var(--bg2);border-radius:var(--r);padding:22px;margin-top:24px}
+.done-note b{font-size:17px}
+.done-note p{margin:6px 0 0;color:var(--muted);font-size:14.5px}
+.myrow{display:flex;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.myrow img{width:72px;height:54px;object-fit:cover;border-radius:4px;flex:none;background:var(--bg2)}
+.myrow div{flex:1;font-size:14px}
+.myrow b{display:block;font-size:15px}
+.demo{position:fixed;left:16px;bottom:16px;z-index:25;background:var(--ink);color:#fff;font-size:12px;padding:8px 12px;border-radius:4px;opacity:.85}
+</style>
+</head>
+<body>
+
+<header class="top" id="hdr">
+  <div class="wrap">
+    <a class="brand" href="#top">발품옥션<small>BALPUM</small></a>
+    <nav class="menu">
+      <a href="#list">물건 찾기</a><a href="#model">함께 신청</a><a href="#report">리포트</a><a href="#services">맞춤 임장</a><a href="#faq">자주 묻는 질문</a>
+    </nav>
+    <button class="my" id="my-open" type="button">내 신청 <b id="my-count" hidden>0</b></button>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-img" role="img" aria-label="강 건너 보이는 아파트 단지"></div>
+  <div class="wrap">
+    <div class="kicker">경매 물건 임장 리포트</div>
+    <h1>입찰하기 전에,<br>현장부터 확인하세요</h1>
+    <p>지역 파트너가 경매 물건 현장에 직접 가서 점유 상태, 관리비 체납, 건물 상태, 주변 시세를 사진과 함께 기록해 드립니다.</p>
+    <form class="search" id="hero-search">
+      <select id="hs-region" aria-label="지역"><option value="">전체 지역</option><option>서울</option><option>경기</option><option>인천</option><option value="지방">지방</option></select>
+      <input id="hs-q" placeholder="단지명, 동네, 사건번호로 검색" aria-label="검색어">
+      <button type="submit">검색</button>
+    </form>
+    <div class="facts">
+      <div><b class="num">48시간</b>임장 후 리포트 전달</div>
+      <div><b class="num">현지 파트너</b>물건 지역에서 직접 방문</div>
+      <div><b class="num">18개 법원</b>전국 관할 지원</div>
+    </div>
+  </div>
+</section>
+
+<section id="list">
+  <div class="wrap">
+    <div class="listhead">
+      <div>
+        <div class="label">물건</div>
+        <h2 class="h2">지금 신청 받는 물건</h2>
+      </div>
+      <a class="btn btn-line" href="#request">찾는 물건이 없나요?
+        <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+    <div class="filters" id="tabs"></div>
+    <div class="grid" id="items"></div>
+  </div>
+</section>
+
+<section class="alt" id="model">
+  <div class="wrap split">
+    <div>
+      <div class="label">요금</div>
+      <h2 class="h2">인원이 모이면 함께 가고,<br>다녀온 리포트는 누구나 열람합니다</h2>
+      <p class="sub">같은 물건에 관심 있는 사람이 3명 이상 모이면 파트너가 출발합니다. 출발 뒤에도 인원 제한 없이 합류할 수 있고, 1인 요금은 인원과 관계없이 같습니다.</p>
+      <p class="sub">결제는 출발이 확정된 다음에 합니다. 매각기일 7일 전까지 3명이 모이지 않으면 단독 임장으로 바꾸거나 전액 취소할 수 있습니다.</p>
+    </div>
+    <div>
+      <table class="table num">
+        <thead><tr><th>상품</th><th>1인 요금</th></tr></thead>
+        <tbody>
+          <tr class="best"><td>함께 신청<small>3명 이상 모이면 출발 · 인원 제한 없음</small></td><td>70,000원</td></tr>
+          <tr><td>완성 리포트 열람<small>이미 다녀온 물건 · 매각기일까지 열람</small></td><td>49,000원</td></tr>
+          <tr><td>단독 임장<small>신청 즉시 확정 · 리포트는 신청자만 열람</small></td><td>150,000원</td></tr>
+          <tr><td>정밀 임장<small>낮·밤 2회 방문 · 중개사무소 5곳 탐문</small></td><td>300,000원</td></tr>
+          <tr><td>멤버십<small>매월 리포트 4건 열람 · 신청 10% 할인</small></td><td>월 129,000원</td></tr>
+        </tbody>
+      </table>
+      <p class="fine">전국 같은 요금입니다. 물건이 있는 지역의 파트너가 방문하며, 파트너가 없는 지역은 교통비 실비를 신청 전에 따로 안내합니다. 함께 신청의 첫 신청자에게는 리포트가 열람될 때마다 5,000원이 적립됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<section id="report">
+  <div class="wrap">
+    <div class="report">
+      <div class="collage">
+        <img src="https://images.unsplash.com/photo-1706534272739-3ee946364de0?w=900&q=80&auto=format&fit=crop" alt="아파트 외관" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1751664453447-049ab41b4147?w=500&q=80&auto=format&fit=crop" alt="동 출입구" loading="lazy">
+        <img src="https://images.unsplash.com/photo-1554782647-42840d3c766f?w=500&q=80&auto=format&fit=crop" alt="단지 내 동 사이 풍경" loading="lazy">
+      </div>
+      <div>
+        <div class="label">리포트</div>
+        <h2 class="h2">서류에는 없는 것을<br>기록합니다</h2>
+        <p class="sub">등기부와 감정평가서가 말해주지 않는 현장의 사실을 정해진 기준에 따라 확인하고 기록합니다.</p>
+        <div class="sheet-doc" style="margin-top:36px">
+          <div class="doc-head"><b>현장 확인 리포트</b><span>2026타경 ○○○○○<br>현장 확인일 기준</span></div>
+          <dl style="margin:0">
+            <div class="doc-row"><dt>점유 상태</dt><dd>우편물·계량기 기준 거주 중</dd><span class="st ok">확인</span></div>
+            <div class="doc-row"><dt>관리비 체납</dt><dd>관리사무소 확인</dd><span class="st warn">체납 있음</span></div>
+            <div class="doc-row"><dt>외관·공용부</dt><dd>외벽 균열 일부, 누수 흔적 없음</dd><span class="st ok">확인</span></div>
+            <div class="doc-row"><dt>인근 시세</dt><dd>중개사무소 3곳 탐문</dd><span class="st ok">확인</span></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="checks">
+      <div><span>01</span>단지 외관, 동 출입구, 공용 복도 사진 20장 이상</div>
+      <div><span>02</span>주변 환경과 동선을 담은 짧은 영상</div>
+      <div><span>03</span>관리사무소를 통한 체납 관리비 확인</div>
+      <div><span>04</span>우편물·계량기·주차 차량으로 본 점유 흔적</div>
+      <div><span>05</span>외벽 균열, 누수 흔적, 불법 증축 여부</div>
+      <div><span>06</span>인근 중개사무소 시세와 매물 탐문</div>
+      <div><span>07</span>주차, 소음, 학교·역까지 실제 거리</div>
+      <div><span>08</span>모든 항목에 현장 확인 날짜 표기</div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="how">
+  <div class="wrap">
+    <div class="label">진행 과정</div>
+    <h2 class="h2">신청부터 리포트까지</h2>
+    <div class="steps">
+      <div><em>01</em><h3>물건 선택</h3><p>매각기일 2~3주 전 물건이 올라옵니다. 목록에 없다면 사건번호로 직접 요청하세요.</p></div>
+      <div><em>02</em><h3>함께 신청</h3><p>같은 물건을 보는 사람이 모이면 비용을 나눕니다. 급하다면 혼자 바로 출발할 수도 있습니다.</p></div>
+      <div><em>03</em><h3>현장 확인</h3><p>출발이 확정되면 해당 지역 파트너가 체크리스트에 따라 현장을 확인합니다.</p></div>
+      <div><em>04</em><h3>리포트 전달</h3><p>현장 확인 후 48시간 안에 사진, 영상, 확인 결과를 정리해 전달합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="label">맞춤 임장</div>
+    <h2 class="h2">직접 보고 싶다면,<br>혼자 가지 않아도 됩니다</h2>
+    <div class="svc">
+      <article>
+        <img src="https://images.unsplash.com/photo-1744273876148-71718f401231?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="label" style="color:rgba(255,255,255,.7)">동행</div>
+        <h3>안심 동행 임장</h3>
+        <p>경험 많은 파트너가 현장까지 함께 갑니다. 무엇을 봐야 하는지, 관리사무소에 무엇을 물어야 하는지 옆에서 안내합니다.</p>
+        <ul><li>처음 경매하는 분</li><li>혼자 가기 부담스러운 분</li><li>파트너 성별 선택</li></ul>
+        <div class="price"><b class="num">200,000원~</b><a href="#request" data-mode="companion">동행 신청</a></div>
+      </article>
+      <article>
+        <img src="https://images.unsplash.com/photo-1691071207776-4c90bc27005d?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="label" style="color:rgba(255,255,255,.7)">지방</div>
+        <h3>지방 원격 임장</h3>
+        <p>지방 물건 하나 보려고 하루를 비우지 마세요. 그 지역에 사는 파트너가 대신 가고, 원하시면 영상통화로 현장을 실시간으로 보여드립니다.</p>
+        <ul><li>실시간 영상통화</li><li>현지 시세 탐문</li><li>수도권과 같은 요금</li></ul>
+        <div class="price"><b class="num">함께 70,000원 · 단독 150,000원</b><a href="#request" data-mode="remote">원격 임장 신청</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="alt" style="padding:96px 0">
+  <div class="wrap">
+    <div class="label">운영 원칙</div>
+    <h2 class="h2">분명하게 약속하는 것</h2>
+    <div class="rules">
+      <div><h3>임장 전 취하되면 전액 환불</h3><p>경매가 취하·변경되어 현장에 가지 않았다면 받은 비용을 모두 돌려드립니다.</p></div>
+      <div><h3>모집 마감은 매각기일 7일 전</h3><p>입찰 준비 시간을 확보할 수 있도록 리포트는 늦어도 매각기일 3일 전까지 전달합니다.</p></div>
+      <div><h3>무단 진입하지 않습니다</h3><p>점유자 동의 없이 집 안에 들어가지 않고, 외부·공용부·관리사무소를 통해 확인합니다.</p></div>
+      <div><h3>사실만 기록합니다</h3><p>입찰가 추천이나 법률 판단은 하지 않습니다. 현장에서 확인한 사실만 날짜와 함께 남깁니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="request">
+  <div class="wrap split">
+    <div>
+      <div class="label">물건 요청</div>
+      <h2 class="h2">찾는 물건이 목록에 없다면</h2>
+      <p class="sub">사건번호를 남겨주세요. 목록에 올려 함께 신청할 사람을 모으거나, 바로 단독으로 출발합니다. 담당자가 2시간 안에 연락드립니다.</p>
+    </div>
+    <div id="req-wrap">
+      <form class="form" id="req-form">
+        <div class="field"><label for="r-court">관할 법원</label>
+          <select id="r-court" required>
+            <option value="">선택</option>
+            <option>서울중앙지방법원</option><option>서울동부지방법원</option><option>서울남부지방법원</option><option>서울북부지방법원</option><option>서울서부지방법원</option>
+            <option>의정부지방법원</option><option>인천지방법원</option><option>수원지방법원</option><option>춘천지방법원</option><option>대전지방법원</option>
+            <option>청주지방법원</option><option>대구지방법원</option><option>부산지방법원</option><option>울산지방법원</option><option>창원지방법원</option>
+            <option>광주지방법원</option><option>전주지방법원</option><option>제주지방법원</option>
+          </select></div>
+        <div class="field"><label for="r-case">사건번호</label><input id="r-case" placeholder="2026타경12345" required pattern="\d{4}\s*타경\s*\d+" title="예: 2026타경12345"></div>
+        <div class="field"><label for="r-date">매각기일</label><input id="r-date" type="date" required></div>
+        <div class="field"><label for="r-mode">진행 방식</label>
+          <select id="r-mode">
+            <option value="group">함께 신청 (목록에 올려 모집)</option>
+            <option value="solo">단독 임장</option><option value="premium">정밀 임장</option>
+            <option value="companion">안심 동행 임장</option>
+            <option value="remote">지방 원격 임장</option>
+          </select></div>
+        <div class="field"><label for="r-phone">연락처</label><input id="r-phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
+        <div class="field"><label for="r-focus">꼭 확인할 점 (선택)</label><input id="r-focus" placeholder="누수, 주차, 학교 거리 등"></div>
+        <label class="agree field full"><input type="checkbox" required><span>개인정보 수집·이용에 동의합니다. 임장 진행과 연락 목적으로만 사용하며 3개월 뒤 파기합니다.</span></label>
+        <div class="field full"><button class="btn btn-white" type="submit" style="width:100%">임장 요청하기</button></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="label">도움말</div>
+    <h2 class="h2">자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>함께 신청한 사람들끼리 정보가 공유되나요?</summary><p>리포트 내용은 같지만 신청자끼리 이름이나 연락처는 공유되지 않습니다. 누가 같은 물건에 관심이 있는지 알 수 없도록 익명으로 운영합니다.</p></details>
+      <details><summary>같은 리포트를 여러 명이 보면 경쟁이 심해지지 않나요?</summary><p>인기 물건은 리포트와 관계없이 입찰자가 많습니다. 리포트는 현장 사실을 확인하는 자료이고 입찰가는 각자 판단합니다. 공유를 원하지 않으면 단독 임장을 선택하세요. 단독 임장 리포트는 다른 사람에게 판매하지 않습니다.</p></details>
+      <details><summary>집 내부도 확인해 주나요?</summary><p>점유자 동의 없이는 내부에 들어갈 수 없습니다. 같은 단지·같은 평형의 매물 확인, 관리사무소 문의, 외부·공용부 점검으로 상태를 최대한 파악합니다.</p></details>
+      <details><summary>입찰이나 명도도 맡길 수 있나요?</summary><p>발품옥션은 현장 확인만 합니다. 입찰 대리는 법원에 등록된 매수신청대리인이, 명도 대리는 변호사가 할 수 있는 업무라 직접 하지 않습니다.</p></details>
+      <details><summary>모집이 안 되면 어떻게 되나요?</summary><p>매각기일 7일 전에 안내드립니다. 단독 임장(150,000원)으로 바꾸거나 전액 취소 중에서 고를 수 있고, 취소하면 비용이 발생하지 않습니다.</p></details>
+    </div>
+    <div class="partner" style="margin-top:96px">
+      <div><h2>발품 파트너를 찾습니다</h2><p>내 지역 경매 물건을 확인하고 건당 수익을 받으세요. 공인중개사와 부동산 실무 경력자를 우대합니다.</p></div>
+      <a class="btn btn-ink" href="#request">파트너 지원</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div><div class="brand" style="color:var(--ink)">발품옥션<small>BALPUM</small></div><p style="margin:14px 0 0;max-width:320px">경매 물건 현장 확인 리포트 서비스</p></div>
+      <div><h4>서비스</h4><a href="#list">물건 찾기</a><a href="#model">함께 신청</a><a href="#services">맞춤 임장</a></div>
+      <div><h4>안내</h4><a href="#report">리포트 구성</a><a href="#faq">자주 묻는 질문</a><a href="#request">파트너 지원</a></div>
+      <div><h4>고객센터</h4><p style="margin:0">평일 09:00–18:00</p></div>
+    </div>
+    <div class="fbottom">
+      상호 발품옥션 · 대표 (준비 중) · 사업자등록번호 (준비 중) · 통신판매업 신고 (준비 중)<br>
+      발품옥션은 현장에서 확인한 사실 정보를 제공하며 입찰 대리, 법률 자문, 명도 대리를 하지 않습니다. 리포트는 참고 자료이며 투자 결과를 보장하지 않습니다.<br>
+      © 2026 Balpum Auction
+    </div>
+  </div>
+</footer>
+
+<div class="demo">데모 · 예시 물건, 결제 없음</div>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true">
+  <div class="panel" id="panel"></div>
+  <button class="pclose" id="pclose" aria-label="닫기"><svg width="16" height="16" viewBox="0 0 16 16" stroke="currentColor" stroke-width="1.6"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const eok = v => { const e = Math.floor(v / 10000), m = v % 10000; return (e ? e + '억' : '') + (m ? ' ' + m.toLocaleString() + '만' : ''); };
+const won = man => Math.round(man * 10000).toLocaleString() + '원';
+const DAY = 864e5;
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const dateOf = off => new Date(today.getTime() + off * DAY);
+const fmt = d => `${d.getMonth() + 1}월 ${d.getDate()}일 (${'일월화수목금토'[d.getDay()]})`;
+const img = (id, w = 900) => `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
+
+// header
+const hdr = $('hdr');
+const onScroll = () => hdr.classList.toggle('solid', scrollY > 40);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+// 요금 (만 원)
+const PRICE = { group: 7, report: 4.9, solo: 15, urgent: 20 };
+const GOAL = 3;
+
+// 예시 물건 (매각기일 = 오늘 + off일)
+const ITEMS = [
+  { id: 1, region: '서울', addr: '서울 노원구 상계동', name: '상계 ○○아파트', type: '아파트', size: '59㎡', floor: '9층', court: '서울북부지법', caseNo: '2026타경10231', appr: 61000, min: 48800, fail: 1, off: 18, status: 'rec', count: 2, photo: '1593726222205-21404ff4e5fd' },
+  { id: 2, region: '경기', addr: '경기 수원시 영통구', name: '영통 ○○아파트', type: '아파트', size: '84㎡', floor: '15층', court: '수원지법', caseNo: '2026타경20877', appr: 54000, min: 37800, fail: 2, off: 12, status: 'done', count: 4, sold: 7, visited: -3, photo: '1677076212506-a2c960901bd7' },
+  { id: 3, region: '인천', addr: '인천 연수구 송도동', name: '송도 ○○오피스텔', type: '오피스텔', size: '29㎡', floor: '21층', court: '인천지법', caseNo: '2026타경31540', appr: 22000, min: 10780, fail: 3, off: 21, status: 'rec', count: 1, photo: '1710418555472-e812e83ea103' },
+  { id: 4, region: '지방', addr: '부산 해운대구 우동', name: '해운대 ○○아파트', type: '아파트', size: '101㎡', floor: '27층', court: '부산지법', caseNo: '2026타경40612', appr: 72000, min: 50400, fail: 1, off: 25, status: 'rec', count: 0, photo: '1587830343816-09edcc513e57' },
+  { id: 5, region: '서울', addr: '서울 강서구 화곡동', name: '화곡동 ○○빌라', type: '다세대', size: '46㎡', floor: '3층', court: '서울남부지법', caseNo: '2026타경11908', appr: 29000, min: 18560, fail: 2, off: 15, status: 'go', count: 3, photo: '1744273876148-71718f401231' },
+  { id: 6, region: '지방', addr: '대전 유성구 봉명동', name: '봉명 ○○아파트', type: '아파트', size: '84㎡', floor: '6층', court: '대전지법', caseNo: '2026타경52233', appr: 43000, min: 30100, fail: 1, off: 9, status: 'done', count: 3, sold: 3, visited: -2, photo: '1576613443548-c586abb1e2f4' },
+  { id: 7, region: '경기', addr: '경기 고양시 일산동구', name: '일산 ○○아파트', type: '아파트', size: '84㎡', floor: '11층', court: '의정부지법 고양지원', caseNo: '2026타경23019', appr: 48000, min: 33600, fail: 1, off: 16, status: 'rec', count: 2, photo: '1710418561655-7a9460df902b' },
+  { id: 8, region: '지방', addr: '대구 수성구 범어동', name: '범어 ○○아파트', type: '아파트', size: '84㎡', floor: '18층', court: '대구지법', caseNo: '2026타경60488', appr: 66000, min: 46200, fail: 1, off: 23, status: 'rec', count: 1, photo: '1708242152350-4c34d2ee5a4d' },
+  { id: 9, region: '경기', addr: '경기 화성시 오산동', name: '동탄 ○○아파트', type: '아파트', size: '74㎡', floor: '20층', court: '수원지법', caseNo: '2026타경24455', appr: 59000, min: 41300, fail: 1, off: 7, status: 'done', count: 5, sold: 11, visited: -4, photo: '1691071102169-1b821a252f0e' },
+  { id: 10, region: '서울', addr: '서울 은평구 불광동', name: '불광 ○○아파트', type: '아파트', size: '59㎡', floor: '4층', court: '서울서부지법', caseNo: '2026타경12764', appr: 52000, min: 41600, fail: 1, off: 4, status: 'rec', count: 1, photo: '1761199663791-3b8c1fe956e4' },
+];
+
+let mine = [];
+try { mine = JSON.parse(localStorage.getItem('balpum_mine') || '[]'); } catch (_) {}
+const saveMine = () => { try { localStorage.setItem('balpum_mine', JSON.stringify(mine)); } catch (_) {} renderMyCount(); };
+const myFor = id => mine.find(m => m.itemId === id);
+
+function view(it) {
+  const p = PRICE;
+  const joined = myFor(it.id);
+  const count = it.count + (joined && joined.kind !== 'report' && joined.kind !== 'urgent' ? 1 : 0);
+  let status = it.status;
+  if (status === 'rec' && it.off < 7) status = 'closed';
+  else if (status === 'rec' && (count >= GOAL || (joined && joined.kind === 'solo'))) status = 'go';
+  return { ...it, p, count, status, joined, date: dateOf(it.off) };
+}
+
+const STATUS = { rec: '모집 중', go: '출발 확정', done: '리포트 열람 가능', closed: '모집 마감' };
+const TABS = [['all', '전체'], ['rec', '모집 중'], ['go', '출발 확정'], ['done', '리포트 열람 가능']];
+let filter = 'all', region = '', q = '';
+
+function renderTabs() {
+  const all = ITEMS.map(view);
+  $('tabs').innerHTML = TABS.map(([k, t]) => {
+    const n = k === 'all' ? all.length : all.filter(v => v.status === k).length;
+    return `<button data-f="${k}" class="${filter === k ? 'on' : ''}">${t}<span>${n}</span></button>`;
+  }).join('');
+}
+
+function renderList() {
+  renderTabs();
+  const rows = ITEMS.map(view)
+    .filter(v => filter === 'all' || v.status === filter)
+    .filter(v => !region || v.region === region)
+    .filter(v => !q || (v.addr + v.name + v.caseNo).replace(/\s/g, '').includes(q))
+    .sort((a, b) => (a.status === 'closed') - (b.status === 'closed') || a.off - b.off);
+  $('items').innerHTML = rows.length ? rows.map(v => {
+    let prog;
+    if (v.status === 'done') prog = `<span class="t">리포트 ${v.sold}건 열람</span><span class="p num">${won(v.p.report)}</span>`;
+    else if (v.status === 'closed') prog = `<span class="t">매각기일 임박 · 긴급 문의</span><span class="p" style="color:var(--muted)">—</span>`;
+    else {
+      const seats = Array.from({ length: GOAL }, (_, i) => `<i class="${i < v.count ? 'f' : ''}"></i>`).join('');
+      const t = v.status === 'go' ? `${v.count}명 신청 · 출발 확정` : `${v.count}/${GOAL}명 · ${GOAL - v.count}명 더 모이면 출발`;
+      prog = `<span class="seats">${seats}</span><span class="t">${t}</span><span class="p num">${v.p.group}만<small>원</small></span>`;
+    }
+    return `<article class="card" tabindex="0" data-id="${v.id}">
+      <div class="ph">
+        <img src="${img(v.photo, 800)}" alt="${esc(v.name)} 외관 (예시 사진)" loading="lazy">
+        <span class="chip ${v.status}"><span class="dot"></span>${STATUS[v.status]}</span>
+        <span class="dd ${v.off <= 7 ? 'hot' : ''}">D-${v.off}</span>
+        ${v.joined ? '<span class="mine">내 신청</span>' : ''}
+      </div>
+      <div class="info">
+        <div class="case">${esc(v.court)} · ${esc(v.caseNo)}</div>
+        <h3>${esc(v.addr)} ${esc(v.name)}</h3>
+        <div class="spec">${esc(v.type)} · ${esc(v.size)} · ${esc(v.floor)} · 매각기일 ${fmt(v.date)}</div>
+        <div class="money num"><span>감정가<b>${eok(v.appr)}</b></span><span>최저가<b>${eok(v.min)}</b></span><span>${v.fail}회 유찰</span></div>
+        <div class="progress">${prog}</div>
+      </div></article>`;
+  }).join('') : '<div class="empty">조건에 맞는 물건이 없습니다. 아래에서 사건번호로 직접 요청해 주세요.</div>';
+}
+
+$('tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; filter = b.dataset.f; renderList(); });
+$('items').addEventListener('click', e => { const c = e.target.closest('.card'); if (c) openItem(+c.dataset.id); });
+$('items').addEventListener('keydown', e => { if (e.key === 'Enter') { const c = e.target.closest('.card'); if (c) openItem(+c.dataset.id); } });
+$('hero-search').addEventListener('submit', e => {
+  e.preventDefault();
+  region = $('hs-region').value; q = $('hs-q').value.replace(/\s/g, ''); filter = 'all';
+  renderList(); $('list').scrollIntoView();
+});
+
+// 사이드 패널
+function openPanel(html) { $('panel').innerHTML = html; $('panel').scrollTop = 0; $('ov').classList.add('open'); document.body.classList.add('lock'); }
+function closePanel() { $('ov').classList.remove('open'); document.body.classList.remove('lock'); }
+$('pclose').onclick = closePanel;
+$('ov').addEventListener('click', e => { if (e.target.id === 'ov') closePanel(); });
+addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+const contact = `
+  <div class="pf"><label for="m-phone">연락처</label><input id="m-phone" type="tel" required placeholder="010-0000-0000" autocomplete="tel"></div>
+  <label class="agree"><input type="checkbox" required><span>개인정보 수집·이용(임장 진행 연락 목적, 3개월 보관)에 동의합니다.</span></label>`;
+
+function openItem(id) {
+  const v = view(ITEMS.find(i => i.id === id));
+  let html = `<img class="pimg" src="${img(v.photo, 1100)}" alt="">
+  <div class="pbody">
+    <div class="case" style="font-size:13px;color:var(--muted)">${esc(v.court)} · ${esc(v.caseNo)} · ${STATUS[v.status]}</div>
+    <h2>${esc(v.addr)} ${esc(v.name)}</h2>
+    <div style="color:var(--muted);font-size:15px">${esc(v.type)} · ${esc(v.size)} · ${esc(v.floor)}</div>
+    <dl class="kv num">
+      <div><dt>매각기일</dt><dd>${fmt(v.date)} · D-${v.off}</dd></div>
+      <div><dt>감정가</dt><dd>${eok(v.appr)}원</dd></div>
+      <div><dt>최저매각가격</dt><dd>${eok(v.min)}원 (${Math.round(v.min / v.appr * 100)}%)</dd></div>
+      <div><dt>유찰</dt><dd>${v.fail}회</dd></div>
+    </dl>`;
+
+  if (v.joined) {
+    const isReport = v.joined.kind === 'report';
+    html += `<div class="done-note"><b>${isReport ? '구매한 리포트입니다' : v.joined.kind === 'urgent' ? '긴급 임장을 문의했습니다' : '신청한 물건입니다'}</b>
+      <p>${isReport ? '실제 서비스에서는 이 자리에서 전체 리포트를 열람합니다.' : '출발이 확정되면 문자로 결제 안내를 드립니다. 확정 전에는 비용이 발생하지 않습니다.'}</p></div>
+      ${isReport ? '' : `<button class="btn btn-line" style="width:100%;margin-top:14px" data-cancel>신청 취소</button>`}`;
+  } else if (v.status === 'done') {
+    html += `<div class="block"><h4>현장 확인 리포트 · ${fmt(dateOf(v.visited))} 확인</h4>
+      <div class="sheet-doc" style="padding:6px 20px;box-shadow:none">
+        <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>점유 상태</dt><dd>거주 중으로 보임</dd><span class="st ok">확인</span></div>
+        <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>관리비</dt><dd>체납 있음</dd><span class="st warn">주의</span></div>
+        <div class="locked"><div class="blur">
+          <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>체납 금액</dt><dd>약 000만 원</dd><span class="st warn">주의</span></div>
+          <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>외관·공용부</dt><dd>외벽 균열 일부</dd><span class="st ok">확인</span></div>
+          <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>인근 시세</dt><dd>0억 0천 ~ 0억 0천</dd><span class="st ok">확인</span></div>
+        </div><div class="lk">구매 후 전체 항목과 사진 26장, 영상 2편을 볼 수 있습니다</div></div>
+      </div></div>
+      <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 구매 · ${won(v.p.report)}</button></form>`;
+  } else if (v.status === 'closed') {
+    html += `<div class="done-note"><b>함께 신청이 마감되었습니다</b><p>매각기일이 7일 안으로 남아 모집을 마감했습니다. 긴급 단독 임장(${won(v.p.urgent)})이 가능한지 확인해 드립니다.</p></div>
+      <form id="m-form" data-kind="urgent">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">긴급 임장 문의</button></form>`;
+  } else {
+    const next = v.count + 1;
+    const going = v.status === 'go';
+    const meter = Array.from({ length: GOAL }, (_, i) => `<i class="${i < v.count ? 'f' : ''}"></i>`).join('');
+    html += `<div class="block"><h4>${going ? '출발이 확정된 임장입니다' : `${v.count}/${GOAL}명 모집 중 · ${fmt(dateOf(v.off - 7))} 마감`}</h4>
+      <div class="meter">${meter}</div>
+      <p style="margin:0;color:var(--muted);font-size:14.5px">${going ? `출발이 확정된 임장입니다. 지금 합류하면 같은 리포트를 <b style="color:var(--ink)">${won(v.p.group)}</b>에 받습니다.` : next >= GOAL ? `지금 신청하면 ${GOAL}명이 되어 바로 출발이 확정됩니다.` : `지금 신청하면 ${next}명입니다. ${GOAL - next}명 더 모이면 출발합니다.`} 결제는 출발 확정 후에 합니다.</p></div>
+    <form id="m-form" class="block">
+      <label class="opt"><input type="radio" name="kind" value="group" checked><span class="t">${going ? '확정된 임장에 합류' : '함께 신청'}<small>${going ? '같은 리포트를 함께 받습니다' : `인원 제한 없음 · 마감까지 ${GOAL}명이 안 모이면 단독 전환 또는 전액 취소`}</small></span><span class="p num">${won(v.p.group)}</span></label>
+      ${going ? '' : `<label class="opt"><input type="radio" name="kind" value="solo"><span class="t">단독 임장<small>기다리지 않고 즉시 확정 · 리포트는 나만 열람</small></span><span class="p num">${won(v.p.solo)}</span></label>`}
+      ${contact}
+      <button class="btn btn-ink" style="width:100%;margin-top:20px">임장 신청하기</button>
+    </form>`;
+  }
+  openPanel(html + '</div>');
+
+  const f = $('m-form');
+  if (f) f.addEventListener('submit', e => {
+    e.preventDefault();
+    const kind = v.status === 'done' ? 'report' : f.dataset.kind || f.querySelector('input[name=kind]:checked').value;
+    mine.push({ itemId: v.id, kind, at: new Date().toISOString() });
+    saveMine(); renderList(); openItem(v.id);
+  });
+  const c = document.querySelector('[data-cancel]');
+  if (c) c.onclick = () => { mine = mine.filter(m => m.itemId !== v.id); saveMine(); renderList(); closePanel(); };
+}
+
+// 내 신청
+const KIND = { group: '함께 신청', solo: '단독 임장', report: '리포트 구매', urgent: '긴급 임장 문의', request: '물건 요청' };
+function renderMyCount() { $('my-count').hidden = !mine.length; $('my-count').textContent = mine.length; }
+$('my-open').onclick = () => {
+  const rows = mine.map(m => {
+    const it = ITEMS.find(i => i.id === m.itemId);
+    return `<div class="myrow" ${it ? `data-open="${it.id}"` : ''}>
+      ${it ? `<img src="${img(it.photo, 200)}" alt="">` : '<img alt="">'}
+      <div><b>${it ? esc(it.addr + ' ' + it.name) : esc(m.title || '요청한 물건')}</b>${KIND[m.kind] || ''} · ${new Date(m.at).toLocaleDateString('ko-KR')}</div></div>`;
+  }).join('');
+  openPanel(`<div class="pbody" style="padding-top:40px"><div class="label">신청 내역</div><h2 style="margin-top:10px">내 신청</h2>
+    <div style="margin-top:20px;border-top:1px solid var(--ink)">${rows || '<p style="color:var(--muted);padding:20px 0">아직 신청한 물건이 없습니다.</p>'}</div></div>`);
+  document.querySelectorAll('[data-open]').forEach(r => r.onclick = () => openItem(+r.dataset.open));
+};
+
+// 물건 요청
+$('r-date').min = dateOf(1).toISOString().slice(0, 10);
+document.querySelectorAll('[data-mode]').forEach(a => a.addEventListener('click', () => { $('r-mode').value = a.dataset.mode; }));
+$('req-form').addEventListener('submit', e => {
+  e.preventDefault();
+  const title = `${$('r-court').value} ${$('r-case').value}`;
+  const modeText = $('r-mode').selectedOptions[0].text;
+  const days = Math.round((new Date($('r-date').value) - today) / DAY);
+  mine.push({ itemId: null, kind: 'request', title, at: new Date().toISOString() });
+  saveMine();
+  $('req-wrap').innerHTML = `<div class="okbox"><div class="label">접수 완료</div><h3 style="margin-top:12px">요청을 받았습니다</h3>
+    <p class="sub" style="margin:0">${esc(title)} · ${esc(modeText)}<br>담당자가 2시간 안에 연락드립니다.${days < 7 ? ' 매각기일이 7일 안이라 긴급 임장 가능 여부부터 확인하겠습니다.' : ''}</p></div>`;
+});
+
+renderList(); renderMyCount();
+</script>
+</body>
+</html>
