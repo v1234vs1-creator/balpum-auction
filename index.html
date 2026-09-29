@@ -7,7 +7,7 @@
 <meta name="description" content="지역 파트너가 경매 물건 현장에 직접 가서 점유 상태, 관리비 체납, 건물 상태, 주변 시세를 사진과 함께 기록해 드립니다.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="발품옥션 | 경매 물건 현장 임장 리포트">
-<meta property="og:description" content="입찰하기 전에, 현장부터 확인하세요. 함께 신청하면 1인 7만 원.">
+<meta property="og:description" content="입찰하기 전에, 현장부터 확인하세요. 함께 신청하면 리포트 열람 수익을 신청자끼리 나눠 돌려받습니다.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1743906487902-a9ce042ecc5c?w=1200&h=630&q=80&auto=format&fit=crop">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23121417'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3E%EB%B0%9C%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -260,6 +260,8 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
 .myrow div{flex:1;font-size:14px}
 .myrow b{display:block;font-size:15px}
 .ref{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;padding:3px 7px;border-radius:3px}
+.was{color:var(--faint);font-weight:400;margin-right:6px}
+.sale{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:600;border-radius:4px;padding:3px 9px;margin-bottom:14px}
 .demo{position:fixed;left:16px;bottom:16px;z-index:25;background:var(--ink);color:#fff;font-size:12px;padding:8px 12px;border-radius:4px;opacity:.85}
 </style>
 </head>
@@ -313,22 +315,24 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
   <div class="wrap split">
     <div>
       <div class="label">요금</div>
-      <h2 class="h2">인원이 모이면 함께 가고,<br>다녀온 리포트는 누구나 열람합니다</h2>
-      <p class="sub">같은 물건에 관심 있는 사람이 3명 이상 모이면 파트너가 출발합니다. 출발 뒤에도 인원 제한 없이 합류할 수 있고, 1인 요금은 인원과 관계없이 같습니다.</p>
+      <h2 class="h2">먼저 신청한 사람이<br>가장 적게 냅니다</h2>
+      <p class="sub">같은 물건에 관심 있는 사람이 3명 이상 모이면 파트너가 출발합니다. 다녀온 리포트를 나중에 열람하는 사람이 생기면, 열람 1건마다 20,000원을 먼저 신청한 사람들에게 나눠 적립해 드립니다. 인기 물건이라면 신청 비용을 대부분 돌려받을 수 있습니다.</p>
+      <p class="sub">신청자는 꼭 확인할 점을 미리 요청할 수 있고, 리포트도 열람자보다 하루 먼저 받습니다. 경쟁이 지나치게 늘지 않도록 나중 열람은 물건당 10명까지만 받습니다.</p>
       <p class="sub">결제는 출발이 확정된 다음에 합니다. 매각기일 5일 전까지 3명이 모이지 않으면 단독 임장으로 바꾸거나 전액 취소할 수 있습니다.</p>
     </div>
     <div>
+      <span class="sale">오픈 기념 30% 할인 · 10월 31일까지</span>
       <table class="table num">
         <thead><tr><th>상품</th><th>1인 요금</th></tr></thead>
         <tbody>
-          <tr class="best"><td>함께 신청<small>3명 이상 모이면 출발 · 인원 제한 없음</small></td><td>70,000원</td></tr>
-          <tr><td>완성 리포트 열람<small>이미 다녀온 물건 · 매각기일까지 열람</small></td><td>49,000원</td></tr>
-          <tr><td>단독 임장<small>신청 즉시 확정 · 리포트는 신청자만 열람</small></td><td>150,000원</td></tr>
-          <tr><td>정밀 임장<small>낮·밤 2회 방문 · 중개사무소 5곳 탐문</small></td><td>300,000원</td></tr>
-          <tr><td>멤버십<small>매월 리포트 4건 열람 · 신청 10% 할인</small></td><td>월 129,000원</td></tr>
+          <tr class="best"><td>함께 신청<small>3명 이상 모이면 출발 · 열람 수익 나눠 적립</small></td><td><s class="was">99,000원</s>69,000원</td></tr>
+          <tr><td>나중 열람<small>이미 다녀온 물건 · 물건당 10명까지</small></td><td><s class="was">129,000원</s>90,000원</td></tr>
+          <tr><td>단독 임장<small>신청 즉시 확정 · 리포트는 나만 열람</small></td><td><s class="was">250,000원</s>175,000원</td></tr>
+          <tr><td>정밀 임장<small>낮·밤 2회 방문 · 중개사무소 5곳 탐문</small></td><td><s class="was">450,000원</s>315,000원</td></tr>
+          <tr><td>안심 동행<small>파트너와 함께 현장 방문 · 2시간</small></td><td><s class="was">250,000원</s>175,000원</td></tr>
         </tbody>
       </table>
-      <p class="fine">전국 같은 요금입니다. 물건이 있는 지역의 파트너가 방문하며, 파트너가 없는 지역은 교통비 실비를 신청 전에 따로 안내합니다. 함께 신청의 첫 신청자에게는 리포트가 열람될 때마다 5,000원이 적립됩니다.</p>
+      <p class="fine">전국 같은 요금입니다. 물건이 있는 지역의 파트너가 방문하며, 파트너가 없는 지역은 교통비 실비를 신청 전에 따로 안내합니다. 감정가 10억 원 이상 물건은 50,000원이 추가됩니다. 적립금은 신청 금액까지 쌓이고 다음 신청에 쓸 수 있습니다.</p>
     </div>
   </div>
 </section>
@@ -393,7 +397,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
         <h3>안심 동행 임장</h3>
         <p>경험 많은 파트너가 현장까지 함께 갑니다. 무엇을 봐야 하는지, 관리사무소에 무엇을 물어야 하는지 옆에서 안내합니다.</p>
         <ul><li>처음 경매하는 분</li><li>혼자 가기 부담스러운 분</li><li>파트너 성별 선택</li></ul>
-        <div class="price"><b class="num">200,000원~</b><a href="#request" data-mode="companion">동행 신청</a></div>
+        <div class="price"><b class="num"><s class="was">250,000원</s>175,000원~</b><a href="#request" data-mode="companion">동행 신청</a></div>
       </article>
       <article>
         <img src="https://images.unsplash.com/photo-1691071207776-4c90bc27005d?w=1200&q=80&auto=format&fit=crop" alt="" loading="lazy">
@@ -401,7 +405,7 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
         <h3>지방 원격 임장</h3>
         <p>지방 물건 하나 보려고 하루를 비우지 마세요. 그 지역에 사는 파트너가 대신 가고, 원하시면 영상통화로 현장을 실시간으로 보여드립니다.</p>
         <ul><li>실시간 영상통화</li><li>현지 시세 탐문</li><li>수도권과 같은 요금</li></ul>
-        <div class="price"><b class="num">함께 70,000원 · 단독 150,000원</b><a href="#request" data-mode="remote">원격 임장 신청</a></div>
+        <div class="price"><b class="num">함께 69,000원 · 단독 175,000원</b><a href="#request" data-mode="remote">원격 임장 신청</a></div>
       </article>
     </div>
   </div>
@@ -462,10 +466,10 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
     <h2 class="h2">자주 묻는 질문</h2>
     <div class="faq">
       <details><summary>함께 신청한 사람들끼리 정보가 공유되나요?</summary><p>리포트 내용은 같지만 신청자끼리 이름이나 연락처는 공유되지 않습니다. 누가 같은 물건에 관심이 있는지 알 수 없도록 익명으로 운영합니다.</p></details>
-      <details><summary>같은 리포트를 여러 명이 보면 경쟁이 심해지지 않나요?</summary><p>인기 물건은 리포트와 관계없이 입찰자가 많습니다. 리포트는 현장 사실을 확인하는 자료이고 입찰가는 각자 판단합니다. 공유를 원하지 않으면 단독 임장을 선택하세요. 단독 임장 리포트는 다른 사람에게 판매하지 않습니다.</p></details>
+      <details><summary>같은 리포트를 여러 명이 보면 경쟁이 심해지지 않나요?</summary><p>나중 열람은 물건당 10명까지만 받습니다. 인기 물건은 리포트와 관계없이 입찰자가 많습니다. 리포트는 현장 사실을 확인하는 자료이고 입찰가는 각자 판단합니다. 공유를 원하지 않으면 단독 임장을 선택하세요. 단독 임장 리포트는 다른 사람에게 판매하지 않습니다.</p></details>
       <details><summary>집 내부도 확인해 주나요?</summary><p>점유자 동의 없이는 내부에 들어갈 수 없습니다. 같은 단지·같은 평형의 매물 확인, 관리사무소 문의, 외부·공용부 점검으로 상태를 최대한 파악합니다.</p></details>
       <details><summary>입찰이나 명도도 맡길 수 있나요?</summary><p>발품옥션은 현장 확인만 합니다. 입찰 대리는 법원에 등록된 매수신청대리인이, 명도 대리는 변호사가 할 수 있는 업무라 직접 하지 않습니다.</p></details>
-      <details><summary>모집이 안 되면 어떻게 되나요?</summary><p>매각기일 5일 전에 안내드립니다. 단독 임장(150,000원)으로 바꾸거나 전액 취소 중에서 고를 수 있고, 취소하면 비용이 발생하지 않습니다.</p></details>
+      <details><summary>모집이 안 되면 어떻게 되나요?</summary><p>매각기일 5일 전에 안내드립니다. 단독 임장으로 바꾸거나 전액 취소 중에서 고를 수 있고, 취소하면 비용이 발생하지 않습니다.</p></details>
     </div>
     <div class="partner" style="margin-top:96px">
       <div><h2>발품 파트너를 찾습니다</h2><p>내 지역 경매 물건을 확인하고 건당 수익을 받으세요. 공인중개사와 부동산 실무 경력자를 우대합니다.</p></div>
@@ -513,7 +517,13 @@ const onScroll = () => hdr.classList.toggle('solid', scrollY > 40);
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
 // 요금 (만 원)
-const PRICE = { group: 7, report: 4.9, solo: 15, urgent: 20 };
+const PRICE = { group: 9.9, report: 12.9, solo: 25, urgent: 30 };
+const REPORT_MAX = 10;   // 나중 열람은 물건당 10명까지
+const SHARE = 2;         // 열람 1건마다 신청자에게 나눠 주는 적립금(만 원)
+const SALE_UNTIL = new Date('2026-11-01T00:00:00'); // 오픈 할인 30%
+const onSale = () => new Date() < SALE_UNTIL;
+const cost = man => onSale() ? Math.round(man * 0.7 * 10) / 10 : man;
+const priceHtml = man => onSale() ? `<s class="was">${won(man)}</s>${won(cost(man))}` : won(man);
 const GOAL = 3;
 
 // 물건 목록: 구글 시트 '물건' 탭에서 불러온다 (관리자 페이지에서 등록)
@@ -582,12 +592,14 @@ function renderList() {
   }
   $('items').innerHTML = rows.length ? rows.map(v => {
     let prog;
-    if (v.status === 'done') prog = `<span class="t">리포트 ${v.sold}건 열람</span><span class="p num">${won(v.p.report)}</span>`;
+    if (v.status === 'done') prog = v.sold >= REPORT_MAX
+      ? `<span class="t">열람 ${REPORT_MAX}/${REPORT_MAX} · 마감</span><span class="p" style="color:var(--muted)">—</span>`
+      : `<span class="t">열람 ${v.sold}/${REPORT_MAX}명</span><span class="p num">${won(cost(v.p.report))}</span>`;
     else if (v.status === 'closed') prog = `<span class="t">매각기일 임박 · 긴급 문의</span><span class="p" style="color:var(--muted)">—</span>`;
     else {
       const seats = Array.from({ length: GOAL }, (_, i) => `<i class="${i < v.count ? 'f' : ''}"></i>`).join('');
       const t = v.status === 'go' ? `${v.count}명 신청 · 출발 확정` : `${v.count}/${GOAL}명 · ${GOAL - v.count}명 더 모이면 출발`;
-      prog = `<span class="seats">${seats}</span><span class="t">${t}</span><span class="p num">${v.p.group}만<small>원</small></span>`;
+      prog = `<span class="seats">${seats}</span><span class="t">${t}</span><span class="p num">${cost(v.p.group)}만<small>원</small></span>`;
     }
     return `<article class="card" tabindex="0" data-id="${v.id}">
       <div class="ph">
@@ -678,9 +690,11 @@ function openItem(id) {
           <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>인근 시세</dt><dd>0억 0천 ~ 0억 0천</dd><span class="st ok">확인</span></div>
         </div><div class="lk">구매 후 전체 항목과 사진 26장, 영상 2편을 볼 수 있습니다</div></div>
       </div></div>
-      <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 구매 · ${won(v.p.report)}</button></form>`;
+      ${v.sold >= REPORT_MAX ? `<div class="done-note"><b>열람이 마감되었습니다</b><p>경쟁이 지나치게 늘지 않도록 나중 열람은 물건당 ${REPORT_MAX}명까지만 받습니다.</p></div>`
+      : `<p style="color:var(--muted);font-size:14px;margin:14px 0 0">남은 열람 ${REPORT_MAX - v.sold}자리 · 결제 금액 중 ${won(SHARE)}은 먼저 신청한 분들께 적립됩니다.</p>
+      <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 열람 신청 · ${won(cost(v.p.report))}</button></form>`}`;
   } else if (v.status === 'closed') {
-    html += `<div class="done-note"><b>함께 신청이 마감되었습니다</b><p>매각기일이 ${CUTOFF}일 안으로 남아 모집을 마감했습니다. 긴급 단독 임장(${won(v.p.urgent)})이 가능한지 확인해 드립니다.</p></div>
+    html += `<div class="done-note"><b>함께 신청이 마감되었습니다</b><p>매각기일이 ${CUTOFF}일 안으로 남아 모집을 마감했습니다. 긴급 단독 임장(${won(cost(v.p.urgent))})이 가능한지 확인해 드립니다.</p></div>
       <form id="m-form" data-kind="urgent">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">긴급 임장 문의</button></form>`;
   } else {
     const next = v.count + 1;
@@ -688,10 +702,12 @@ function openItem(id) {
     const meter = Array.from({ length: GOAL }, (_, i) => `<i class="${i < v.count ? 'f' : ''}"></i>`).join('');
     html += `<div class="block"><h4>${going ? '출발이 확정된 임장입니다' : `${v.count}/${GOAL}명 모집 중 · ${fmt(dateOf(v.off - CUTOFF))} 마감`}</h4>
       <div class="meter">${meter}</div>
-      <p style="margin:0;color:var(--muted);font-size:14.5px">${going ? `출발이 확정된 임장입니다. 지금 합류하면 같은 리포트를 <b style="color:var(--ink)">${won(v.p.group)}</b>에 받습니다.` : next >= GOAL ? `지금 신청하면 ${GOAL}명이 되어 바로 출발이 확정됩니다.` : `지금 신청하면 ${next}명입니다. ${GOAL - next}명 더 모이면 출발합니다.`} 결제는 출발 확정 후에 합니다.</p></div>
+      <p style="margin:0;color:var(--muted);font-size:14.5px">${going ? `출발이 확정된 임장입니다. 지금 합류하면 같은 리포트를 <b style="color:var(--ink)">${won(cost(v.p.group))}</b>에 받습니다.` : next >= GOAL ? `지금 신청하면 ${GOAL}명이 되어 바로 출발이 확정됩니다.` : `지금 신청하면 ${next}명입니다. ${GOAL - next}명 더 모이면 출발합니다.`} 결제는 출발 확정 후에 합니다.</p>
+      <div class="done-note" style="margin-top:16px"><b>먼저 신청할수록 이득입니다</b><p>리포트가 나중에 열람될 때마다 ${won(SHARE)}씩 신청자끼리 나눠 적립됩니다. 예를 들어 3명이 신청하고 열람이 10건 나오면 1인당 약 ${won(Math.floor(SHARE * 10 / 3 * 10) / 10)}이 돌아옵니다. 리포트도 열람자보다 하루 먼저 받습니다.</p></div></div>
     <form id="m-form" class="block">
-      <label class="opt"><input type="radio" name="kind" value="group" checked><span class="t">${going ? '확정된 임장에 합류' : '함께 신청'}<small>${going ? '같은 리포트를 함께 받습니다' : `인원 제한 없음 · 마감까지 ${GOAL}명이 안 모이면 단독 전환 또는 전액 취소`}</small></span><span class="p num">${won(v.p.group)}</span></label>
-      ${going ? '' : `<label class="opt"><input type="radio" name="kind" value="solo"><span class="t">단독 임장<small>기다리지 않고 즉시 확정 · 리포트는 나만 열람</small></span><span class="p num">${won(v.p.solo)}</span></label>`}
+      <label class="opt"><input type="radio" name="kind" value="group" checked><span class="t">${going ? '확정된 임장에 합류' : '함께 신청'}<small>${going ? '같은 리포트를 함께 받고 열람 수익을 나눠 적립' : `열람 수익 나눠 적립 · 마감까지 ${GOAL}명이 안 모이면 단독 전환 또는 전액 취소`}</small></span><span class="p num">${priceHtml(v.p.group)}</span></label>
+      ${going ? '' : `<label class="opt"><input type="radio" name="kind" value="solo"><span class="t">단독 임장<small>기다리지 않고 즉시 확정 · 리포트는 나만 열람</small></span><span class="p num">${priceHtml(v.p.solo)}</span></label>`}
+      <div class="pf"><label for="m-memo">꼭 확인할 점 (신청자만 요청 가능)</label><input id="m-memo" type="text" maxlength="200" placeholder="누수 흔적, 주차, 학교까지 거리 등" style="height:52px;border:1px solid var(--line2);border-radius:var(--r);padding:0 16px;font:inherit;outline:0"></div>
       ${contact}
       <button class="btn btn-ink" style="width:100%;margin-top:20px">임장 신청하기</button>
     </form>`;
@@ -705,7 +721,7 @@ function openItem(id) {
     const phone = $('m-phone').value;
     const ok = await submitting(f, () => {
       if (!phoneOk(phone)) throw new Error('phone');
-      return send({ kind: KIND[kind], item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), mode: kind, phone, website: f.website.value });
+      return send({ kind: KIND[kind], item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), mode: kind, phone, memo: $('m-memo') ? $('m-memo').value : '', website: f.website.value });
     });
     if (!ok) return;
     mine.push({ caseNo: v.caseNo, title: `${v.addr} ${v.name}`, kind, phone, at: new Date().toISOString() });
@@ -722,7 +738,7 @@ function openItem(id) {
 }
 
 // 내 신청
-const KIND = { group: '함께 신청', solo: '단독 임장', report: '리포트 구매', urgent: '긴급 임장 문의', request: '물건 요청' };
+const KIND = { group: '함께 신청', solo: '단독 임장', report: '리포트 열람', urgent: '긴급 임장 문의', request: '물건 요청' };
 function renderMyCount() { $('my-count').hidden = !mine.length; $('my-count').textContent = mine.length; }
 $('my-open').onclick = () => {
   const rows = mine.map(m => {
