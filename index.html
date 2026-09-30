@@ -99,7 +99,8 @@ header.top.solid{background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) 
 .card .case{font-size:13px;color:var(--muted)}
 .card h3{font-size:19px;font-weight:600;letter-spacing:-.025em;margin:4px 0 2px;line-height:1.4}
 .card .spec{font-size:14px;color:var(--muted)}
-.card .money{display:flex;gap:18px;margin-top:14px;font-size:14px;color:var(--muted)}
+.card .money{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:14px;font-size:14px;color:var(--muted)}
+.card .money span{white-space:nowrap}
 .card .money b{color:var(--ink);font-weight:600;margin-left:6px}
 .progress{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:center;gap:14px}
 .seats{display:flex;gap:4px}
@@ -262,6 +263,15 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
 .ref{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:11px;padding:3px 7px;border-radius:3px}
 .was{color:var(--faint);font-weight:400;margin-right:6px}
 .sale{display:inline-block;background:var(--red);color:#fff;font-size:12px;font-weight:600;border-radius:4px;padding:3px 9px;margin-bottom:14px}
+.tl{list-style:none;padding:0;margin:22px 0 0}
+.tl li{position:relative;padding:0 0 20px 30px;color:var(--faint);font-size:14.5px}
+.tl li::before{content:"";position:absolute;left:4px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--line2)}
+.tl li::after{content:"";position:absolute;left:8.5px;top:17px;bottom:-3px;width:1px;background:var(--line2)}
+.tl li:last-child{padding-bottom:0}.tl li:last-child::after{display:none}
+.tl li.on{color:var(--ink)}.tl li.on::before{background:var(--ink)}
+.tl li.now{font-weight:600}.tl li.now::before{background:var(--green);box-shadow:0 0 0 4px var(--green-bg)}
+.tl small{display:block;font-weight:400;color:var(--muted);font-size:13.5px}
+.sample-note{background:var(--amber-bg);color:var(--amber);font-size:13.5px;border-radius:var(--r);padding:10px 14px;margin-top:16px}
 .demo{position:fixed;left:16px;bottom:16px;z-index:25;background:var(--ink);color:#fff;font-size:12px;padding:8px 12px;border-radius:4px;opacity:.85}
 </style>
 </head>
@@ -358,6 +368,8 @@ footer{background:var(--bg2);padding:64px 0 40px;font-size:14px;color:var(--mute
             <div class="doc-row"><dt>인근 시세</dt><dd>중개사무소 3곳 탐문</dd><span class="st ok">확인</span></div>
           </dl>
         </div>
+        <a class="btn btn-ink" href="report.html" style="margin-top:24px">샘플 리포트 전체 보기
+          <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       </div>
     </div>
     <div class="checks">
@@ -542,15 +554,24 @@ function toItem(r, i) {
     type: r.type || '아파트', size: r.size, appr: Math.round(r.appr / 10000), min: Math.round(r.min / 10000), fail: r.fail,
     date, off: Math.round((date - today) / DAY), status: STATUS_CODE[r.status] || 'rec', count: r.count || 0, sold: r.sold || 0,
     visited: r.visited ? new Date(r.visited + 'T00:00:00') : null, photo: r.photo || PHOTOS[hash(r.caseNo) % PHOTOS.length],
+    sample: !!r.sample, report: r.report || '',
   };
 }
 
+// 화면을 보여주기 위한 예시 물건 (가상의 사례, 신청은 접수되지 않는다)
+const ymd = off => { const d = dateOf(off); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+const SAMPLES = [
+  { sample: true, caseNo: '2026타경1○○○1', court: '서울서부지방법원', region: '서울', addr: '서울 마포구 성산동', name: '○○아파트 101동', type: '아파트', size: '59㎡', appr: 820000000, min: 656000000, fail: 1, date: ymd(11), status: '모집', count: 2, photo: '1554782647-42840d3c766f' },
+  { sample: true, caseNo: '2026타경2○○○2', court: '성남지원', region: '경기', addr: '경기 성남시 분당구 정자동', name: '○○마을 205동', type: '아파트', size: '84㎡', appr: 1240000000, min: 868000000, fail: 1, date: ymd(9), status: '확정', count: 4, photo: '1691071102169-1b821a252f0e' },
+  { sample: true, caseNo: '2026타경5○○○○', court: '고양지원', region: '경기', addr: '경기 고양시 덕양구 행신동', name: '○○마을 3단지 703동', type: '아파트', size: '59㎡', appr: 376000000, min: 263200000, fail: 1, date: ymd(6), status: '리포트', count: 3, sold: 6, visited: ymd(-2), photo: '1706534272739-3ee946364de0', report: 'report.html' },
+  { sample: true, caseNo: '2026타경3○○○3', court: '인천지방법원', region: '인천', addr: '인천 연수구 송도동', name: '○○파크 302동', type: '아파트', size: '84㎡', appr: 690000000, min: 483000000, fail: 1, date: ymd(13), status: '모집', count: 0, photo: '1587830343816-09edcc513e57' },
+];
+
 async function loadItems() {
-  try {
-    const j = await (await fetch(ENDPOINT + '?action=items')).json();
-    ITEMS = (j.items || []).map(toItem);
-    loadState = 'ok';
-  } catch (_) { loadState = 'error'; }
+  let real = [];
+  try { real = (await (await fetch(ENDPOINT + '?action=items')).json()).items || []; } catch (_) {}
+  ITEMS = real.concat(SAMPLES).map(toItem);
+  loadState = 'ok';
   renderList();
 }
 
@@ -585,12 +606,13 @@ function renderList() {
     .filter(v => filter === 'all' || v.status === filter)
     .filter(v => !region || v.region === region)
     .filter(v => !q || (v.addr + v.name + v.caseNo).replace(/\s/g, '').includes(q))
-    .sort((a, b) => (a.status === 'closed') - (b.status === 'closed') || a.off - b.off);
+    .sort((a, b) => a.sample - b.sample || (a.status === 'closed') - (b.status === 'closed') || a.off - b.off);
   if (loadState !== 'ok') {
     $('items').innerHTML = `<div class="empty">${loadState === 'loading' ? '물건 목록을 불러오는 중입니다…' : '목록을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.'}</div>`;
     return;
   }
-  $('items').innerHTML = rows.length ? rows.map(v => {
+  const intro = ITEMS.some(i => !i.sample) ? '' : '<div class="empty" style="padding:0;text-align:left">실제 물건은 법원 공고에 맞춰 올라옵니다. 아래는 화면을 보여드리기 위한 예시입니다.</div>';
+  $('items').innerHTML = rows.length ? intro + rows.map(v => {
     let prog;
     if (v.status === 'done') prog = v.sold >= REPORT_MAX
       ? `<span class="t">열람 ${REPORT_MAX}/${REPORT_MAX} · 마감</span><span class="p" style="color:var(--muted)">—</span>`
@@ -603,7 +625,7 @@ function renderList() {
     }
     return `<article class="card" tabindex="0" data-id="${v.id}">
       <div class="ph">
-        <img src="${img(v.photo, 800)}" alt="" loading="lazy"><span class="ref">참고 이미지</span>
+        <img src="${img(v.photo, 800)}" alt="" loading="lazy"><span class="ref">${v.sample ? '예시 물건' : '참고 이미지'}</span>
         <span class="chip ${v.status}"><span class="dot"></span>${STATUS[v.status]}</span>
         <span class="dd ${v.off <= CUTOFF + 2 ? 'hot' : ''}">D-${v.off}</span>
         ${v.joined ? '<span class="mine">내 신청</span>' : ''}
@@ -667,6 +689,7 @@ function openItem(id) {
     <div class="case" style="font-size:13px;color:var(--muted)">${esc(v.court)} · ${esc(v.caseNo)} · ${STATUS[v.status]}</div>
     <h2>${esc(v.addr)} ${esc(v.name)}</h2>
     <div style="color:var(--muted);font-size:15px">${esc(v.type)} · ${esc(v.size)} · 사진은 참고 이미지</div>
+    ${v.sample ? '<div class="sample-note">예시 물건입니다. 화면을 보여드리기 위한 가상의 사례라서 신청해도 접수되지 않습니다.</div>' : ''}
     <dl class="kv num">
       <div><dt>매각기일</dt><dd>${fmt(v.date)} · D-${v.off}</dd></div>
       <div><dt>감정가</dt><dd>${eok(v.appr)}원</dd></div>
@@ -676,9 +699,19 @@ function openItem(id) {
 
   if (v.joined) {
     const isReport = v.joined.kind === 'report';
-    html += `<div class="done-note"><b>${isReport ? '구매한 리포트입니다' : v.joined.kind === 'urgent' ? '긴급 임장을 문의했습니다' : '신청한 물건입니다'}</b>
-      <p>${isReport ? '담당자가 연락드려 결제를 안내하고, 결제가 확인되면 리포트를 보내드립니다.' : v.joined.kind === 'urgent' ? '담당자가 가능 여부를 확인해 연락드립니다.' : '출발이 확정되면 문자로 결제를 안내해 드립니다. 확정 전에는 비용이 발생하지 않습니다.'}</p></div>
-      ${isReport ? '' : `<button class="btn btn-line" style="width:100%;margin-top:14px" data-cancel>신청 취소</button>`}`;
+    const k = v.joined.kind;
+    const steps = isReport
+      ? [['열람 신청', '접수되었습니다'], ['결제', '담당자가 문자로 결제를 안내합니다'], ['리포트 열람', '결제가 확인되면 전용 링크를 보내드립니다']]
+      : k === 'urgent' ? [['긴급 임장 문의', '접수되었습니다'], ['가능 여부 확인', '담당자가 2시간 안에 연락드립니다'], ['현장 확인', ''], ['리포트 전달', '']]
+      : [['신청 접수', fmt(new Date(v.joined.at))], [k === 'solo' ? '단독 임장 확정' : '인원 모집', k === 'solo' ? '기다리지 않고 바로 진행합니다' : `${v.count}/${GOAL}명 · ${fmt(dateOf(v.off - CUTOFF))} 마감`],
+         ['출발 확정 · 결제', '확정되면 문자로 결제를 안내합니다. 그 전에는 비용이 없습니다'], ['현장 확인', '지역 파트너가 체크리스트에 따라 확인합니다'],
+         ['리포트 전달', '현장 확인 후 48시간 안에, 열람자보다 하루 먼저 받습니다']];
+    const cur = isReport ? (v.sample ? 2 : 1) : k === 'urgent' ? 1 : v.status === 'done' ? 4 : v.status === 'go' ? 2 : 1;
+    html += `<div class="done-note"><b>${isReport ? '리포트 열람을 신청했습니다' : k === 'urgent' ? '긴급 임장을 문의했습니다' : '신청이 접수되었습니다'}</b>
+      <p>${v.sample ? '예시 물건이라 실제로 접수되지는 않았습니다. 신청하면 아래 순서로 진행됩니다.' : '진행 상황은 문자로 알려드립니다.'}</p></div>
+      <ol class="tl">${steps.map((st, i) => `<li class="${i < cur ? 'on' : i === cur ? 'on now' : ''}">${st[0]}${st[1] ? `<small>${st[1]}</small>` : ''}</li>`).join('')}</ol>
+      ${v.report && (isReport || v.status === 'done') ? `<a class="btn btn-ink" href="${v.report}" style="width:100%;margin-top:24px">샘플 리포트 보기</a>` : ''}
+      ${isReport && !v.sample ? '' : `<button class="btn btn-line" style="width:100%;margin-top:12px" data-cancel>${v.sample ? '예시 신청 되돌리기' : '신청 취소'}</button>`}`;
   } else if (v.status === 'done') {
     html += `<div class="block"><h4>현장 확인 리포트${v.visited ? ' · ' + fmt(v.visited) + ' 확인' : ''}</h4>
       <div class="sheet-doc" style="padding:6px 20px;box-shadow:none">
@@ -688,8 +721,9 @@ function openItem(id) {
           <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>체납 금액</dt><dd>약 000만 원</dd><span class="st warn">주의</span></div>
           <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>외관·공용부</dt><dd>외벽 균열 일부</dd><span class="st ok">확인</span></div>
           <div class="doc-row" style="grid-template-columns:100px 1fr auto"><dt>인근 시세</dt><dd>0억 0천 ~ 0억 0천</dd><span class="st ok">확인</span></div>
-        </div><div class="lk">구매 후 전체 항목과 사진 26장, 영상 2편을 볼 수 있습니다</div></div>
-      </div></div>
+        </div><div class="lk">열람하면 전체 항목과 사진 26장, 영상 2편을 볼 수 있습니다</div></div>
+      </div>
+      ${v.report ? `<a class="btn btn-line" href="${v.report}" style="width:100%;margin-top:14px">샘플 리포트 전체 보기 (무료)</a>` : ''}</div>
       ${v.sold >= REPORT_MAX ? `<div class="done-note"><b>열람이 마감되었습니다</b><p>경쟁이 지나치게 늘지 않도록 나중 열람은 물건당 ${REPORT_MAX}명까지만 받습니다.</p></div>`
       : `<p style="color:var(--muted);font-size:14px;margin:14px 0 0">남은 열람 ${REPORT_MAX - v.sold}자리 · 결제 금액 중 ${won(SHARE)}은 먼저 신청한 분들께 적립됩니다.</p>
       <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 열람 신청 · ${won(cost(v.p.report))}</button></form>`}`;
@@ -721,6 +755,7 @@ function openItem(id) {
     const phone = $('m-phone').value;
     const ok = await submitting(f, () => {
       if (!phoneOk(phone)) throw new Error('phone');
+      if (v.sample) return;
       return send({ kind: KIND[kind], item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), mode: kind, phone, memo: $('m-memo') ? $('m-memo').value : '', website: f.website.value });
     });
     if (!ok) return;
@@ -731,7 +766,7 @@ function openItem(id) {
   const c = document.querySelector('[data-cancel]');
   if (c) c.onclick = async () => {
     c.disabled = true; c.textContent = '취소 중…';
-    try { await send({ kind: '신청 취소', item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), phone: v.joined.phone || '' }); } catch (_) {}
+    try { if (!v.sample) await send({ kind: '신청 취소', item: `${v.addr} ${v.name}`, court: v.court, caseNo: v.caseNo, date: fmt(v.date), phone: v.joined.phone || '' }); } catch (_) {}
     if (v.joined.kind === 'group') ITEMS.find(i => i.id === v.id).count--;
     mine = mine.filter(m => m.caseNo !== v.caseNo); saveMine(); renderList(); closePanel();
   };

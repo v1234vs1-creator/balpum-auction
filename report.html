@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>샘플 현장 리포트 | 발품옥션</title>
+<meta name="description" content="발품옥션 현장 확인 리포트 샘플. 점유 현황, 관리비 체납, 건물 상태, 주변 환경, 시세 탐문, 사진 기록까지 실제 전달되는 구성 그대로.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&display=swap">
+<style>
+:root{--ink:#121417;--muted:#6c7178;--faint:#9aa0a6;--bg:#f6f5f2;--paper:#fff;--line:#e7e5e0;--line2:#d9d6cf;
+  --green:#1f5c46;--green-bg:#e8f0ec;--amber:#9a6b1f;--amber-bg:#f6eedf;--red:#a23b2a;--red-bg:#f6e3df;--gray-bg:#efeeea;--serif:"Noto Serif KR",serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;font-size:15.5px;line-height:1.7;letter-spacing:-.01em;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{display:block;max-width:100%}
+.num{font-variant-numeric:tabular-nums}
+.bar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar div{max-width:1180px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar b{font-size:17px;letter-spacing:-.03em}
+.bar a.btn{font-size:14px;font-weight:600;text-decoration:none;background:var(--ink);color:#fff;border-radius:6px;padding:9px 16px;white-space:nowrap}
+.notice{background:var(--ink);color:#fff;font-size:13.5px;text-align:center;padding:9px 16px}
+.layout{max-width:1180px;margin:0 auto;padding:32px 20px 100px;display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:start}
+@media (max-width:900px){.layout{grid-template-columns:1fr;gap:0;padding:20px 12px 80px}.toc{display:none}}
+.toc{position:sticky;top:92px;font-size:14px}
+.toc a{display:block;padding:7px 0 7px 14px;border-left:2px solid var(--line2);color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--ink);border-color:var(--ink)}
+.toc .t{font-size:12px;font-weight:600;color:var(--faint);margin-bottom:10px}
+.paper{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:56px 56px 64px;box-shadow:0 30px 60px -40px rgba(0,0,0,.2)}
+@media (max-width:700px){.paper{padding:28px 18px 40px}}
+.doc-no{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);padding-bottom:16px;border-bottom:2px solid var(--ink);gap:12px;flex-wrap:wrap}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.4vw,36px);letter-spacing:-.02em;line-height:1.35;margin:28px 0 6px}
+.sub{color:var(--muted);margin:0}
+h2{font-family:var(--serif);font-weight:500;font-size:24px;letter-spacing:-.02em;margin:64px 0 6px;padding-top:28px;border-top:1px solid var(--ink);display:flex;gap:14px;align-items:baseline}
+h2 span{font-family:"Pretendard Variable",sans-serif;font-size:13px;font-weight:600;color:var(--faint)}
+h3{font-size:16px;margin:30px 0 10px}
+p{margin:10px 0}
+.lead{color:var(--muted);margin:0 0 18px}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:28px 0 0;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
+.meta div{padding:16px 18px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.meta b{display:block;color:var(--ink);font-size:16px;font-weight:600;margin-top:2px}
+@media (max-width:700px){.meta{grid-template-columns:1fr 1fr}}
+.hero{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-top:28px}
+.hero img{width:100%;height:100%;object-fit:cover;border-radius:6px}
+.hero .side{display:grid;gap:8px}
+.hero .main{aspect-ratio:16/10}
+.score{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.score div{border-radius:6px;padding:18px;font-size:14px}
+.score b{display:block;font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.2}
+.score .ok{background:var(--green-bg);color:var(--green)}
+.score .warn{background:var(--amber-bg);color:var(--amber)}
+.score .na{background:var(--gray-bg);color:var(--muted)}
+.keys{list-style:none;padding:0;margin:0;counter-reset:k}
+.keys li{counter-increment:k;display:grid;grid-template-columns:34px 1fr auto;gap:10px;padding:16px 0;border-bottom:1px solid var(--line);align-items:start}
+.keys li::before{content:counter(k,decimal-leading-zero);font-size:13px;font-weight:600;color:var(--faint);padding-top:2px}
+.keys b{display:block}
+.keys small{color:var(--muted);font-size:14px}
+.st{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:4px;white-space:nowrap}
+.st.ok{background:var(--green-bg);color:var(--green)}.st.warn{background:var(--amber-bg);color:var(--amber)}.st.bad{background:var(--red-bg);color:var(--red)}.st.na{background:var(--gray-bg);color:var(--muted)}
+.tw{overflow-x:auto;margin:6px 0 0}
+table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:560px}
+th{text-align:left;font-size:12.5px;font-weight:600;color:var(--muted);padding:10px 12px 10px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
+td{padding:13px 12px 13px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:600;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px}
+.ref{font-size:12px;color:var(--faint);white-space:nowrap}
+.note{background:var(--bg);border-left:3px solid var(--ink);padding:14px 18px;margin:18px 0;font-size:14.5px;border-radius:0 6px 6px 0}
+.note.warn{border-color:var(--amber);background:var(--amber-bg)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+figure{margin:0}
+figure img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px;display:flex;gap:8px}
+figcaption b{color:var(--ink);font-weight:600}
+.gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 10px;margin-top:16px}
+@media (max-width:900px){.gallery{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.gallery{grid-template-columns:repeat(2,1fr)}}
+.gallery figcaption{flex-direction:column;gap:0;font-size:12.5px;line-height:1.5}
+.bars{margin-top:10px}
+.bars div{display:grid;grid-template-columns:96px 1fr 150px;gap:12px;align-items:center;padding:8px 0;font-size:14px}
+.bars i{display:block;height:10px;border-radius:5px;background:var(--ink)}
+.bars i.soft{background:var(--line2)}
+.bars span:last-child{text-align:right;font-weight:600;white-space:nowrap}
+.qa{border:1px solid var(--line2);border-radius:6px;padding:18px 20px;margin-top:12px}
+.qa .q{font-weight:600;display:flex;gap:10px}
+.qa .q span{color:var(--green);font-size:13px;white-space:nowrap;padding-top:2px}
+.qa .a{color:var(--muted);margin:8px 0 0;padding-left:0}
+.video{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media (max-width:700px){.video{grid-template-columns:1fr}}
+.video div{position:relative;border-radius:6px;overflow:hidden;color:#fff}
+.video img{width:100%;aspect-ratio:16/9;object-fit:cover;filter:brightness(.6)}
+.video .play{position:absolute;inset:0;display:grid;place-items:center}
+.video .play i{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.92);display:grid;place-items:center}
+.video .play i::after{content:"";border-left:16px solid var(--ink);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+.video span{position:absolute;left:14px;bottom:12px;font-size:13.5px;font-weight:600}
+.check{list-style:none;padding:0;margin:10px 0 0}
+.check li{padding:12px 0 12px 32px;border-bottom:1px solid var(--line);position:relative}
+.check li::before{content:"";position:absolute;left:2px;top:16px;width:16px;height:16px;border:1.5px solid var(--ink);border-radius:3px}
+.check small{display:block;color:var(--muted);font-size:13.5px}
+.sign{margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.sign b{color:var(--ink)}
+.cta{margin-top:28px;background:var(--ink);color:#fff;border-radius:8px;padding:32px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.cta h3{font-family:var(--serif);font-weight:500;font-size:22px;margin:0 0 4px}
+.cta p{margin:0;opacity:.7}
+.cta a{background:#fff;color:var(--ink);font-weight:600;text-decoration:none;border-radius:6px;padding:14px 24px}
+@media print{.bar,.notice,.toc,.cta{display:none}.layout{display:block;padding:0}.paper{border:0;box-shadow:none;padding:0}body{background:#fff;font-size:12px}h2{break-after:avoid;margin-top:36px}tr,figure,.qa,.keys li{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="notice">샘플 리포트입니다. 실제 물건이 아닌 가상의 사례이며, 사진은 예시 이미지입니다.</div>
+<div class="bar"><div><b>발품옥션 <span style="font-weight:500;color:var(--muted);font-size:14px">현장 확인 리포트</span></b><a class="btn" href="./#list">물건 보러 가기</a></div></div>
+
+<div class="layout">
+  <nav class="toc">
+    <div class="t">목차</div>
+    <a href="#summary">요약</a>
+    <a href="#s1">1. 점유 현황</a>
+    <a href="#s2">2. 관리비</a>
+    <a href="#s3">3. 건물 외관·공용부</a>
+    <a href="#s4">4. 세대 위치와 구조</a>
+    <a href="#s5">5. 주변 환경</a>
+    <a href="#s6">6. 주차</a>
+    <a href="#s7">7. 시세 탐문</a>
+    <a href="#s8">8. 신청자 요청 확인</a>
+    <a href="#s9">9. 사진·영상 기록</a>
+    <a href="#s10">10. 확인하지 못한 것</a>
+    <a href="#s11">입찰 전 체크리스트</a>
+  </nav>
+
+  <article class="paper">
+    <div class="doc-no"><span>리포트 번호 BP-2610-0037 · 함께 신청 3명</span><span>현장 확인 <b data-d="-2" style="color:var(--ink)"></b> 14:10~16:25 · 작성 <span data-d="-1"></span></span></div>
+
+    <h1>경기 고양시 덕양구 행신동<br>○○마을 3단지 703동</h1>
+    <p class="sub">아파트 · 전용 59.04㎡ (약 25평형) · 13층 / 20층 · 계단식 · 1997년 준공 · 1,120세대</p>
+
+    <div class="meta num">
+      <div>사건번호<b>고양지원 2026타경5○○○○</b></div>
+      <div>매각기일<b data-d="6"></b></div>
+      <div>감정가<b>3억 7,600만 원</b></div>
+      <div>최저매각가격<b>2억 6,320만 원 (70%)</b></div>
+    </div>
+
+    <div class="hero">
+      <img class="main" src="https://images.unsplash.com/photo-1706534272739-3ee946364de0?w=1100&q=80&auto=format&fit=crop" alt="703동 남측 외관 (예시 사진)">
+      <div class="side">
+        <img src="https://images.unsplash.com/photo-1751664453447-049ab41b4147?w=600&q=80&auto=format&fit=crop" alt="동 출입구 (예시 사진)">
+        <img src="https://images.unsplash.com/photo-1790362324749-41a5d5efef55?w=600&q=80&auto=format&fit=crop" alt="지상 주차장 (예시 사진)">
+      </div>
+    </div>
+
+    <h2 id="summary"><span>요약</span>한눈에 보기</h2>
+    <p class="lead">현장에서 확인한 사실만 적었습니다. 입찰가 추천이나 권리관계 판단은 포함하지 않습니다.</p>
+    <div class="score num">
+      <div class="ok"><b>11</b>이상 없음</div>
+      <div class="warn"><b>3</b>주의해서 볼 점</div>
+      <div class="na"><b>4</b>확인하지 못함</div>
+    </div>
+    <ol class="keys">
+      <li><div><b>사람이 살고 있는 것으로 보입니다</b><small>전기 계량기가 돌고 있고, 우편함에 최근 우편물 2통, 현관 앞에 유모차와 택배 상자가 있었습니다. 소유자인지 임차인인지는 현장에서 확인할 수 없습니다.</small></div><span class="st ok">확인</span></li>
+      <li><div><b>관리비가 7개월 밀려 있습니다 · 1,684,300원</b><small>관리사무소에서 구두로 확인했습니다. 이 중 공용부분은 약 982,000원입니다.</small></div><span class="st warn">주의</span></li>
+      <li><div><b>건물 상태는 같은 연식 대비 양호합니다</b><small>2023년에 외벽을 다시 칠했고, 13층 복도와 계단실에서 누수 흔적은 보이지 않았습니다. 12층 세대의 누수 민원 이력도 없다고 합니다.</small></div><span class="st ok">확인</span></li>
+      <li><div><b>주차가 빠듯합니다 · 세대당 0.9대</b><small>지하주차장이 없고 지상만 있습니다. 경비원 설명으로는 평일 밤 9시쯤부터 이중주차가 시작됩니다.</small></div><span class="st warn">주의</span></li>
+      <li><div><b>작은방 쪽 창호는 준공 당시 것으로 보입니다</b><small>거실 쪽은 흰색 PVC 이중창으로 교체된 것으로 보이고, 북측 작은방은 알루미늄 단창입니다. 외부에서 관찰한 내용입니다.</small></div><span class="st warn">주의</span></li>
+      <li><div><b>인근 중개사무소 호가는 3억 4,500만~3억 7,000만 원</b><small>3곳을 방문했습니다. 같은 평형 최근 실거래는 3억 5,200만 원(9층)입니다.</small></div><span class="st ok">확인</span></li>
+    </ol>
+
+    <h2 id="s1"><span>01</span>점유 현황</h2>
+    <p class="lead">집 안에 들어가지 않고 밖에서 확인할 수 있는 단서를 모았습니다.</p>
+    <div class="tw"><table>
+      <thead><tr><th>확인 항목</th><th>현장에서 본 내용</th><th>사진</th><th>판단</th></tr></thead>
+      <tbody>
+        <tr><td>우편함</td><td>우편물 2통. 소인이 확인 주간 것이고 오래 쌓인 흔적이 없습니다.<small>수취인 이름은 기록하지 않습니다.</small></td><td class="ref">사진 05</td><td><span class="st ok">거주 단서</span></td></tr>
+        <tr><td>전기 계량기</td><td>원판이 회전 중이었습니다. 14:20에 4,218kWh, 16:10에 4,219kWh로 읽혔습니다.</td><td class="ref">사진 06, 07</td><td><span class="st ok">거주 단서</span></td></tr>
+        <tr><td>수도·가스</td><td>계량기함이 잠겨 있어 확인하지 못했습니다.</td><td class="ref">-</td><td><span class="st na">미확인</span></td></tr>
+        <tr><td>현관 앞</td><td>유모차 1대와 당일 배송 택배 상자 1개. 고지서나 안내문 부착은 없습니다.</td><td class="ref">사진 08</td><td><span class="st ok">거주 단서</span></td></tr>
+        <tr><td>창·베란다</td><td>거실 커튼이 절반 열려 있고 베란다에 빨래 건조대가 보입니다.</td><td class="ref">사진 03</td><td><span class="st ok">거주 단서</span></td></tr>
+        <tr><td>초인종</td><td>두 차례 눌렀으나 응답이 없었습니다(14:25, 16:05).</td><td class="ref">-</td><td><span class="st na">부재</span></td></tr>
+        <tr><td>등록 차량</td><td>관리사무소 확인: 이 세대에 등록된 차량 1대.</td><td class="ref">-</td><td><span class="st ok">거주 단서</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">종합하면 현재 사람이 거주하는 것으로 보입니다. 점유자가 소유자인지 임차인인지, 대항력이 있는지는 매각물건명세서와 전입세대확인서로 직접 확인하셔야 합니다.</div>
+
+    <h2 id="s2"><span>02</span>관리비</h2>
+    <p class="lead">관리사무소를 방문해 경매 입찰 검토 목적임을 밝히고 확인했습니다.</p>
+    <div class="tw"><table class="num">
+      <thead><tr><th>항목</th><th>내용</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>체납 기간</td><td>7개월</td><td>확인일 기준</td></tr>
+        <tr><td>체납 합계</td><td>1,684,300원</td><td>연체료 포함</td></tr>
+        <tr><td>그중 공용부분</td><td>약 982,000원</td><td>일반관리비, 청소비, 승강기 유지비 등</td></tr>
+        <tr><td>그중 전용부분</td><td>약 702,000원</td><td>세대 전기, 수도, 난방</td></tr>
+        <tr><td>월평균 관리비</td><td>여름 18만 원, 겨울 27만 원 안팎</td><td>같은 평형 기준, 관리사무소 설명</td></tr>
+        <tr><td>난방 방식</td><td>지역난방</td><td></td></tr>
+        <tr><td>장기수선충당금</td><td>월 14,200원</td><td></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note warn">체납 관리비 가운데 공용부분은 낙찰자가 부담하게 되는 경우가 많습니다. 금액은 매각기일까지 계속 늘어나니, 입찰 직전에 관리사무소에 한 번 더 확인하는 것을 권합니다.</div>
+
+    <h2 id="s3"><span>03</span>건물 외관·공용부</h2>
+    <div class="tw"><table>
+      <thead><tr><th>확인 항목</th><th>현장에서 본 내용</th><th>사진</th><th>판단</th></tr></thead>
+      <tbody>
+        <tr><td>외벽</td><td>2023년 재도색. 703동 남측 5~6층 사이에 가는 균열 보수 흔적 1곳.</td><td class="ref">사진 01, 02</td><td><span class="st ok">양호</span></td></tr>
+        <tr><td>13층 복도·계단실</td><td>천장과 벽에 누수 얼룩이나 곰팡이가 없습니다.</td><td class="ref">사진 09, 10</td><td><span class="st ok">양호</span></td></tr>
+        <tr><td>아래층 누수 이력</td><td>관리사무소 확인: 12층 세대에서 접수된 누수 민원 없음.</td><td class="ref">-</td><td><span class="st ok">이력 없음</span></td></tr>
+        <tr><td>승강기</td><td>2대. 2021년 교체. 운행 소음 없음.</td><td class="ref">사진 11</td><td><span class="st ok">양호</span></td></tr>
+        <tr><td>현관문</td><td>디지털 도어록 설치. 문틀 손상이나 강제 개방 흔적 없음.</td><td class="ref">사진 08</td><td><span class="st ok">양호</span></td></tr>
+        <tr><td>창호(외부 관찰)</td><td>남측 거실은 PVC 이중창으로 교체된 것으로 보이고, 북측 작은방은 알루미늄 단창.</td><td class="ref">사진 03, 04</td><td><span class="st warn">일부 노후</span></td></tr>
+        <tr><td>불법 확장·증축</td><td>외부에서 보이는 구조 변경 없음. 베란다 확장 여부는 내부 확인이 필요합니다.</td><td class="ref">-</td><td><span class="st na">내부 미확인</span></td></tr>
+        <tr><td>단지 관리 상태</td><td>조경과 분리수거장 정돈. 놀이터 2023년 교체.</td><td class="ref">사진 12</td><td><span class="st ok">양호</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="two">
+      <figure><img src="https://images.unsplash.com/photo-1760210211349-15b4ad2cf6c5?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy"><figcaption><b>사진 09</b>13층 복도. 천장 얼룩 없음</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1705922477242-8040f46c946b?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy"><figcaption><b>사진 10</b>12~13층 계단실</figcaption></figure>
+    </div>
+
+    <h2 id="s4"><span>04</span>세대 위치와 구조</h2>
+    <div class="tw"><table>
+      <thead><tr><th>항목</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>향</td><td>남동향. 14:30 기준 거실 쪽에 햇빛이 들고 있었습니다.</td></tr>
+        <tr><td>층·조망</td><td>20층 중 13층. 앞 동(701동)과 약 45m 떨어져 있고 거실 정면은 단지 중앙 녹지입니다.</td></tr>
+        <tr><td>구조</td><td>계단식, 한 층 2세대. 방 3, 욕실 1 (관리사무소 비치 평면도 기준).</td></tr>
+        <tr><td>라인 위치</td><td>동 끝이 아닌 가운데 라인. 외벽에 접한 면이 적습니다.</td></tr>
+        <tr><td>같은 평형 내부</td><td>단지 상가 중개사무소를 통해 같은 타입 8층 매물 내부를 봤습니다. 기본형 상태 기준으로 욕실과 싱크대 교체가 필요한 수준이었습니다.<small>대상 세대 내부와 같다는 뜻은 아닙니다.</small></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="s5"><span>05</span>주변 환경</h2>
+    <p class="lead">모두 직접 걸어서 잰 시간입니다.</p>
+    <div class="tw"><table class="num">
+      <thead><tr><th>항목</th><th>실측</th><th>메모</th></tr></thead>
+      <tbody>
+        <tr><td>지하철역</td><td>도보 9분 (640m)</td><td>경의중앙선. 단지 정문에서 개찰구까지, 신호 대기 1회 포함</td></tr>
+        <tr><td>초등학교</td><td>도보 6분 (420m)</td><td>후문 이용. 신호등 있는 횡단보도 1회</td></tr>
+        <tr><td>대형마트</td><td>도보 12분</td><td>단지 상가에 중형 슈퍼 1곳</td></tr>
+        <tr><td>버스 정류장</td><td>도보 3분</td><td>서울 방면 광역버스 2개 노선</td></tr>
+        <tr><td>소음</td><td>평소 52~55dB, 열차 통과 때 61dB</td><td>13층 복도 창을 열고 스마트폰 앱으로 측정한 참고값</td></tr>
+        <tr><td>경사</td><td>평지</td><td>단지 안팎 모두 유모차 이동에 무리 없음</td></tr>
+        <tr><td>기피 시설</td><td>반경 500m 안에서 보이지 않음</td><td>철로까지 약 180m</td></tr>
+      </tbody>
+    </table></div>
+    <div class="two">
+      <figure><img src="https://images.unsplash.com/photo-1625028164526-77c3de33b282?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy"><figcaption><b>사진 15</b>후문에서 초등학교 가는 길</figcaption></figure>
+      <figure><img src="https://images.unsplash.com/photo-1745586426278-b09fd9b93e49?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy"><figcaption><b>사진 16</b>역 앞 상가 거리</figcaption></figure>
+    </div>
+
+    <h2 id="s6"><span>06</span>주차</h2>
+    <div class="tw"><table>
+      <thead><tr><th>항목</th><th>내용</th><th>판단</th></tr></thead>
+      <tbody>
+        <tr><td>주차 대수</td><td>세대당 0.9대. 지하주차장 없음, 지상만.</td><td><span class="st warn">부족</span></td></tr>
+        <tr><td>낮 시간</td><td>15:00 기준 703동 앞 32면 중 11면이 비어 있었습니다.</td><td><span class="st ok">여유</span></td></tr>
+        <tr><td>밤 시간</td><td>경비원 설명: 평일 21시쯤부터 이중주차. 늦게 오면 단지 외곽에 세웁니다.</td><td><span class="st warn">혼잡</span></td></tr>
+        <tr><td>주차비</td><td>1대 무료, 2대째 월 20,000원.</td><td><span class="st ok">확인</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="s7"><span>07</span>시세 탐문</h2>
+    <p class="lead">단지 주변 중개사무소 3곳을 방문했습니다. 경매 물건임은 밝히지 않고 같은 평형 매수 문의로 물었습니다.</p>
+    <div class="tw"><table class="num">
+      <thead><tr><th>중개사무소</th><th>매매 호가</th><th>전세</th><th>들은 이야기</th></tr></thead>
+      <tbody>
+        <tr><td>A (단지 상가)</td><td>3억 5,500만~3억 7,000만</td><td>2억 4,000만~2억 5,000만</td><td>급매는 3억 4,500만 선에서 나갑니다. 10층 이상 남향은 3억 6,000만은 줘야 합니다.</td></tr>
+        <tr><td>B (후문 앞)</td><td>3억 5,000만~3억 6,500만</td><td>2억 3,000만~2억 4,500만</td><td>59㎡는 신혼부부 전세 수요가 꾸준해 공실 걱정은 적습니다.</td></tr>
+        <tr><td>C (역 앞)</td><td>3억 4,500만~3억 6,000만</td><td>월세 3,000만 / 90만</td><td>투자 문의는 늘었는데 실제 거래는 한 달에 2~3건 정도입니다.</td></tr>
+      </tbody>
+    </table></div>
+    <h3>같은 단지 59㎡ 최근 실거래 (국토교통부 공개 자료)</h3>
+    <div class="bars num">
+      <div><span data-m="-1"></span><i style="width:88%"></i><span>3억 5,200만 · 9층</span></div>
+      <div><span data-m="-2"></span><i style="width:85.7%"></i><span>3억 4,300만 · 3층</span></div>
+      <div><span data-m="-3"></span><i style="width:90%"></i><span>3억 6,000만 · 15층</span></div>
+      <div><span>최저매각가격</span><i class="soft" style="width:65.8%"></i><span>2억 6,320만</span></div>
+    </div>
+
+    <h2 id="s8"><span>08</span>신청자 요청 확인</h2>
+    <p class="lead">함께 신청한 분들이 미리 요청한 사항입니다. 신청자 정보는 서로 공개되지 않습니다.</p>
+    <div class="qa"><div class="q"><span>신청자 A</span>베란다 샷시가 교체됐는지 봐주세요.</div><p class="a">남측 거실은 흰색 PVC 이중창으로 교체된 것으로 보입니다. 북측 작은방은 준공 당시 알루미늄 단창 그대로입니다. 외부 관찰이라 내부 중문이나 방충망 상태는 알 수 없습니다. (사진 03, 04)</p></div>
+    <div class="qa"><div class="q"><span>신청자 B</span>철길 소음이 어느 정도인가요?</div><p class="a">철로까지 약 180m이고 703동은 단지 가운데에 있습니다. 13층 복도 창을 열었을 때 평소 52~55dB, 열차가 지날 때 61dB였습니다. 35분 머무는 동안 열차는 5회 지나갔습니다. 창을 닫은 세대 안에서는 더 낮을 것으로 보입니다.</p></div>
+    <div class="qa"><div class="q"><span>신청자 C</span>초등학교 통학로가 안전한지 궁금합니다.</div><p class="a">후문에서 학교 정문까지 걸어서 6분입니다. 횡단보도는 한 번 건너고 신호등과 과속 단속 카메라가 있습니다. 인도는 전 구간 차도와 분리돼 있습니다. (사진 15)</p></div>
+
+    <h2 id="s9"><span>09</span>사진·영상 기록</h2>
+    <p class="lead">사진 26장 중 주요 16장입니다. 실제 리포트에서는 원본 크기로 모두 내려받을 수 있습니다.</p>
+    <div class="gallery" id="gallery"></div>
+    <h3>영상 2편</h3>
+    <div class="video">
+      <div><img src="https://images.unsplash.com/photo-1615016146852-7240cd4c3c09?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy"><div class="play"><i></i></div><span>단지 정문에서 703동까지 · 1분 42초</span></div>
+      <div><img src="https://images.unsplash.com/photo-1758384077740-51982c00c477?w=800&q=80&auto=format&fit=crop" alt="" loading="lazy"><div class="play"><i></i></div><span>지하철역에서 단지까지 · 3분 10초</span></div>
+    </div>
+    <p style="font-size:13px;color:var(--muted)">샘플에서는 영상이 재생되지 않습니다.</p>
+
+    <h2 id="s10"><span>10</span>확인하지 못한 것</h2>
+    <p class="lead">현장 확인으로는 알 수 없거나, 발품옥션이 다루지 않는 항목입니다.</p>
+    <div class="tw"><table>
+      <thead><tr><th>항목</th><th>이유</th><th>확인 방법</th></tr></thead>
+      <tbody>
+        <tr><td>세대 내부 상태</td><td>점유자 동의 없이 들어가지 않습니다.</td><td>같은 평형 매물 내부 참고, 낙찰 후 확인</td></tr>
+        <tr><td>점유자와 임대차 관계</td><td>초인종 응답이 없었고, 신원 확인은 하지 않습니다.</td><td>매각물건명세서, 전입세대확인서</td></tr>
+        <tr><td>수도·가스 사용량</td><td>계량기함이 잠겨 있었습니다.</td><td>관리비 고지 내역으로 추정</td></tr>
+        <tr><td>권리관계와 적정 입찰가</td><td>법률 판단과 입찰가 추천은 하지 않습니다.</td><td>등기사항증명서, 전문가 상담</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 id="s11"><span>부록</span>입찰 전 체크리스트</h2>
+    <p class="lead">이 리포트와 함께 직접 확인하시길 권하는 것들입니다.</p>
+    <ul class="check">
+      <li>매각물건명세서 확인<small>매각기일 1주 전부터 법원경매정보에서 볼 수 있습니다. 임차인과 인수되는 권리를 확인합니다.</small></li>
+      <li>전입세대확인서 발급<small>경매 정보 출력물과 신분증을 가지고 주민센터에서 발급받을 수 있습니다.</small></li>
+      <li>등기사항증명서 최신본 확인<small>입찰 전날 다시 떼어 변동이 없는지 봅니다.</small></li>
+      <li>체납 관리비 최종 금액 확인<small>입찰 직전 관리사무소에 전화로 확인합니다.</small></li>
+      <li>대출 가능 금액 확인<small>경락잔금대출은 은행마다 한도가 다릅니다. 입찰 전에 상담합니다.</small></li>
+      <li>입찰보증금 준비<small>최저매각가격의 10%, 이 물건은 2,632만 원입니다.</small></li>
+    </ul>
+
+    <div class="sign">
+      <div>확인자 <b>발품 파트너 K</b> · 고양 덕양 담당 · 개업공인중개사<br>검수 <b>발품옥션 운영팀</b></div>
+      <div style="text-align:right">이 리포트는 확인일 현재 현장에서 본 사실을 기록한 참고 자료입니다.<br>이후 상태가 달라질 수 있고, 투자 결과를 보장하지 않습니다.</div>
+    </div>
+
+    <div class="cta">
+      <div><h3>이런 리포트를 입찰 전에 받아보세요</h3><p>함께 신청하면 열람 수익을 나눠 돌려받습니다.</p></div>
+      <a href="./#list">신청 받는 물건 보기</a>
+    </div>
+  </article>
+</div>
+
+<script>
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const fmt = d => `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} (${'일월화수목금토'[d.getDay()]})`;
+document.querySelectorAll('[data-d]').forEach(el => { el.textContent = fmt(new Date(today.getTime() + (+el.dataset.d) * 864e5)); });
+document.querySelectorAll('[data-m]').forEach(el => { const d = new Date(today.getFullYear(), today.getMonth() + (+el.dataset.m), 1); el.textContent = `${d.getFullYear()}년 ${d.getMonth() + 1}월`; });
+
+const PHOTOS = [
+  ['1706534272739-3ee946364de0', '703동 남측 전경', '14:12'],
+  ['1630829421842-fc4f5a296e49', '외벽 도색 상태, 균열 보수 흔적', '14:15'],
+  ['1710418555472-e812e83ea103', '13층 남측 창, 베란다', '14:17'],
+  ['1593726222205-21404ff4e5fd', '북측 작은방 창호', '14:19'],
+  ['1788494835366-2f45563a8e12', '1층 우편함', '14:21'],
+  ['1663609476830-8c247515c1db', '전기 계량기 1차 (4,218kWh)', '14:20'],
+  ['1663608786776-72e279f45a95', '전기 계량기 2차 (4,219kWh)', '16:10'],
+  ['1751664453447-049ab41b4147', '703동 출입구와 세대 현관 방향', '14:23'],
+  ['1760210211349-15b4ad2cf6c5', '13층 복도', '14:27'],
+  ['1705922477242-8040f46c946b', '12~13층 계단실', '14:31'],
+  ['1783996461140-e3a7ade835ab', '승강기 홀', '14:34'],
+  ['1615016146852-7240cd4c3c09', '단지 중앙 보행로', '14:48'],
+  ['1790362324749-41a5d5efef55', '703동 앞 주차장 (낮)', '15:00'],
+  ['1627638154017-056df3e16eef', '단지 외곽 주차 구역', '15:04'],
+  ['1625028164526-77c3de33b282', '후문에서 초등학교 가는 길', '15:22'],
+  ['1745586426278-b09fd9b93e49', '역 앞 상가 거리', '15:41'],
+];
+document.getElementById('gallery').innerHTML = PHOTOS.map((p, i) =>
+  `<figure><img src="https://images.unsplash.com/photo-${p[0]}?w=500&q=75&auto=format&fit=crop" alt="" loading="lazy"><figcaption><b>사진 ${String(i + 1).padStart(2, '0')} · ${p[2]}</b>${p[1]}</figcaption></figure>`).join('');
+</script>
+</body>
+</html>
