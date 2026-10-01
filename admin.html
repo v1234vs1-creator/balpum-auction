@@ -51,7 +51,7 @@ a{color:var(--green)}
   <div class="links"><a href="https://docs.google.com/spreadsheets/d/1HoNs8gFBo5GEMyfAQCWDVck1Qzsr1DYz_vkO40Jul4U/edit" target="_blank" rel="noopener">시트 열기</a><a href="./" target="_blank">사이트 보기</a><a href="field.html" target="_blank">현장 리포트 작성</a></div>
 
   <details class="box" id="bm-box">
-    <summary style="cursor:pointer;font-weight:700;font-size:17px">원클릭 담기 버튼 설치 (처음 한 번)</summary>
+    <summary style="cursor:pointer;font-weight:700;font-size:17px">원클릭 담기 버튼 설치 (처음 한 번) <span style="font-size:13px;font-weight:600;color:#a23b2a">· 10월 1일 수정판: 예전 버튼은 지우고 다시 끌어다 놓으세요</span></summary>
     <ol style="margin-top:14px">
       <li>크롬에서 <b>Ctrl+Shift+B</b>를 눌러 즐겨찾기 막대를 켭니다.</li>
       <li>아래 검은 버튼을 마우스로 <b>즐겨찾기 막대에 끌어다 놓습니다.</b> (누르지 말고 끌어다 놓기)</li>
@@ -236,7 +236,8 @@ if ($('key').value) loadManaged();
 
 // 원클릭 담기: 법원 사이트에서 보고 있는 화면 글자를 이 페이지로 넘긴다
 const ADMIN_URL = location.href.split('#')[0];
-const BM = `(()=>{const t=(getSelection().toString()||document.body.innerText).slice(0,400000);if(!/타경/.test(t)){alert('경매 물건 검색 결과나 상세 화면에서 눌러 주세요');return}window.open('${ADMIN_URL}#paste='+encodeURIComponent(t),'balpum_admin')})()`;
+// 화면 속 작은 창(iframe) 안의 글자까지 모은다. 사건번호가 없으면 넘기지 않는다.
+const BM = `(()=>{const g=d=>{let t='';try{t=d.body.innerText+' ';d.querySelectorAll('iframe,frame').forEach(f=>{try{t+=g(f.contentDocument)}catch(e){}})}catch(e){}return t};const t=(getSelection().toString()||g(document)).slice(0,400000);if(!/[0-9]{4} *타경 *[0-9]+/.test(t)||!/[0-9]{1,3}(,[0-9]{3}){2,}/.test(t)){alert('사건 정보(주소·감정가·매각기일)가 화면에 보일 때 눌러 주세요. 검색 버튼을 누른 뒤 결과가 뜨면 누르면 됩니다.');return}window.open('${ADMIN_URL}#paste='+encodeURIComponent(t),'balpum_admin')})()`;
 $('bm').href = 'javascript:' + encodeURIComponent(BM);
 $('bm').onclick = e => { e.preventDefault(); alert('누르지 말고 즐겨찾기 막대로 끌어다 놓아 주세요.'); };
 $('clear').onclick = () => { $('src').value = ''; $('result').hidden = true; $('found').textContent = ''; $('got').hidden = true; };
