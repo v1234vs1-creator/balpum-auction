@@ -258,6 +258,28 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .checks li{background:var(--gray);border-radius:12px;padding:12px 14px 12px 40px;position:relative;font-size:14.5px}
 .checks li::before{content:"";position:absolute;left:16px;top:18px;width:10px;height:6px;border-left:2px solid var(--ok);border-bottom:2px solid var(--ok);transform:rotate(-45deg)}
 
+/* 혼자 임장 vs 발품옥션 */
+#diff{padding-bottom:40px}
+.cmp{margin-top:44px;border-radius:24px;overflow:hidden;border:1px solid var(--line)}
+.cmp-head,.cmp-row{display:grid;grid-template-columns:150px 1fr 1.3fr}
+.cmp-head span{padding:16px 20px;font-size:13.5px;font-weight:600;color:var(--muted);background:var(--gray)}
+.cmp-head span:last-child{background:var(--ink);color:var(--lime)}
+.cmp-row>*{padding:18px 20px;border-top:1px solid var(--line);font-size:15px}
+.cmp-row b{font-family:var(--head);font-weight:620;letter-spacing:-.02em}
+.cmp-row span:nth-child(2){color:var(--muted)}
+.cmp-row span:last-child{background:#fafbf5}
+.cmp-row em{font-style:normal;font-weight:600;background:linear-gradient(transparent 60%,rgba(200,240,60,.7) 60%)}
+@media (max-width:700px){
+  .cmp-head{display:none}
+  .cmp-row{grid-template-columns:1fr}
+  .cmp-row>*{border-top:0;padding:4px 18px}
+  .cmp-row{border-top:1px solid var(--line);padding:14px 0}
+  .cmp-row:first-of-type{border-top:0}
+  .cmp-row span:nth-child(2)::before{content:"혼자: "}
+  .cmp-row span:last-child{background:none}
+  .cmp-row span:last-child::before{content:"발품: ";font-weight:600;color:var(--ok)}
+}
+
 /* 요금 */
 .price-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;align-items:start}
 @media (max-width:980px){.price-grid{grid-template-columns:1fr;gap:36px}}
@@ -492,6 +514,23 @@ footer{padding:64px 0 48px;font-size:14px;color:var(--muted);background:var(--gr
   </div>
 </section>
 
+<section id="diff">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>직접 가도 놓치는 것을<br><span class="hl">저희는 확인해 옵니다</span></h2>
+    <p class="sub" data-reveal>임장은 가는 것보다 무엇을 물어보고 무엇을 세어 오는지가 중요합니다. 같은 하루를 써도 결과가 다릅니다.</p>
+    <div class="cmp" data-reveal>
+      <div class="cmp-head"><span></span><span>혼자 임장</span><span>발품옥션 리포트</span></div>
+      <div class="cmp-row"><b>체납 관리비</b><span>"좀 밀렸어요" 정도만 듣거나 못 들음</span><span>공용·전용·연체료로 나눠 <em>낙찰자가 떠안을 금액</em>만 뽑아 드림</span></div>
+      <div class="cmp-row"><b>명도</b><span>사람이 사는지 정도</span><span>우편물·계량기 두 번·검침표·관리사무소 탐문으로 <em>쉬움·보통·어려움</em></span></div>
+      <div class="cmp-row"><b>앞으로 낼 돈</b><span>게시판까지 보기 어려움</span><span>배관·승강기 교체, 분담금, 재건축·소송 공지까지</span></div>
+      <div class="cmp-row"><b>수리비</b><span>집 안을 못 봐서 감으로</span><span>같은 평형 내부를 보고 <em>수리비 범위</em>로</span></div>
+      <div class="cmp-row"><b>시세</b><span>호가만 듣고 옴</span><span>중개사무소 3곳에서 <em>실제 거래되는 급매가</em>, 전세, 거래 속도, 이사비 관행</span></div>
+      <div class="cmp-row"><b>밤</b><span>낮에 한 번</span><span>밤 주차와 불 켜짐까지 (정밀 임장)</span></div>
+      <div class="cmp-row"><b>남는 것</b><span>기억과 사진 몇 장</span><span>항목마다 근거 사진 번호와 시각, <em>입찰 전 숫자</em> 한 장 정리</span></div>
+    </div>
+  </div>
+</section>
+
 <section id="list">
   <div class="wrap">
     <div class="list-head">
@@ -545,10 +584,10 @@ footer{padding:64px 0 48px;font-size:14px;color:var(--muted);background:var(--gr
       <h2 class="h2">서류에 없는 것을<br>적어 옵니다</h2>
       <p class="sub">정해진 순서로 확인하고, 항목마다 근거 사진 번호와 확인 시각을 붙입니다. 입찰가 추천이나 법률 판단은 하지 않습니다.</p>
       <ul class="checks">
-        <li>우편함·계량기로 본 점유 흔적</li><li>관리사무소 체납 관리비</li>
-        <li>복도·계단 누수와 외벽</li><li>창호 교체 여부</li>
-        <li>역·학교까지 걸어서 잰 시간</li><li>낮과 밤 주차 상황</li>
-        <li>중개사무소 3곳 시세 탐문</li><li>신청자가 요청한 확인 사항</li>
+        <li>명도 난이도 (쉬움·보통·어려움)</li><li>낙찰자가 떠안을 관리비</li>
+        <li>앞으로 걷을 공사비·분담금</li><li>같은 평형 기준 수리비 범위</li>
+        <li>급매가·전세·이사비 관행</li><li>최저가가 시세보다 몇 % 싼지</li>
+        <li>누수·결로·외벽 하자 흔적</li><li>신청자가 요청한 확인 사항</li>
       </ul>
       <a class="btn btn-ink" href="report.html" style="margin-top:32px">샘플 리포트 전체 보기<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
