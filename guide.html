@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>현장 체크리스트 | 발품옥션 파트너</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
+<style>
+:root{--ink:#0e1116;--muted:#6b7684;--gray:#f4f5f7;--line:#dfe2e6;--lime:#c8f03c;--navy:#0b1220;--ok:#12a46b;--head:"Wanted Sans Variable",Pretendard,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--gray);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;font-size:14px;line-height:1.55;word-break:keep-all;-webkit-font-smoothing:antialiased}
+.bar{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.bar div{max-width:880px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bar b{font-family:var(--head);font-weight:700;letter-spacing:-.04em}
+.bar button,.bar a{font-family:var(--head);font-weight:620;font-size:14px;border:0;border-radius:11px;padding:9px 14px;cursor:pointer;text-decoration:none}
+.bar button{background:var(--ink);color:#fff}
+.bar a{background:var(--gray);color:var(--ink)}
+.sheet{max-width:880px;margin:16px auto 60px;background:#fff;border-radius:20px;padding:36px 40px}
+@media (max-width:640px){.sheet{margin:8px;padding:22px 16px;border-radius:16px}}
+h1{font-family:var(--head);font-weight:640;font-size:26px;letter-spacing:-.04em;margin:0}
+h2{font-family:var(--head);font-weight:640;font-size:17px;letter-spacing:-.03em;margin:26px 0 8px;padding-top:14px;border-top:2px solid var(--ink);display:flex;gap:8px;align-items:baseline}
+h2 span{font-size:12px;color:var(--ok)}
+.sub{color:var(--muted);margin:4px 0 0}
+.fill{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 16px;margin-top:18px}
+@media (max-width:640px){.fill{grid-template-columns:1fr 1fr}}
+.fill div{border-bottom:1px solid var(--ink);padding:14px 0 3px;font-size:12px;color:var(--muted)}
+.rules{background:var(--navy);color:#fff;border-radius:14px;padding:14px 16px;margin-top:16px;font-size:13px}
+.rules b{color:var(--lime)}
+.route{list-style:none;padding:0;margin:0;counter-reset:r}
+.route li{counter-increment:r;display:grid;grid-template-columns:18px 22px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);align-items:start}
+.route li::before{content:counter(r);font-family:var(--head);font-weight:640;color:var(--ok);grid-column:2;grid-row:1}
+.box{width:15px;height:15px;border:1.5px solid var(--ink);border-radius:3px;margin-top:2px;grid-column:1;grid-row:1}
+.route li>span:last-child{grid-column:3}
+table{width:100%;border-collapse:collapse}
+td{border-bottom:1px solid var(--line);padding:6px 6px 6px 0;vertical-align:top}
+td.c{width:22px}
+td.k{width:30%;font-weight:600}
+td.h{color:var(--muted);font-size:12.5px}
+td.w{width:26%;border-left:1px dashed var(--line)}
+.note{background:#f6fbe4;border-radius:10px;padding:9px 12px;font-size:12.5px;margin:6px 0 8px}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 14px}
+@media (max-width:640px){.shots{grid-template-columns:1fr 1fr}}
+.shots span{display:flex;gap:8px;align-items:center;padding:4px 0}
+.shots .box{margin:0;flex:none}
+.nums td.w{width:40%}
+.ev{display:flex;gap:16px;margin:4px 0}
+.ev span{display:flex;gap:6px;align-items:center}
+.ev .box{margin:0}
+.lines div{border-bottom:1px solid var(--line);height:26px}
+.foot{margin-top:22px;font-size:11.5px;color:var(--muted)}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;font-size:11px}
+  .bar{display:none}
+  .sheet{margin:0;padding:0;border-radius:0;max-width:none}
+  h1{font-size:20px}
+  h2{font-size:13.5px;margin:12px 0 4px;padding-top:6px;break-after:avoid}
+  td{padding:3px 4px 3px 0}
+  td.h{font-size:10px}
+  .route li{padding:3px 0}
+  tr,.route li{break-inside:avoid}
+  .rules{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pb{break-before:page}
+}
+</style>
+</head>
+<body>
+<div class="bar"><div><b>발품옥션 현장 체크리스트</b><span style="display:flex;gap:6px"><a href="field.html">작성 화면</a><button onclick="print()">인쇄하기</button></span></div></div>
+
+<article class="sheet">
+  <h1>현장 체크리스트</h1>
+  <p class="sub">위에서부터 순서대로 돌면 빠뜨리지 않습니다. 본 것만 시각과 함께 적고, 돌아와서 현장 리포트 작성 화면에 옮깁니다.</p>
+  <div class="fill"><div>사건번호</div><div>단지·동·호</div><div>매각기일</div><div>방문 날짜</div><div>도착 ~ 출발 시각</div><div>확인자</div></div>
+  <div class="rules"><b>지킬 것</b> · 집 안에 들어가지 않기 · 이웃·중개사무소에 경매 물건이라고 말하지 않기 · 점유자와 대화·다툼 피하기 · 입찰가 추천·법률 판단 하지 않기 · 받는 사람 이름 적지 않기</div>
+
+  <h2><span>순서</span>현장 동선 9단계</h2>
+  <ol class="route" id="route"></ol>
+
+  <div id="sections"></div>
+
+  <h2 class="pb"><span>사진</span>꼭 찍을 사진 · 최소 20장</h2>
+  <div class="shots" id="shots"></div>
+
+  <h2><span>숫자</span>입찰 전 숫자 (리포트 맨 위에 크게 나갑니다)</h2>
+  <div class="ev"><b>명도 난이도</b><span><i class="box"></i>쉬움</span><span><i class="box"></i>보통</span><span><i class="box"></i>어려움</span></div>
+  <div class="lines"><div></div></div>
+  <table class="nums" id="nums"></table>
+  <p class="note">리포트가 자동으로 계산합니다 · 낙찰 후 더 드는 돈 = 인수 관리비 + 수리비 + 이사비 · 최저가가 시세 하단보다 몇 % 싼지 · 전세가율 = 전세 ÷ 시세 하단</p>
+
+  <h2><span>메모</span>신청자 요청 · 그 밖에 본 것</h2>
+  <div class="lines"><div></div><div></div><div></div><div></div><div></div></div>
+
+  <p class="foot">발품옥션 · 확인일 현재 현장에서 본 사실만 기록합니다. 사진은 직접 찍은 것만 씁니다.</p>
+</article>
+
+<script>
+const ROUTE = [
+  ['도착 전', '매각물건명세서·현황조사서에서 점유자·임차인 확인, 신청자 요청사항 확인, 인근 실거래가 3건 미리 찾기'],
+  ['단지 정문·게시판', '전경 사진, 단지 게시판과 엘리베이터 공지 사진 (재건축·소송·공사·관리비)'],
+  ['해당 동 1층', '외벽·출입구 사진, 우편함, 전기 계량기 1차 숫자'],
+  ['해당 층', '복도·계단·현관 앞 사진, 가스 검침표, 초인종 두 번 (응답 여부만)'],
+  ['관리사무소', '체납 관리비를 공용·전용·연체료로 나눠 받기, 장기수선충당금, 예정 공사·분담금, 민원, 등록 차량, 평면도'],
+  ['주차장', '낮 빈자리 세기, 경비원에게 밤 주차 상황'],
+  ['주변 걷기', '역·학교 도보 실측, 소음 두 번 측정, 공사 현수막, 불편 시설'],
+  ['중개사무소 3곳', '매매 호가와 실제 거래되는 급매가, 전세, 매물 수, 거래 속도, 이사비 관행, 같은 평형 내부'],
+  ['떠나기 전', '전기 계량기 2차 숫자, 저녁이면 불 켜짐 확인, 빠진 사진 확인'],
+];
+const SECTIONS = [
+  ['① 점유와 명도 단서', '', [
+    ['우편함', '우편물 개수·소인 날짜, 오래 쌓였는지. 법원·채권추심·카드사 우편이 많은지'],
+    ['전기 계량기', '도착·출발 때 두 번 숫자, 원판 회전. 숫자가 늘면 지금 사는 중'],
+    ['가스 검침표·수도', '현관 옆 검침 스티커 날짜, 수도 계량기 숫자 (잠겨 있으면 미확인)'],
+    ['현관 앞', '택배(받는 사람 성이 여러 개인지), 신발·유모차, 고지서·법원 안내문'],
+    ['창·베란다', '커튼, 조명, 빨래, 짐. 저녁에 불이 켜지는지'],
+    ['초인종', '두 번 누르고 시각 기록. 응답 여부만'],
+    ['관리사무소가 아는 것', '등록 차량 수, 실거주·세입자 여부를 아는 범위, 최근 출입·연락'] ]],
+  ['② 관리비와 낙찰 후 추가 부담', '낙찰자가 떠안는 것은 보통 공용부분 관리비, 최근 3년분, 연체료 제외입니다. 관리사무소에 경매 입찰 검토 목적을 밝히고 항목별로 받습니다.', [
+    ['체납 기간·합계', '몇 개월째, 연체료 포함 총액'],
+    ['공용부분 (연체료 제외)', '일반관리비·청소·승강기·경비·수선유지비 등 공용 항목만'],
+    ['전용부분·연체료', '세대 전기·수도·난방 사용료와 연체료'],
+    ['장기수선충당금 미납', '미납 여부와 금액'],
+    ['예정된 공사·분담금', '엘리베이터·외벽·배관 공사 등 앞으로 걷을 돈'],
+    ['월평균 관리비', '같은 평형 여름·겨울, 난방 방식'],
+    ['누수·하자 민원', '이 세대와 위·아래층 민원 기록'] ]],
+  ['③ 건물 하자', '', [
+    ['외벽', '도색 시기, 균열·백화(흰 얼룩)·물자국'],
+    ['세대 창 외부', '창틀 변색·곰팡이 자국(결로), 실외기'],
+    ['복도·계단실', '해당 층과 위층 천장·벽 얼룩, 곰팡이'],
+    ['승강기', '대수, 교체 연도, 소음·멈춤 공지'],
+    ['배관·옥상', '배관 교체 연도, 최상층·1층이면 옥상·필로티 누수'],
+    ['창호(외부 관찰)', '이중창 교체 여부, 방마다 다른지'],
+    ['불법 확장·증축', '밖에서 보이는 구조 변경, 베란다 확장 흔적'] ]],
+  ['④ 단지 게시판·관리 공지', '', [
+    ['재건축·리모델링', '추진위·설명회·동의서 공지'],
+    ['소송·분쟁', '하자 소송, 관리업체 분쟁, 주민 갈등'],
+    ['관리비 인상·공사', '관리비 인상, 단수·정전 공사, 도색 공고'],
+    ['단지 분위기', '분리수거장·조경·놀이터 관리, 공지 어조'] ]],
+  ['⑤ 세대 위치와 생활', '', [
+    ['향·일조', '확인 시각과 해 드는 방향, 앞 동 높이·거리'],
+    ['층·조망', '전체 층수, 앞 동과의 거리, 가림'],
+    ['구조', '계단식·복도식, 방·욕실 수 (평면도)'],
+    ['동 위치', '정문·지하철 쪽 출입구까지 거리, 언덕'],
+    ['가까운 불편 시설', '쓰레기장·환기구·변압기·흡연 구역·놀이터'],
+    ['같은 평형 내부', '중개사무소 매물로 내부 상태와 수리 범위'] ]],
+  ['⑥ 주변 환경 (직접 걸어서)', '', [
+    ['지하철역', '정문에서 개찰구까지 시간·거리'],
+    ['초등학교', '배정 학교(학구도), 도보 시간, 횡단보도 수'],
+    ['학원가·생활 시설', '학원가, 대형마트, 병원까지 시간'],
+    ['버스', '도보 시간, 주요 방면 노선 수'],
+    ['소음', '복도에서 소음 앱 dB 두 번 (시각 기록)'],
+    ['개발·공사', '재개발·도로·철도 공사 현수막'],
+    ['기피 시설', '반경 500m 공장·고압선·유흥가'] ]],
+  ['⑦ 주차', '', [
+    ['주차 대수', '세대당 대수, 지하주차장·엘리베이터 연결'],
+    ['낮 시간', '동 앞 빈자리 / 전체, 시각'],
+    ['밤 시간', '경비원에게 이중주차 시작 시각'],
+    ['주차비·충전', '1대·2대째 요금, 전기차 충전기'] ]],
+];
+const SHOTS = ['단지 전경', '단지 게시판·공지', '동 외벽', '동 출입구', '우편함', '전기 계량기 1차', '전기 계량기 2차', '가스 검침표', '해당 층 복도', '위층 복도 천장', '계단실', '승강기', '현관 방향', '세대 창 외부', '주차장 (낮)', '쓰레기장·불편 시설', '통학로', '역 가는 길', '주변 상가·공사'];
+const NUMS = [['인수 예상 관리비', '공용부분, 연체료 제외'], ['체납 관리비 총액', '연체료 포함'], ['월 관리비', '같은 평형 평균'], ['수리 정도', '도배·장판 / 욕실·주방 포함 / 전체 수리'],
+  ['수리비 범위', '하단 ~ 상단'], ['이사비 관행', '이 동네 명도 때 보통 주는 금액'], ['시세 하단 (급매가)', '실제 거래되는 가격'], ['시세 상단 (호가)', ''], ['전세 시세', '']];
+
+document.getElementById('route').innerHTML = ROUTE.map(r => `<li><i class="box"></i><span><b>${r[0]}</b> · ${r[1]}</span></li>`).join('');
+document.getElementById('sections').innerHTML = SECTIONS.map(([t, lead, rows]) => `<h2>${t}</h2>${lead ? `<p class="note">${lead}</p>` : ''}
+  <table>${rows.map(r => `<tr><td class="c"><i class="box" style="display:block"></i></td><td class="k">${r[0]}</td><td class="h">${r[1]}</td><td class="w"></td></tr>`).join('')}</table>`).join('');
+document.getElementById('shots').innerHTML = SHOTS.map(s => `<span><i class="box"></i>${s}</span>`).join('');
+document.getElementById('nums').innerHTML = NUMS.map(n => `<tr><td class="k">${n[0]}</td><td class="h">${n[1]}</td><td class="w"></td></tr>`).join('');
+</script>
+</body>
+</html>

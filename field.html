@@ -265,6 +265,7 @@ function draw() {
   <details class="sec"><summary>현장 순서<span>${(R.route || []).filter(Boolean).length}/${ROUTE.length} 완료</span></summary><div class="in">
     ${ROUTE.map((r, i) => `<label style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:${i ? '1px solid var(--line)' : '0'}"><input type="checkbox" style="width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--ok)" data-chk="route.${i}" ${(R.route || [])[i] ? 'checked' : ''}>
       <span><b style="font-size:15px">${i + 1}. ${r[0]}</b><br><span class="hint" style="margin:0">${r[1]}</span></span></label>`).join('')}
+    <a class="btn btn-gray sm" href="guide.html" target="_blank" style="margin-top:10px">인쇄용 체크리스트 보기</a>
     <p class="hint" style="margin-top:10px">지킬 것: 집 안에 들어가지 않기 · 이웃에게 경매 물건이라고 말하지 않기 · 점유자와 다투지 않기</p>
   </div></details>
 
