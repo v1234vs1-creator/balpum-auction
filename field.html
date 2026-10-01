@@ -313,6 +313,13 @@ async function shrink(file) {
   return c.toDataURL('image/jpeg', .82).split(',')[1];
 }
 
+// 확인 창 대신 '한 번 더 누르면 실행' (브라우저가 확인 창을 막아도 동작)
+function armed(btn, label) {
+  if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.old; return true; }
+  btn.dataset.armed = 1; btn.dataset.old = btn.textContent; btn.textContent = label;
+  setTimeout(() => { if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.old; } }, 4000);
+  return false;
+}
 $('b-preview').onclick = () => { localStorage.setItem('balpum_preview', JSON.stringify(payload())); window.open('report.html?preview=1', '_blank'); };
 $('b-save').onclick = async () => {
   const b = $('b-save'); b.disabled = true; b.textContent = '저장 중…';
@@ -323,8 +330,9 @@ $('b-save').onclick = async () => {
 $('b-publish').onclick = async () => {
   if (R.photos.some(p => p.up)) return toast('사진을 올리는 중입니다. 잠시만요');
   if (!R.summary.length) return toast('요약을 먼저 채워 주세요');
-  if (!confirm('리포트를 발행할까요? 운영팀에 알림이 가고, 물건이 "리포트 열람"으로 바뀝니다.')) return;
-  const b = $('b-publish'); b.disabled = true; b.textContent = '발행 중…';
+  const b = $('b-publish');
+  if (!armed(b, '한 번 더 누르면 발행')) return toast('발행하면 운영팀에 알림이 가고 물건이 "리포트 열람"으로 바뀝니다');
+  b.disabled = true; b.textContent = '발행 중…';
   try {
     const j = await post({ action: 'saveReport', caseNo: R.caseNo, report: payload(), publish: true });
     const link = SITE + 'report.html?id=' + j.token;

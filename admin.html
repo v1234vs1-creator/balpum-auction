@@ -159,6 +159,13 @@ $('save').onclick = async () => {
 };
 
 // 등록된 물건 관리
+// 확인 창 대신 '한 번 더 누르면 실행' (브라우저가 확인 창을 막아도 동작)
+function armed(btn, label) {
+  if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.old; return true; }
+  btn.dataset.armed = 1; btn.dataset.old = btn.textContent; btn.textContent = label;
+  setTimeout(() => { if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.old; } }, 4000);
+  return false;
+}
 const SITE = location.href.replace(/admin\.html.*$/, '');
 let managed = [];
 async function loadManaged() {
@@ -195,13 +202,13 @@ $('mrows').addEventListener('click', async e => {
   if (c) { navigator.clipboard.writeText(`${SITE}report.html?id=${c.dataset.copy}`); c.textContent = '복사됨'; return; }
   const d = e.target.closest('[data-del]'); if (!d) return;
   const it = managed[+d.dataset.del];
-  if (!confirm(`${it.caseNo} ${it.name}\n물건과 리포트를 삭제할까요? 사진 폴더는 휴지통으로 옮겨집니다.`)) return;
+  if (!armed(d, '한 번 더 누르면 삭제')) return;
   d.disabled = true;
   try { await adminPost({ op: 'delete', caseNo: it.caseNo }); $('mmsg').className = 'msg ok'; $('mmsg').textContent = `${it.caseNo}를 삭제했습니다.`; loadManaged(); }
   catch (_) { d.disabled = false; $('mmsg').className = 'msg err'; $('mmsg').textContent = '삭제하지 못했습니다.'; }
 });
 $('clean').onclick = async () => {
-  if (!confirm('시험 데이터(연락처 010-0000-0000, 이름에 테스트가 들어간 물건)를 지울까요?')) return;
+  if (!armed($('clean'), '한 번 더 누르면 정리')) return;
   $('clean').disabled = true;
   try { const j = await adminPost({ op: 'cleanTest' }); $('mmsg').className = 'msg ok'; $('mmsg').textContent = `정리했습니다 · 신청 ${j.removed.신청}줄, 파트너 ${j.removed.파트너}줄, 물건 ${j.removed.물건}개`; loadManaged(); }
   catch (_) { $('mmsg').className = 'msg err'; $('mmsg').textContent = '정리하지 못했습니다.'; }
