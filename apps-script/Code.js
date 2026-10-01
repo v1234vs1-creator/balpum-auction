@@ -40,6 +40,7 @@ function doPost(e) {
     if (d.action === 'partnerApply') return out(partnerApply_(d));
     if (d.action === 'uploadPhoto') return out(uploadPhoto_(d));
     if (d.action === 'saveReport') return out(saveReport_(d));
+    if (d.action === 'adminUpdate') return out(adminUpdate_(d));
     if (d.website) return out({ ok: true }); // 스팸봇용 숨은 칸
 
     const phone = String(d.phone || '').replace(/[^0-9]/g, '');
@@ -71,6 +72,7 @@ function doGet(e) {
   if (p.action === 'items') return out({ ok: true, items: items_() });
   if (p.action === 'partnerItems') return out(partnerItems_(p.key));
   if (p.action === 'report') return out(getReport_(p));
+  if (p.action === 'adminItems') return out(adminItems_(p.key));
   return out({ ok: true, service: 'balpum' });
 }
 
