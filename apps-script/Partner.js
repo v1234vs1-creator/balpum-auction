@@ -87,6 +87,10 @@ function saveReport_(d) {
     if (k > 0) {
       is.getRange(k + 1, 13).setValue('리포트');
       if (d.report && d.report.visitedAt) is.getRange(k + 1, 15).setValue(d.report.visitedAt);
+      // 대표 사진(없으면 첫 사진)을 물건 썸네일로
+      const ph = (d.report && d.report.photos) || [];
+      const cover = ph.find(p => p.cover) || ph[0];
+      if (cover && cover.url) is.getRange(k + 1, 16).setValue(String(cover.url).replace('&sz=w1600', '&sz=w1000'));
     }
     const link = SITE + 'report.html?id=' + token;
     MailApp.sendEmail(recipients_(), `[발품옥션] 리포트 발행 · ${cs}`,

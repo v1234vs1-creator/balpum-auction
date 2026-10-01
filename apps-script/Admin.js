@@ -21,7 +21,7 @@ function adminItems_(key) {
   reportSheet_().getDataRange().getValues().slice(1).forEach(r => { reports[String(r[0])] = { token: r[1], status: r[2] }; });
   const items = itemSheet_().getDataRange().getValues().slice(1).filter(r => r[0]).map(r => {
     const cs = String(r[0]).replace(/\s/g, '');
-    return { caseNo: cs, court: r[1], addr: r[3], name: r[4],
+    return { caseNo: cs, court: r[1], region: r[2], addr: r[3], name: r[4], type: r[5], size: r[6], appr: Number(r[7]) || 0, min: Number(r[8]) || 0, fail: Number(r[9]) || 0, photo: String(r[15] || ''),
       date: r[10] instanceof Date ? Utilities.formatDate(r[10], 'Asia/Seoul', 'yyyy-MM-dd') : String(r[10]),
       status: r[12] || '모집', count: counts[cs] || 0, sold: sold[cs] || 0, report: reports[cs] || null };
   });
@@ -44,6 +44,18 @@ function adminUpdate_(d) {
     if (d.op === 'status') {
       if (['모집', '확정', '리포트', '숨김'].indexOf(d.status) < 0) return { ok: false, error: 'status' };
       is.getRange(k + 1, 13).setValue(d.status);
+      return { ok: true };
+    }
+    if (d.op === 'edit') {   // 잘못 읽힌 정보를 손으로 고친다 (법원~관심수, 2~12번째 칸)
+      const f = d.fields || {};
+      const cur = iv[k];
+      const v = (key, i, num) => f[key] === undefined ? cur[i] : (num ? Number(String(f[key]).replace(/[^\d]/g, '')) || 0 : clean(f[key]));
+      is.getRange(k + 1, 2, 1, 11).setValues([[v('court', 1), v('region', 2), v('addr', 3), v('name', 4), v('type', 5), v('size', 6),
+        v('appr', 7, 1), v('min', 8, 1), v('fail', 9, 1), v('date', 10), v('interest', 11, 1)]]);
+      return { ok: true };
+    }
+    if (d.op === 'photo') {  // 썸네일 사진 주소 (드라이브에 올린 사진)
+      is.getRange(k + 1, 16).setValue(clean(d.url, 300));
       return { ok: true };
     }
     if (d.op === 'delete') {

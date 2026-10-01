@@ -38,6 +38,9 @@ select.st{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 8
 .btn.red{background:#fff;color:var(--red);border:1px solid #efc9c1}
 .links{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:14px}
 tr.hidden td{opacity:.5}
+.ef{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;align-items:end;background:var(--bg);border-radius:8px;padding:12px}
+.ef label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.ef input{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 8px;font:inherit;font-size:14px;color:var(--ink)}
 .bm{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;text-decoration:none;font-weight:700;border-radius:8px;padding:11px 18px;cursor:grab;user-select:none}
 .bm::before{content:"";width:10px;height:10px;border-radius:50%;background:#c8f03c}
 .got{background:#eef7d2;border-radius:8px;padding:10px 14px;margin-top:12px;font-weight:600;font-size:14.5px}
@@ -75,6 +78,8 @@ a{color:var(--green)}
       <thead><tr><th>사건번호</th><th>물건</th><th>매각기일</th><th>신청</th><th>열람</th><th>상태</th><th>리포트</th><th></th></tr></thead>
       <tbody id="mrows"></tbody>
     </table></div>
+    <p class="muted" style="font-size:13px;margin:10px 0 0">사진: 직접 찍은 사진만 올리세요. 감정평가서 사진이나 지도 로드뷰 캡처는 저작권 문제가 있습니다. 리포트를 발행하면 대표 사진이 자동으로 썸네일이 됩니다.</p>
+    <input type="file" id="thumb-file" accept="image/*" hidden>
     <div class="row"><button class="btn line" id="clean">시험 데이터 정리</button><span class="muted" style="font-size:13.5px">연락처 010-0000-0000으로 들어온 신청·지원, 이름에 '테스트'가 들어간 물건을 지웁니다.</span></div>
     <p class="msg" id="mmsg"></p>
   </div>
@@ -195,13 +200,17 @@ async function loadManaged() {
     try { sessionStorage.setItem('balpum_admin', key); } catch (_) {}
     managed = j.items; $('manage').hidden = false; $('mmsg').textContent = '';
     $('mrows').innerHTML = managed.length ? managed.map((it, i) => `<tr class="${it.status === '숨김' ? 'hidden' : ''}">
-      <td class="num">${esc(it.caseNo)}<small>${esc(it.court)}</small></td>
+      <td class="num">${it.photo ? `<img src="${esc(it.photo)}" alt="" style="width:64px;height:48px;object-fit:cover;border-radius:6px;display:block;margin-bottom:4px">` : ''}${esc(it.caseNo)}<small>${esc(it.court)}</small></td>
       <td>${esc(it.addr)} ${esc(it.name)}${it.status === '숨김' ? '<small>사이트에 안 보임 · 숨김</small>' : !(dday(it.date) >= 0) ? '<small style="color:var(--red)">사이트에 안 보임 · 매각기일이 지났거나 날짜를 잘못 읽음. 다시 담아서 올리면 고쳐집니다</small>' : ''}</td>
       <td class="num">${esc(it.date)}<small>${dday(it.date) >= 0 ? 'D-' + dday(it.date) : '지남'}</small></td>
       <td class="num">${it.count}명</td><td class="num">${it.sold}건</td>
       <td><select class="st" data-i="${i}">${['모집', '확정', '리포트', '숨김'].map(s => `<option ${s === it.status ? 'selected' : ''}>${s}</option>`).join('')}</select></td>
       <td>${it.report ? `<a href="${SITE}report.html?id=${esc(it.report.token)}" target="_blank">${it.report.status === '공개' ? '링크' : '초안'}</a> <button class="btn sm line" data-copy="${esc(it.report.token)}">복사</button>` : '<span class="muted">-</span>'}</td>
-      <td><button class="btn sm red" data-del="${i}">삭제</button></td></tr>`).join('') : '<tr><td colspan="8" class="muted">등록된 물건이 없습니다.</td></tr>';
+      <td style="white-space:nowrap"><button class="btn sm line" data-edit="${i}">수정</button> <button class="btn sm line" data-photo="${i}">사진</button> <button class="btn sm red" data-del="${i}">삭제</button></td></tr>
+      <tr class="editrow" id="er-${i}" hidden><td colspan="8"><div class="ef">
+        ${[['court', '법원'], ['addr', '주소(시·구·동)'], ['name', '단지·동'], ['type', '용도'], ['size', '면적'], ['appr', '감정가(원)'], ['min', '최저가(원)'], ['fail', '유찰'], ['date', '매각기일(2026-10-13)']]
+          .map(([k, l]) => `<label>${l}<input data-f="${k}" value="${esc(it[k] ?? '')}"></label>`).join('')}
+        <button class="btn sm" data-save="${i}">저장</button></div></td></tr>`).join('') : '<tr><td colspan="8" class="muted">등록된 물건이 없습니다.</td></tr>';
   } catch (e) { $('manage').hidden = false; $('mmsg').className = 'msg err'; $('mmsg').textContent = e.message === 'key' ? '비밀번호가 맞지 않습니다.' : '불러오지 못했습니다.'; }
 }
 async function adminPost(data) {
@@ -218,6 +227,19 @@ $('mrows').addEventListener('change', async e => {
 $('mrows').addEventListener('click', async e => {
   const c = e.target.closest('[data-copy]');
   if (c) { navigator.clipboard.writeText(`${SITE}report.html?id=${c.dataset.copy}`); c.textContent = '복사됨'; return; }
+  const ed = e.target.closest('[data-edit]');
+  if (ed) { const r = $('er-' + ed.dataset.edit); r.hidden = !r.hidden; return; }
+  const sv = e.target.closest('[data-save]');
+  if (sv) {
+    const it = managed[+sv.dataset.save], fields = {};
+    $('er-' + sv.dataset.save).querySelectorAll('[data-f]').forEach(x => { fields[x.dataset.f] = x.value.trim(); });
+    sv.disabled = true; sv.textContent = '저장 중…';
+    try { await adminPost({ op: 'edit', caseNo: it.caseNo, fields }); $('mmsg').className = 'msg ok'; $('mmsg').textContent = `${it.caseNo} 정보를 고쳤습니다. 사이트에 바로 반영됩니다.`; loadManaged(); }
+    catch (_) { sv.disabled = false; sv.textContent = '저장'; $('mmsg').className = 'msg err'; $('mmsg').textContent = '저장하지 못했습니다.'; }
+    return;
+  }
+  const ph = e.target.closest('[data-photo]');
+  if (ph) { photoFor = managed[+ph.dataset.photo]; $('thumb-file').click(); return; }
   const d = e.target.closest('[data-del]'); if (!d) return;
   const it = managed[+d.dataset.del];
   if (!armed(d, '한 번 더 누르면 삭제')) return;
@@ -233,6 +255,25 @@ $('clean').onclick = async () => {
   $('clean').disabled = false;
 };
 if ($('key').value) loadManaged();
+
+// 썸네일 사진: 1200px로 줄여 드라이브에 올리고 물건에 연결한다
+let photoFor = null;
+$('thumb-file').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = '';
+  if (!f || !photoFor) return;
+  $('mmsg').className = 'msg'; $('mmsg').textContent = '사진을 올리는 중…';
+  try {
+    const bmp = await createImageBitmap(f);
+    const s = Math.min(1, 1200 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const data = c.toDataURL('image/jpeg', .85).split(',')[1];
+    const up = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'uploadPhoto', key: $('key').value.trim(), caseNo: photoFor.caseNo, name: 'thumb.jpg', mime: 'image/jpeg', data }) })).json();
+    if (!up.ok) throw new Error(up.error);
+    await adminPost({ op: 'photo', caseNo: photoFor.caseNo, url: up.url.replace('&sz=w1600', '&sz=w1000') });
+    $('mmsg').className = 'msg ok'; $('mmsg').textContent = `${photoFor.caseNo} 썸네일을 바꿨습니다.`; loadManaged();
+  } catch (_) { $('mmsg').className = 'msg err'; $('mmsg').textContent = '사진을 올리지 못했습니다.'; }
+});
 
 // 원클릭 담기: 법원 사이트에서 보고 있는 화면 글자를 이 페이지로 넘긴다
 const ADMIN_URL = location.href.split('#')[0];

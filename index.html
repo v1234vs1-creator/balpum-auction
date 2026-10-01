@@ -126,7 +126,13 @@ section{padding:140px 0}
 .story{display:grid;grid-template-columns:1fr 1fr;gap:80px}
 @media (max-width:900px){.story{grid-template-columns:1fr;gap:0}}
 .stage{align-self:start;position:sticky;top:110px;height:min(600px,calc(100vh - 150px));border-radius:28px;background:var(--gray);overflow:hidden}
-@media (max-width:900px){.stage{top:76px;height:300px;z-index:2;margin-bottom:24px;border-radius:22px}}
+/* 휴대폰: 고정 판이 글을 덮지 않게, 단계마다 그림을 바로 아래 붙인다 */
+@media (max-width:900px){
+  .stage{display:none}
+  .steps-txt .step{min-height:0!important;opacity:1!important;padding:28px 0 36px}
+  .mini{position:relative;margin-top:22px;height:300px;border-radius:22px;background:var(--gray);overflow:hidden}
+  .mini .scene{pointer-events:auto}
+}
 .scene{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.96);transition:opacity 500ms var(--ease-out),transform 600ms var(--ease-out);pointer-events:none}
 .scene.on{opacity:1;transform:none}
 .card-ui{background:#fff;border-radius:20px;box-shadow:0 30px 60px -30px rgba(14,17,22,.25);padding:24px;width:min(340px,84%)}
@@ -725,6 +731,15 @@ const sio = new IntersectionObserver(es => es.forEach(e => {
   scenes.forEach(s => s.classList.toggle('on', s.dataset.scene === n));
 }), { rootMargin: '-45% 0px -45% 0px' });
 steps.forEach(s => sio.observe(s));
+// 휴대폰: 그림을 각 단계 아래에 복사해 두고, 화면에 들어오면 그 그림의 움직임을 켠다
+if (matchMedia('(max-width:900px)').matches) {
+  steps.forEach(s => {
+    const box = document.createElement('div'); box.className = 'mini';
+    const sc = scenes[+s.dataset.step].cloneNode(true);
+    sc.classList.add('on');   // 휴대폰에서는 처음부터 다 보이게 (스크롤 감지에 기대지 않는다)
+    box.appendChild(sc); s.appendChild(box);
+  });
+}
 
 // 글자가 하나씩 진해지는 문장
 const words = $('words');

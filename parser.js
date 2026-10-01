@@ -6,7 +6,23 @@
   const TYPES = /(아파트|오피스텔|다세대|연립|빌라|다가구|단독주택|근린|상가|대지|임야|공장|창고|기타)/;
   const FLAGS = ['지분', '유치권', '법정지상권', '선순위', '재매각', '특별매각조건', '대항력', '위반건축물', '토지별도등기', '대지권미등기', '분묘'];
 
+  const COURT_NAME = /^((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)$/;
+
+  // 화면의 '법원 선택' 목록처럼 법원 이름만 4줄 넘게 이어지는 부분은 지운다 (첫 줄인 서울중앙을 법원으로 잘못 읽지 않게)
+  function dropCourtLists(text) {
+    const lines = text.split('\n');
+    const keep = lines.map(() => true);
+    for (let i = 0; i < lines.length;) {
+      let j = i;
+      while (j < lines.length && COURT_NAME.test(lines[j].trim())) j++;
+      if (j - i >= 4) for (let k = i; k < j; k++) keep[k] = false;
+      i = j > i ? j : i + 1;
+    }
+    return lines.filter((_, i) => keep[i]).join('\n');
+  }
+
   function parse(text) {
+    text = dropCourtLists(String(text || '').replace(/\r/g, ''));
     text = String(text || '').replace(/\r/g, '').replace(/ /g, ' ');
     const hits = [...text.matchAll(COURT)].map(m => {
       const after = text.slice(m.index + m[0].length, m.index + m[0].length + 12);
@@ -24,9 +40,13 @@
     // 물건 상세 화면: 법원 이름과 사건번호가 떨어져 있으면 화면 전체를 한 물건으로 본다
     if (!groups.length) {
       const cm = text.match(/(\d{4}\s*타경\s*\d+)/);
-      const ct = text.match(/((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)/);
       if (cm) {
-        const it = one(text.slice(Math.max(0, cm.index - 200)), { caseNo: cm[1].replace(/\s/g, ''), court: ct ? ct[1] : '', no: 0 });
+        // '법원 : ○○' 표시가 있으면 그것, 없으면 사건번호에 가장 가까운 법원 이름
+        const CT = /((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)/g;
+        const labeled = text.match(/법원\s*[:：]\s*((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)/);
+        const near = [...text.matchAll(CT)].sort((a, b) => Math.abs(a.index - cm.index) - Math.abs(b.index - cm.index))[0];
+        const court = labeled ? labeled[1] : near ? near[1] : '';
+        const it = one(text.slice(Math.max(0, cm.index - 200)), { caseNo: cm[1].replace(/\s/g, ''), court, no: 0 });
         return it ? [it] : [];
       }
     }

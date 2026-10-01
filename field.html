@@ -66,6 +66,8 @@ details.sec[open] summary::after{transform:rotate(-135deg)}
 .ph .x{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(255,255,255,.92)}
 .ph input{margin-top:6px;padding:7px 9px;font-size:13.5px}
 .ph.up img{opacity:.4}
+.ph .star{position:absolute;bottom:44px;right:6px;width:30px;height:30px;border-radius:9px;border:0;background:rgba(255,255,255,.92);color:var(--faint);font-size:16px;cursor:pointer}
+.ph .star.on{background:var(--lime);color:var(--ink)}
 .ph.up::after{content:"올리는 중…";position:absolute;top:34%;left:0;right:0;text-align:center;font-size:13px;font-weight:600}
 .drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2px dashed var(--gray2);border-radius:16px;padding:22px;cursor:pointer;color:var(--muted);text-align:center;transition:border-color 150ms ease,background-color 150ms ease}
 .drop:active{background:var(--gray)}
@@ -139,14 +141,50 @@ function pick() {
 }
 
 // 기본 항목
+// 표준 체크리스트: [항목, 무엇을 어떻게 보는지]
 const DEF = () => [
-  { title: '점유 현황', lead: '집 안에 들어가지 않고 밖에서 확인할 수 있는 단서를 모았습니다.', rows: ['우편함', '전기 계량기', '수도·가스', '현관 앞', '창·베란다', '초인종', '등록 차량'] },
-  { title: '관리비', lead: '관리사무소를 방문해 경매 입찰 검토 목적임을 밝히고 확인했습니다.', rows: ['체납 기간', '체납 합계', '그중 공용부분', '월평균 관리비', '장기수선충당금'] },
-  { title: '건물 외관·공용부', rows: ['외벽', '복도·계단실', '아래층 누수 이력', '승강기', '창호(외부 관찰)', '불법 확장·증축'] },
-  { title: '세대 위치와 구조', rows: ['향', '층·조망', '구조', '같은 평형 내부'] },
-  { title: '주변 환경', lead: '모두 직접 걸어서 잰 시간입니다.', rows: ['지하철역', '초등학교', '대형마트', '버스 정류장', '소음', '기피 시설'] },
-  { title: '주차', rows: ['주차 대수', '낮 시간', '밤 시간', '주차비'] },
-].map(s => ({ title: s.title, lead: s.lead || '', note: '', warn: false, rows: s.rows.map(k => ({ k, v: '', ref: '', st: 'ok' })) }));
+  { title: '점유 현황', lead: '집 안에 들어가지 않고 밖에서 확인할 수 있는 단서를 모았습니다.', rows: [
+    ['우편함', '우편물 개수와 소인 날짜, 오래 쌓였는지 (받는 사람 이름은 적지 않기)'],
+    ['전기 계량기', '도착할 때와 떠날 때 두 번 숫자를 적고, 원판이 도는지'],
+    ['수도·가스', '계량기함이 열려 있으면 숫자, 잠겨 있으면 미확인'],
+    ['현관 앞', '택배, 신발, 유모차, 고지서·안내문 부착 여부'],
+    ['창·베란다', '밖에서 보이는 커튼, 조명, 빨래 건조대, 짐'],
+    ['초인종', '두 번 누르고 시각을 적기. 응답 여부만 (대화·신원 확인 하지 않기)'],
+    ['등록 차량', '관리사무소에 이 세대 등록 차량 수'] ] },
+  { title: '관리비', lead: '관리사무소를 방문해 경매 입찰 검토 목적임을 밝히고 확인했습니다.', rows: [
+    ['체납 기간', '몇 개월째인지'], ['체납 합계', '연체료 포함 금액'],
+    ['그중 공용부분', '일반관리비·청소비·승강기 유지비 등 공용 항목 합계'],
+    ['월평균 관리비', '같은 평형 여름·겨울 금액, 난방 방식'], ['장기수선충당금', '월 금액'],
+    ['누수·하자 민원', '이 세대와 아래층의 민원 기록'] ] },
+  { title: '건물 외관·공용부', rows: [
+    ['외벽', '도색 시기, 균열·물자국 (사진 필수)'], ['복도·계단실', '해당 층 천장·벽의 얼룩, 곰팡이'],
+    ['승강기', '대수, 교체 연도, 소음'], ['창호(외부 관찰)', '밖에서 보이는 이중창 교체 여부'],
+    ['불법 확장·증축', '밖에서 보이는 구조 변경'] ] },
+  { title: '세대 위치와 구조', rows: [
+    ['향', '몇 시에 어느 쪽으로 해가 드는지'], ['층·조망', '전체 층수, 앞 동과의 거리, 가림 여부'],
+    ['구조', '계단식·복도식, 방·욕실 수 (관리사무소 평면도)'], ['같은 평형 내부', '중개사무소에서 같은 타입 매물 내부를 볼 수 있으면'] ] },
+  { title: '주변 환경', lead: '모두 직접 걸어서 잰 시간입니다.', rows: [
+    ['지하철역', '정문에서 개찰구까지 직접 걸은 시간과 거리'], ['초등학교', '정문·후문 기준 도보 시간, 건너는 횡단보도 수'],
+    ['대형마트', '도보 시간, 단지 상가 슈퍼'], ['버스 정류장', '도보 시간, 서울 방면 노선 수'],
+    ['소음', '해당 층 복도에서 소음 앱 dB, 측정 시각'], ['기피 시설', '반경 500m 공장·고압선·유흥가 등'] ] },
+  { title: '주차', rows: [
+    ['주차 대수', '세대당 대수, 지하주차장 여부'], ['낮 시간', '동 앞 빈자리 수 / 전체, 확인 시각'],
+    ['밤 시간', '경비원에게 이중주차가 시작되는 시각'], ['주차비', '1대·2대째 요금'] ] },
+].map(s => ({ title: s.title, lead: s.lead || '', note: '', warn: false, rows: s.rows.map(([k, h]) => ({ k, h, v: '', ref: '', st: 'ok' })) }));
+
+// 현장 순서 (위에서부터 돌면 빠뜨리지 않는다)
+const ROUTE = [
+  ['도착 전', '매각물건명세서·감정평가서를 훑어보고, 신청자 요청사항을 확인'],
+  ['단지 정문', '전경 사진, 정문에서 해당 동까지 걸으며 영상'],
+  ['해당 동 1층', '외벽·출입구 사진, 우편함, 전기 계량기 1차 숫자'],
+  ['해당 층', '복도·계단·현관 앞 사진, 초인종 두 번 (응답 여부만)'],
+  ['관리사무소', '체납 관리비, 누수 민원, 등록 차량, 평면도, 주차 규정'],
+  ['주차장', '낮 빈자리 세기, 경비원에게 밤 주차 상황'],
+  ['주변 걷기', '역·학교 도보 실측, 소음 측정, 기피 시설'],
+  ['중개사무소 3곳', '매매·전세 호가와 분위기 (경매 물건이라고 말하지 않기)'],
+  ['떠나기 전', '전기 계량기 2차 숫자, 빠진 사진 확인'],
+];
+const SHOTS = ['단지 전경', '동 외벽', '동 출입구', '우편함', '전기 계량기 2장', '해당 층 복도', '계단실', '승강기', '현관 방향', '주차장 (낮)', '통학로', '역 가는 길', '주변 상가'];
 
 function blank(it) {
   return {
@@ -171,6 +209,7 @@ function open(it) {
   R = local ? JSON.parse(local) : server || blank(it);
   // 새로 들어온 요청사항은 덧붙인다
   it.memos.forEach(q => { if (!R.qa.some(x => x.q === q)) R.qa.push({ who: '신청자 ' + 'ABCDEFGHIJ'[R.qa.length], q, a: '' }); });
+  R.route = R.route || [];
   $('who').textContent = it.caseNo;
   draw();
   $('bottom').hidden = false;
@@ -178,7 +217,7 @@ function open(it) {
 
 const rowHtml = (path, r) => `<div class="row">
   <div class="h"><input value="${esc(r.k)}" data-p="${path}.k" placeholder="항목"><button class="x" data-del="${path}" aria-label="삭제">×</button></div>
-  <textarea data-p="${path}.v" placeholder="현장에서 본 내용">${esc(r.v)}</textarea>
+  <textarea data-p="${path}.v" placeholder="${esc(r.h || '현장에서 본 내용')}">${esc(r.v)}</textarea>
   <div class="f"><div class="seg" data-st="${path}">${['ok', 'warn', 'na'].map(s => `<button type="button" class="${s} ${r.st === s ? 'on' : ''}" data-v="${s}">${{ ok: '확인', warn: '주의', na: '미확인' }[s]}</button>`).join('')}</div>
   <input value="${esc(r.ref)}" data-p="${path}.ref" placeholder="사진 번호" inputmode="numeric"></div></div>`;
 
@@ -186,6 +225,12 @@ function draw() {
   const open = [...document.querySelectorAll('details.sec')].map(d => d.open);
   $('app').innerHTML = `<button class="btn btn-gray sm" id="back">← 물건 목록</button>
   <h1 style="margin-top:14px">${esc(R.title)}</h1><p class="lead">${esc(R.court)} ${esc(R.caseNo)} · 매각기일 ${esc(R.date)}</p>
+
+  <details class="sec"><summary>현장 순서<span>${(R.route || []).filter(Boolean).length}/${ROUTE.length} 완료</span></summary><div class="in">
+    ${ROUTE.map((r, i) => `<label style="display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:${i ? '1px solid var(--line)' : '0'}"><input type="checkbox" style="width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--ok)" data-chk="route.${i}" ${(R.route || [])[i] ? 'checked' : ''}>
+      <span><b style="font-size:15px">${i + 1}. ${r[0]}</b><br><span class="hint" style="margin:0">${r[1]}</span></span></label>`).join('')}
+    <p class="hint" style="margin-top:10px">지킬 것: 집 안에 들어가지 않기 · 이웃에게 경매 물건이라고 말하지 않기 · 점유자와 다투지 않기</p>
+  </div></details>
 
   <details class="sec" open><summary>기본 정보<span>방문 일시·확인자</span></summary><div class="in">
     <div class="grid2"><div><label class="l">현장 확인일</label><input type="date" value="${esc(R.visitedAt)}" data-p="visitedAt"></div>
@@ -195,11 +240,11 @@ function draw() {
     <label class="l">확인자</label><input value="${esc(R.partner)}" data-p="partner" placeholder="발품 파트너 K · 고양 덕양 담당 · 개업공인중개사">
   </div></details>
 
-  <details class="sec"><summary>사진<span>${R.photos.length}장</span></summary><div class="in">
+  <details class="sec"><summary>사진<span id="ph-count">${R.photos.length}장 / 최소 20장</span></summary><div class="in">
+    <p class="hint" style="margin:0 0 10px">꼭 찍을 것: ${SHOTS.join(' · ')}</p>
     <label class="drop" for="file"><b>사진 추가</b>카메라로 찍거나 앨범에서 여러 장 고르세요. 자동으로 줄여서 올립니다.</label>
-    <div class="photos">${R.photos.map((p, i) => `<div class="ph ${p.up ? 'up' : ''}"><img src="${esc(p.preview || p.url)}" alt=""><span class="no">${pad(i + 1)}</span><button class="x" data-delp="${i}">×</button>
-      <input value="${esc(p.cap)}" data-p="photos.${i}.cap" placeholder="설명 (예: 1층 우편함)"></div>`).join('')}</div>
-    <p class="hint">사진 번호(01, 02…)를 각 항목의 '사진 번호' 칸에 적으면 리포트에서 연결됩니다.</p>
+    <div class="photos" id="photos">${photosHtml()}</div>
+    <p class="hint">★을 누른 사진이 물건 썸네일과 리포트 첫 사진이 됩니다. 사진 번호(01, 02…)를 각 항목의 '사진 번호' 칸에 적으면 리포트에서 연결됩니다.</p>
   </div></details>
 
   ${R.sections.map((s, si) => `<details class="sec"><summary>${esc(s.title)}<span>${s.rows.filter(r => r.v).length}/${s.rows.length}</span></summary><div class="in">
@@ -247,7 +292,7 @@ function draw() {
   </div></details>`;
 
   document.querySelectorAll('details.sec').forEach((d, i) => { if (open[i] !== undefined) d.open = open[i]; });
-  $('back').onclick = () => { save(); pick(); };
+  $('back').onclick = () => { saveNow(); pick(); };
   $('autosum').onclick = autoSummary;
 }
 
@@ -262,7 +307,8 @@ $('app').addEventListener('click', e => {
   if (seg && t.dataset.v) { setPath(seg.dataset.st + '.st', t.dataset.v); seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === t)); save(); return; }
   if (t.dataset.del) { const [arr, i] = getParent(t.dataset.del); arr.splice(i, 1); save(); draw(); return; }
   if (t.dataset.dellist) { const [arr, i] = getParent(t.dataset.dellist); arr.splice(i, 1); save(); draw(); return; }
-  if (t.dataset.delp) { R.photos.splice(+t.dataset.delp, 1); save(); draw(); return; }
+  if (t.dataset.delp) { const wasCover = R.photos[+t.dataset.delp].cover; R.photos.splice(+t.dataset.delp, 1); if (wasCover && R.photos[0]) R.photos[0].cover = true; save(); updatePhotos(); return; }
+  if (t.dataset.cover) { R.photos.forEach((p, i) => { p.cover = i === +t.dataset.cover; }); save(); updatePhotos(); return; }
   if (t.dataset.addrow) { R.sections[+t.dataset.addrow].rows.push({ k: '', v: '', ref: '', st: 'ok' }); save(); draw(); return; }
   if (t.dataset.addlist) {
     const blankOf = { brokers: { name: '', sale: '', jeonse: '', quote: '' }, deals: { when: '', price: '', floor: '' }, videos: { cap: '', url: '' }, missing: { k: '', why: '', how: '' }, summary: { st: 'ok', t: '', d: '' } };
@@ -282,35 +328,69 @@ function autoSummary() {
   R.summary = out.slice(0, 6); save(); draw(); toast('요약을 채웠습니다. 문장을 다듬어 주세요');
 }
 
-// 자동 저장 (이 기기)
+// 자동 저장 (이 기기): 글자를 칠 때마다 저장하면 휴대폰이 버벅여서, 손을 멈추고 0.6초 뒤에 한 번만 저장한다
+const photoData = p => ({ url: p.url, cap: p.cap, time: p.time, ...(p.cover ? { cover: true } : {}) });
+let saveTimer = null;
 function save() {
   if (!R) return;
-  const clean = { ...R, photos: R.photos.filter(p => p.url).map(({ url, cap, time }) => ({ url, cap, time })) };
-  try { localStorage.setItem('balpum_field_' + R.caseNo, JSON.stringify(clean)); } catch (_) {}
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 600);
+}
+function saveNow() {
+  clearTimeout(saveTimer);
+  if (!R) return;
+  try { localStorage.setItem('balpum_field_' + R.caseNo, JSON.stringify({ ...R, photos: R.photos.filter(p => p.url).map(photoData) })); } catch (_) {}
   $('saved').textContent = '이 기기에 자동 저장됨 · ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
 }
-const payload = () => ({ ...R, photos: R.photos.filter(p => p.url).map(({ url, cap, time }) => ({ url, cap, time })), deals: R.deals.filter(d => d.price).map(d => ({ ...d, price: +String(d.price).replace(/\D/g, '') })), brokers: R.brokers.filter(b => b.sale || b.quote), qa: R.qa.filter(q => q.a), written: todayStr() });
+addEventListener('pagehide', saveNow);
+const payload = () => ({ ...R, route: undefined, photos: R.photos.filter(p => p.url).map(photoData).sort((a, b) => !!b.cover - !!a.cover), deals: R.deals.filter(d => d.price).map(d => ({ ...d, price: +String(d.price).replace(/\D/g, '') })), brokers: R.brokers.filter(b => b.sale || b.quote), qa: R.qa.filter(q => q.a), written: todayStr() });
 
-// 사진: 1600px로 줄여서 한 장씩 올린다
+// 사진 칸만 다시 그린다 (전체를 다시 그리면 쓰던 칸이 닫히고 느려진다)
+function photosHtml() {
+  return R.photos.map((p, i) => `<div class="ph ${p.up ? 'up' : ''}"><img src="${esc(p.preview || p.url)}" alt="" loading="lazy" decoding="async"><span class="no">${pad(i + 1)}</span>
+    <button class="x" data-delp="${i}" aria-label="삭제">×</button>
+    <button class="star ${p.cover ? 'on' : ''}" data-cover="${i}" aria-label="대표 사진">★</button>
+    <input value="${esc(p.cap)}" data-p="photos.${i}.cap" placeholder="설명 (예: 1층 우편함)"></div>`).join('');
+}
+function updatePhotos() {
+  const box = $('photos'); if (!box) return;
+  // 쓰고 있던 설명 칸의 위치는 지킨다
+  const focused = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.p : null;
+  box.innerHTML = photosHtml();
+  $('ph-count').textContent = `${R.photos.length}장 / 최소 20장`;
+  if (focused) { const el = box.querySelector(`[data-p="${focused}"]`); if (el) el.focus(); }
+}
+
+// 사진: 긴 변 1600px로 줄여서 두 장씩 동시에 올린다
 $('file').addEventListener('change', async e => {
   const files = [...e.target.files]; e.target.value = '';
   const items = files.map(f => ({ cap: '', time: new Date(f.lastModified).toTimeString().slice(0, 5), preview: URL.createObjectURL(f), up: true, f }));
-  R.photos.push(...items); draw();
-  for (const p of items) {
-    try {
-      const data = await shrink(p.f);
-      const j = await post({ action: 'uploadPhoto', caseNo: R.caseNo, name: p.f.name, mime: 'image/jpeg', data });
-      p.url = j.url;
-    } catch (err) { toast('사진 한 장을 올리지 못했습니다'); R.photos.splice(R.photos.indexOf(p), 1); }
-    delete p.up; delete p.f; save(); draw();
-  }
+  if (!R.photos.length && items[0]) items[0].cover = true;
+  R.photos.push(...items); updatePhotos();
+  const queue = [...items];
+  const worker = async () => {
+    for (let p; (p = queue.shift());) {
+      try {
+        const data = await shrink(p.f);
+        const j = await post({ action: 'uploadPhoto', caseNo: R.caseNo, name: p.f.name, mime: 'image/jpeg', data });
+        p.url = j.url;
+      } catch (err) { toast('사진 한 장을 올리지 못했습니다'); R.photos.splice(R.photos.indexOf(p), 1); }
+      delete p.up; delete p.f; save(); updatePhotos();
+    }
+  };
+  await Promise.all([worker(), worker()]);
 });
 async function shrink(file) {
-  const bmp = await createImageBitmap(file);
+  // 원본을 다 풀지 않고 처음부터 작게 풀어서 메모리와 시간을 아낀다
+  let bmp;
+  try { bmp = await createImageBitmap(file, { resizeWidth: 1200, resizeQuality: 'medium' }); }
+  catch (_) { bmp = await createImageBitmap(file); }
   const s = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
   const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
   c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
-  return c.toDataURL('image/jpeg', .82).split(',')[1];
+  bmp.close && bmp.close();
+  const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .82));
+  return await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(',')[1]); fr.readAsDataURL(blob); });
 }
 
 // 확인 창 대신 '한 번 더 누르면 실행' (브라우저가 확인 창을 막아도 동작)
