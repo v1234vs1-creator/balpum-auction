@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>현장 리포트 작성 | 발품옥션 파트너</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
+<style>
+:root{--ink:#0e1116;--ink2:#333d4b;--muted:#6b7684;--faint:#b0b8c1;--gray:#f4f5f7;--gray2:#eaecef;--line:#e5e8eb;--lime:#c8f03c;--navy:#0b1220;
+  --ok:#12a46b;--ok-bg:#e6f6ee;--warn:#e8590c;--warn-bg:#fdf0e7;--red:#f04452;--head:"Wanted Sans Variable",Pretendard,sans-serif;--ease-out:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--gray);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;font-size:15.5px;line-height:1.6;letter-spacing:-.012em;word-break:keep-all;-webkit-font-smoothing:antialiased;padding-bottom:110px}
+button,input,select,textarea{font:inherit;color:inherit}
+.top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top div{max-width:760px;margin:0 auto;padding:0 16px;height:58px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.top b{font-family:var(--head);font-weight:700;letter-spacing:-.04em;font-size:16.5px}
+.top small{color:var(--muted);font-size:13px}
+.wrap{max-width:760px;margin:0 auto;padding:18px 12px}
+h1{font-family:var(--head);font-weight:620;font-size:24px;letter-spacing:-.04em;margin:8px 4px 4px}
+.lead{color:var(--muted);margin:0 4px 18px;font-size:14.5px}
+.card{background:#fff;border-radius:20px;padding:20px;margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:50px;padding:0 18px;border-radius:14px;border:0;font-family:var(--head);font-weight:620;font-size:15.5px;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 150ms ease}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:#fff}.btn-lime{background:var(--lime);color:var(--ink)}.btn-gray{background:var(--gray);color:var(--ink)}
+.btn.sm{height:38px;padding:0 12px;font-size:14px;border-radius:11px}
+.btn[disabled]{opacity:.4}
+input,select,textarea{width:100%;border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:11px 13px;outline:0;transition:border-color 150ms ease}
+input:focus,select:focus,textarea:focus{border-color:var(--ink)}
+textarea{resize:vertical;min-height:64px}
+label.l{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 5px}
+.err{color:var(--red);font-size:14px;margin:8px 0 0}
+.items .it{display:block;width:100%;text-align:left;background:#fff;border:0;border-radius:18px;padding:16px 18px;margin-bottom:8px;cursor:pointer;transition:transform 160ms var(--ease-out)}
+.items .it:active{transform:scale(.985)}
+.it b{display:block;font-family:var(--head);font-weight:620;font-size:16.5px;letter-spacing:-.03em}
+.it small{color:var(--muted);font-size:13px}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;border-radius:7px;padding:2px 7px;margin-left:4px;vertical-align:1px}
+.badge.lime{background:var(--lime)}.badge.ok{background:var(--ok-bg);color:var(--ok)}.badge.gray{background:var(--gray);color:var(--muted)}
+details.sec{background:#fff;border-radius:20px;margin-bottom:10px;overflow:hidden}
+details.sec summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 20px;cursor:pointer;font-family:var(--head);font-weight:620;font-size:17px;letter-spacing:-.03em}
+details.sec summary::-webkit-details-marker{display:none}
+details.sec summary span{font-family:"Pretendard Variable",sans-serif;font-weight:500;font-size:13px;color:var(--muted)}
+details.sec summary::after{content:"";width:9px;height:9px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg);transition:transform 200ms var(--ease-out);margin-left:auto}
+details.sec[open] summary::after{transform:rotate(-135deg)}
+.sec .in{padding:0 20px 20px}
+.row{border-top:1px solid var(--line);padding:14px 0}
+.row:first-child{border-top:0;padding-top:0}
+.row .h{display:flex;gap:8px;align-items:center}
+.row .h input{font-weight:600;padding:8px 10px}
+.row textarea{margin-top:8px}
+.row .f{display:flex;gap:8px;align-items:center;margin-top:8px}
+.seg{display:flex;background:var(--gray);border-radius:11px;padding:3px;gap:2px;flex:none}
+.seg button{border:0;background:none;border-radius:8px;height:32px;padding:0 10px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:background-color 150ms ease,color 150ms ease}
+.seg button.on.ok{background:var(--ok);color:#fff}.seg button.on.warn{background:var(--warn);color:#fff}.seg button.on.na{background:var(--ink2);color:#fff}
+.row .f input{width:110px;flex:none;padding:7px 10px;font-size:14px}
+.x{flex:none;width:34px;height:34px;border-radius:10px;border:0;background:var(--gray);color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.add{width:100%;margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+@media (max-width:520px){.photos{grid-template-columns:repeat(2,1fr)}}
+.ph{position:relative}
+.ph img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:var(--gray)}
+.ph .no{position:absolute;top:6px;left:6px;background:var(--ink);color:#fff;font-size:11.5px;font-weight:700;border-radius:7px;padding:2px 7px}
+.ph .x{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(255,255,255,.92)}
+.ph input{margin-top:6px;padding:7px 9px;font-size:13.5px}
+.ph.up img{opacity:.4}
+.ph.up::after{content:"올리는 중…";position:absolute;top:34%;left:0;right:0;text-align:center;font-size:13px;font-weight:600}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2px dashed var(--gray2);border-radius:16px;padding:22px;cursor:pointer;color:var(--muted);text-align:center;transition:border-color 150ms ease,background-color 150ms ease}
+.drop:active{background:var(--gray)}
+.drop b{color:var(--ink);font-family:var(--head);font-weight:620}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:10px 12px calc(10px + env(safe-area-inset-bottom))}
+.bottom div{max-width:760px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px}
+.bottom .btn{width:100%}
+.saved{font-size:12.5px;color:var(--muted);text-align:center;margin:-2px 0 6px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;border-radius:14px;padding:12px 18px;font-size:14.5px;z-index:20;transition:opacity 250ms ease,transform 400ms var(--ease-out);pointer-events:none;max-width:90vw}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.done{background:var(--navy);color:#fff;border-radius:20px;padding:24px}
+.done b{font-family:var(--head);font-size:20px}
+.done input{margin-top:12px;background:#18233a;border-color:transparent;color:#fff}
+.hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+</style>
+</head>
+<body>
+<div class="top"><div><b>발품옥션 파트너</b><small id="who"></small></div></div>
+<div class="wrap" id="app"></div>
+<div class="bottom" id="bottom" hidden><p class="saved" id="saved"></p><div>
+  <button class="btn btn-gray" id="b-preview">미리보기</button>
+  <button class="btn btn-gray" id="b-save">임시 저장</button>
+  <button class="btn btn-lime" id="b-publish">리포트 발행</button></div></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="file" accept="image/*" multiple hidden>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzHqw1TadGxsVEYpnsnaBl2ZzXr0Ohn5uJ7bSRHe6LDLrDCNOPXfknYazCJImYj7QnvXQ/exec';
+const SITE = location.href.replace(/field\.html.*$/, '');
+const pad = n => String(n).padStart(2, '0');
+const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+let KEY = localStorage.getItem('balpum_partner_key') || '';
+let ITEMS = [], ITEM = null, R = null;
+
+function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('on'); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove('on'), 2400); }
+async function post(data) { const j = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ ...data, key: KEY }) })).json(); if (!j.ok) throw new Error(j.error || 'fail'); return j; }
+
+// 1. 비밀번호
+function login(msg) {
+  $('bottom').hidden = true;
+  $('app').innerHTML = `<h1>현장 리포트 작성</h1><p class="lead">임장을 다녀온 뒤 사진과 확인 내용을 올리면 손님에게 보낼 리포트가 만들어집니다.</p>
+  <div class="card"><label class="l" for="k">파트너 비밀번호</label><input id="k" type="password" autocomplete="current-password" value="${esc(KEY)}">
+  <p class="err">${msg || ''}</p><button class="btn btn-ink" id="go" style="width:100%;margin-top:12px">들어가기</button>
+  <p class="hint">비밀번호는 운영팀에서 받으세요. 이 기기에만 저장됩니다.</p></div>
+  <p class="hint" style="text-align:center">아직 파트너가 아니라면 <a href="partner.html">파트너 지원</a></p>`;
+  $('go').onclick = async () => { KEY = $('k').value.trim(); $('go').disabled = true; $('go').textContent = '확인 중…'; await loadItems(); };
+}
+
+async function loadItems() {
+  try {
+    const j = await (await fetch(`${ENDPOINT}?action=partnerItems&key=${encodeURIComponent(KEY)}`)).json();
+    if (!j.ok) { localStorage.removeItem('balpum_partner_key'); return login(j.error === 'key' ? '비밀번호가 맞지 않습니다.' : '불러오지 못했습니다.'); }
+    localStorage.setItem('balpum_partner_key', KEY);
+    ITEMS = j.items; pick();
+  } catch (_) { login('연결하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'); }
+}
+
+// 2. 물건 고르기
+function pick() {
+  $('bottom').hidden = true; $('who').textContent = '';
+  $('app').innerHTML = `<h1>어떤 물건을 다녀오셨나요?</h1><p class="lead">출발이 확정된 물건부터 보입니다.</p>
+  <div class="items">${ITEMS.length ? ITEMS.sort((a, b) => (a.status === '확정' ? -1 : 0) - (b.status === '확정' ? -1 : 0) || String(a.date).localeCompare(b.date)).map((it, i) => `
+    <button class="it" data-i="${ITEMS.indexOf(it)}"><b>${esc(it.addr)} ${esc(it.name)}</b>
+    <small>${esc(it.court)} ${esc(it.caseNo)} · 매각기일 ${esc(it.date)}</small><br>
+    <span class="badge ${it.status === '확정' ? 'lime' : 'gray'}">${esc(it.status || '모집')}</span>
+    ${it.memos.length ? `<span class="badge gray">요청 ${it.memos.length}건</span>` : ''}
+    ${it.draft ? `<span class="badge ok">${it.draft.status === '공개' ? '발행됨' : '초안 있음'}</span>` : ''}</button>`).join('') : '<div class="card">등록된 물건이 없습니다.</div>'}</div>`;
+  document.querySelectorAll('.it').forEach(b => b.onclick = () => open(ITEMS[+b.dataset.i]));
+}
+
+// 기본 항목
+const DEF = () => [
+  { title: '점유 현황', lead: '집 안에 들어가지 않고 밖에서 확인할 수 있는 단서를 모았습니다.', rows: ['우편함', '전기 계량기', '수도·가스', '현관 앞', '창·베란다', '초인종', '등록 차량'] },
+  { title: '관리비', lead: '관리사무소를 방문해 경매 입찰 검토 목적임을 밝히고 확인했습니다.', rows: ['체납 기간', '체납 합계', '그중 공용부분', '월평균 관리비', '장기수선충당금'] },
+  { title: '건물 외관·공용부', rows: ['외벽', '복도·계단실', '아래층 누수 이력', '승강기', '창호(외부 관찰)', '불법 확장·증축'] },
+  { title: '세대 위치와 구조', rows: ['향', '층·조망', '구조', '같은 평형 내부'] },
+  { title: '주변 환경', lead: '모두 직접 걸어서 잰 시간입니다.', rows: ['지하철역', '초등학교', '대형마트', '버스 정류장', '소음', '기피 시설'] },
+  { title: '주차', rows: ['주차 대수', '낮 시간', '밤 시간', '주차비'] },
+].map(s => ({ title: s.title, lead: s.lead || '', note: '', warn: false, rows: s.rows.map(k => ({ k, v: '', ref: '', st: 'ok' })) }));
+
+function blank(it) {
+  return {
+    caseNo: it.caseNo, court: it.court, title: `${it.addr} ${it.name}`.trim(), sub: `${it.type || '아파트'} · 전용 ${it.size || ''}`,
+    date: it.date, appr: it.appr, min: it.min, visitedAt: todayStr(), visitTime: '', written: todayStr(), partner: '', no: 'BP-' + it.caseNo.replace(/\D/g, '').slice(-6),
+    summary: [], sections: DEF(),
+    brokers: [{ name: 'A (단지 상가)', sale: '', jeonse: '', quote: '' }, { name: 'B', sale: '', jeonse: '', quote: '' }, { name: 'C', sale: '', jeonse: '', quote: '' }],
+    deals: [{ when: '', price: '', floor: '' }],
+    qa: it.memos.map((q, i) => ({ who: '신청자 ' + 'ABCDEFGHIJ'[i], q, a: '' })),
+    photos: [], videos: [],
+    missing: [{ k: '세대 내부 상태', why: '점유자 동의 없이 들어가지 않습니다.', how: '같은 평형 매물 내부 참고, 낙찰 후 확인' },
+      { k: '점유자와 임대차 관계', why: '신원 확인은 하지 않습니다.', how: '매각물건명세서, 전입세대확인서' },
+      { k: '권리관계와 적정 입찰가', why: '법률 판단과 입찰가 추천은 하지 않습니다.', how: '등기사항증명서, 전문가 상담' }],
+  };
+}
+
+// 3. 작성
+function open(it) {
+  ITEM = it;
+  const local = localStorage.getItem('balpum_field_' + it.caseNo);
+  let server = null; try { server = it.draft && it.draft.data ? JSON.parse(it.draft.data) : null; } catch (_) {}
+  R = local ? JSON.parse(local) : server || blank(it);
+  // 새로 들어온 요청사항은 덧붙인다
+  it.memos.forEach(q => { if (!R.qa.some(x => x.q === q)) R.qa.push({ who: '신청자 ' + 'ABCDEFGHIJ'[R.qa.length], q, a: '' }); });
+  $('who').textContent = it.caseNo;
+  draw();
+  $('bottom').hidden = false;
+}
+
+const rowHtml = (path, r) => `<div class="row">
+  <div class="h"><input value="${esc(r.k)}" data-p="${path}.k" placeholder="항목"><button class="x" data-del="${path}" aria-label="삭제">×</button></div>
+  <textarea data-p="${path}.v" placeholder="현장에서 본 내용">${esc(r.v)}</textarea>
+  <div class="f"><div class="seg" data-st="${path}">${['ok', 'warn', 'na'].map(s => `<button type="button" class="${s} ${r.st === s ? 'on' : ''}" data-v="${s}">${{ ok: '확인', warn: '주의', na: '미확인' }[s]}</button>`).join('')}</div>
+  <input value="${esc(r.ref)}" data-p="${path}.ref" placeholder="사진 번호" inputmode="numeric"></div></div>`;
+
+function draw() {
+  const open = [...document.querySelectorAll('details.sec')].map(d => d.open);
+  $('app').innerHTML = `<button class="btn btn-gray sm" id="back">← 물건 목록</button>
+  <h1 style="margin-top:14px">${esc(R.title)}</h1><p class="lead">${esc(R.court)} ${esc(R.caseNo)} · 매각기일 ${esc(R.date)}</p>
+
+  <details class="sec" open><summary>기본 정보<span>방문 일시·확인자</span></summary><div class="in">
+    <div class="grid2"><div><label class="l">현장 확인일</label><input type="date" value="${esc(R.visitedAt)}" data-p="visitedAt"></div>
+    <div><label class="l">확인 시간</label><input value="${esc(R.visitTime)}" data-p="visitTime" placeholder="14:10~16:25"></div></div>
+    <label class="l">리포트 제목 (주소·단지·동)</label><input value="${esc(R.title)}" data-p="title">
+    <label class="l">세대 정보</label><input value="${esc(R.sub)}" data-p="sub" placeholder="아파트 · 전용 59㎡ · 13층 / 20층 · 계단식 · 1997년 준공 · 1,120세대">
+    <label class="l">확인자</label><input value="${esc(R.partner)}" data-p="partner" placeholder="발품 파트너 K · 고양 덕양 담당 · 개업공인중개사">
+  </div></details>
+
+  <details class="sec"><summary>사진<span>${R.photos.length}장</span></summary><div class="in">
+    <label class="drop" for="file"><b>사진 추가</b>카메라로 찍거나 앨범에서 여러 장 고르세요. 자동으로 줄여서 올립니다.</label>
+    <div class="photos">${R.photos.map((p, i) => `<div class="ph ${p.up ? 'up' : ''}"><img src="${esc(p.preview || p.url)}" alt=""><span class="no">${pad(i + 1)}</span><button class="x" data-delp="${i}">×</button>
+      <input value="${esc(p.cap)}" data-p="photos.${i}.cap" placeholder="설명 (예: 1층 우편함)"></div>`).join('')}</div>
+    <p class="hint">사진 번호(01, 02…)를 각 항목의 '사진 번호' 칸에 적으면 리포트에서 연결됩니다.</p>
+  </div></details>
+
+  ${R.sections.map((s, si) => `<details class="sec"><summary>${esc(s.title)}<span>${s.rows.filter(r => r.v).length}/${s.rows.length}</span></summary><div class="in">
+    ${s.rows.map((r, ri) => rowHtml(`sections.${si}.rows.${ri}`, r)).join('')}
+    <button class="btn btn-gray sm add" data-addrow="${si}">+ 항목 추가</button>
+    <label class="l">종합 메모 (선택)</label><textarea data-p="sections.${si}.note" placeholder="이 부분을 한 문장으로 정리">${esc(s.note)}</textarea>
+    <label style="display:flex;gap:8px;align-items:center;margin-top:8px;font-size:14px"><input type="checkbox" style="width:auto" data-chk="sections.${si}.warn" ${s.warn ? 'checked' : ''}>메모를 주의 색으로 표시</label>
+  </div></details>`).join('')}
+
+  <details class="sec"><summary>시세 탐문<span>중개사무소·실거래</span></summary><div class="in">
+    ${R.brokers.map((b, i) => `<div class="row"><div class="h"><input value="${esc(b.name)}" data-p="brokers.${i}.name" placeholder="중개사무소 (예: A 단지 상가)"><button class="x" data-dellist="brokers.${i}">×</button></div>
+      <div class="grid2" style="margin-top:8px"><input value="${esc(b.sale)}" data-p="brokers.${i}.sale" placeholder="매매 호가"><input value="${esc(b.jeonse)}" data-p="brokers.${i}.jeonse" placeholder="전세·월세"></div>
+      <textarea data-p="brokers.${i}.quote" placeholder="들은 이야기">${esc(b.quote)}</textarea></div>`).join('')}
+    <button class="btn btn-gray sm add" data-addlist="brokers">+ 중개사무소 추가</button>
+    <label class="l" style="margin-top:20px">같은 단지 같은 평형 최근 실거래 (국토부 실거래가)</label>
+    ${R.deals.map((d, i) => `<div class="row"><div class="grid2"><input value="${esc(d.when)}" data-p="deals.${i}.when" placeholder="언제 (예: 2026년 8월)"><input value="${esc(d.floor)}" data-p="deals.${i}.floor" placeholder="층 (예: 9층)"></div>
+      <div class="h" style="margin-top:8px"><input value="${esc(d.price)}" data-p="deals.${i}.price" placeholder="거래가 (원, 예: 352000000)" inputmode="numeric"><button class="x" data-dellist="deals.${i}">×</button></div></div>`).join('')}
+    <button class="btn btn-gray sm add" data-addlist="deals">+ 실거래 추가</button>
+  </div></details>
+
+  <details class="sec"><summary>신청자 요청<span>${R.qa.filter(q => q.a).length}/${R.qa.length}</span></summary><div class="in">
+    ${R.qa.length ? R.qa.map((q, i) => `<div class="row"><b style="font-size:14.5px">${esc(q.who)} · ${esc(q.q)}</b><textarea data-p="qa.${i}.a" placeholder="확인한 내용">${esc(q.a)}</textarea></div>`).join('') : '<p class="hint">신청자가 남긴 요청사항이 없습니다.</p>'}
+  </div></details>
+
+  <details class="sec"><summary>영상<span>${R.videos.length}개</span></summary><div class="in">
+    ${R.videos.map((v, i) => `<div class="row"><div class="h"><input value="${esc(v.cap)}" data-p="videos.${i}.cap" placeholder="설명 (예: 정문에서 703동까지 · 1분 42초)"><button class="x" data-dellist="videos.${i}">×</button></div>
+      <input style="margin-top:8px" value="${esc(v.url)}" data-p="videos.${i}.url" placeholder="유튜브 '일부 공개' 링크"></div>`).join('')}
+    <button class="btn btn-gray sm add" data-addlist="videos">+ 영상 추가</button>
+    <p class="hint">휴대폰 유튜브 앱에서 '일부 공개'로 올린 뒤 링크를 붙여 넣으세요.</p>
+  </div></details>
+
+  <details class="sec"><summary>확인하지 못한 것<span>${R.missing.length}개</span></summary><div class="in">
+    ${R.missing.map((m, i) => `<div class="row"><div class="h"><input value="${esc(m.k)}" data-p="missing.${i}.k" placeholder="항목"><button class="x" data-dellist="missing.${i}">×</button></div>
+      <div class="grid2" style="margin-top:8px"><input value="${esc(m.why)}" data-p="missing.${i}.why" placeholder="이유"><input value="${esc(m.how)}" data-p="missing.${i}.how" placeholder="확인 방법"></div></div>`).join('')}
+    <button class="btn btn-gray sm add" data-addlist="missing">+ 항목 추가</button>
+  </div></details>
+
+  <details class="sec"><summary>요약<span>${R.summary.length}개 · 맨 위에 보입니다</span></summary><div class="in">
+    <button class="btn btn-ink sm add" id="autosum" style="margin:0 0 6px">작성한 내용으로 요약 채우기</button>
+    <p class="hint">'주의' 항목과 메모를 모아 요약을 만듭니다. 만든 뒤 문장을 다듬어 주세요.</p>
+    ${R.summary.map((s, i) => `<div class="row"><div class="h"><input value="${esc(s.t)}" data-p="summary.${i}.t" placeholder="한 줄 요약"><button class="x" data-dellist="summary.${i}">×</button></div>
+      <textarea data-p="summary.${i}.d" placeholder="근거">${esc(s.d)}</textarea>
+      <div class="f"><div class="seg" data-st="summary.${i}">${['ok', 'warn', 'na'].map(t => `<button type="button" class="${t} ${s.st === t ? 'on' : ''}" data-v="${t}">${{ ok: '확인', warn: '주의', na: '미확인' }[t]}</button>`).join('')}</div></div></div>`).join('')}
+    <button class="btn btn-gray sm add" data-addlist="summary">+ 요약 추가</button>
+  </div></details>`;
+
+  document.querySelectorAll('details.sec').forEach((d, i) => { if (open[i] !== undefined) d.open = open[i]; });
+  $('back').onclick = () => { save(); pick(); };
+  $('autosum').onclick = autoSummary;
+}
+
+// 값 넣기: data-p="sections.0.rows.1.v"
+function setPath(path, val) { const ks = path.split('.'); let o = R; ks.slice(0, -1).forEach(k => o = o[k]); o[ks[ks.length - 1]] = val; }
+function getParent(path) { const ks = path.split('.'); let o = R; ks.slice(0, -1).forEach(k => o = o[k]); return [o, +ks[ks.length - 1]]; }
+$('app').addEventListener('input', e => { const p = e.target.dataset.p; if (p) { setPath(p, e.target.value); save(); } });
+$('app').addEventListener('change', e => { const c = e.target.dataset.chk; if (c) { setPath(c, e.target.checked); save(); } });
+$('app').addEventListener('click', e => {
+  const t = e.target;
+  const seg = t.closest('[data-st]');
+  if (seg && t.dataset.v) { setPath(seg.dataset.st + '.st', t.dataset.v); seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === t)); save(); return; }
+  if (t.dataset.del) { const [arr, i] = getParent(t.dataset.del); arr.splice(i, 1); save(); draw(); return; }
+  if (t.dataset.dellist) { const [arr, i] = getParent(t.dataset.dellist); arr.splice(i, 1); save(); draw(); return; }
+  if (t.dataset.delp) { R.photos.splice(+t.dataset.delp, 1); save(); draw(); return; }
+  if (t.dataset.addrow) { R.sections[+t.dataset.addrow].rows.push({ k: '', v: '', ref: '', st: 'ok' }); save(); draw(); return; }
+  if (t.dataset.addlist) {
+    const blankOf = { brokers: { name: '', sale: '', jeonse: '', quote: '' }, deals: { when: '', price: '', floor: '' }, videos: { cap: '', url: '' }, missing: { k: '', why: '', how: '' }, summary: { st: 'ok', t: '', d: '' } };
+    R[t.dataset.addlist].push({ ...blankOf[t.dataset.addlist] }); save(); draw();
+  }
+});
+
+function autoSummary() {
+  const out = [];
+  R.sections.forEach(s => {
+    s.rows.filter(r => r.st === 'warn' && r.v).forEach(r => out.push({ st: 'warn', t: `${r.k}: ${r.v.split(/[.。]/)[0]}`, d: r.v }));
+    if (s.note) out.push({ st: s.warn ? 'warn' : 'ok', t: s.title, d: s.note });
+  });
+  const b = R.brokers.filter(x => x.sale);
+  if (b.length) out.push({ st: 'ok', t: `인근 중개사무소 호가 ${b.map(x => x.sale).join(' / ')}`, d: `${b.length}곳 방문` });
+  if (!out.length) return toast('먼저 항목을 채우고 눌러 주세요');
+  R.summary = out.slice(0, 6); save(); draw(); toast('요약을 채웠습니다. 문장을 다듬어 주세요');
+}
+
+// 자동 저장 (이 기기)
+function save() {
+  if (!R) return;
+  const clean = { ...R, photos: R.photos.filter(p => p.url).map(({ url, cap, time }) => ({ url, cap, time })) };
+  try { localStorage.setItem('balpum_field_' + R.caseNo, JSON.stringify(clean)); } catch (_) {}
+  $('saved').textContent = '이 기기에 자동 저장됨 · ' + new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+}
+const payload = () => ({ ...R, photos: R.photos.filter(p => p.url).map(({ url, cap, time }) => ({ url, cap, time })), deals: R.deals.filter(d => d.price).map(d => ({ ...d, price: +String(d.price).replace(/\D/g, '') })), brokers: R.brokers.filter(b => b.sale || b.quote), qa: R.qa.filter(q => q.a), written: todayStr() });
+
+// 사진: 1600px로 줄여서 한 장씩 올린다
+$('file').addEventListener('change', async e => {
+  const files = [...e.target.files]; e.target.value = '';
+  const items = files.map(f => ({ cap: '', time: new Date(f.lastModified).toTimeString().slice(0, 5), preview: URL.createObjectURL(f), up: true, f }));
+  R.photos.push(...items); draw();
+  for (const p of items) {
+    try {
+      const data = await shrink(p.f);
+      const j = await post({ action: 'uploadPhoto', caseNo: R.caseNo, name: p.f.name, mime: 'image/jpeg', data });
+      p.url = j.url;
+    } catch (err) { toast('사진 한 장을 올리지 못했습니다'); R.photos.splice(R.photos.indexOf(p), 1); }
+    delete p.up; delete p.f; save(); draw();
+  }
+});
+async function shrink(file) {
+  const bmp = await createImageBitmap(file);
+  const s = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+  const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+  c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+  return c.toDataURL('image/jpeg', .82).split(',')[1];
+}
+
+$('b-preview').onclick = () => { localStorage.setItem('balpum_preview', JSON.stringify(payload())); window.open('report.html?preview=1', '_blank'); };
+$('b-save').onclick = async () => {
+  const b = $('b-save'); b.disabled = true; b.textContent = '저장 중…';
+  try { await post({ action: 'saveReport', caseNo: R.caseNo, report: payload() }); toast('서버에 임시 저장했습니다'); }
+  catch (e) { toast(e.message === 'size' ? '내용이 너무 깁니다' : '저장하지 못했습니다'); }
+  b.disabled = false; b.textContent = '임시 저장';
+};
+$('b-publish').onclick = async () => {
+  if (R.photos.some(p => p.up)) return toast('사진을 올리는 중입니다. 잠시만요');
+  if (!R.summary.length) return toast('요약을 먼저 채워 주세요');
+  if (!confirm('리포트를 발행할까요? 운영팀에 알림이 가고, 물건이 "리포트 열람"으로 바뀝니다.')) return;
+  const b = $('b-publish'); b.disabled = true; b.textContent = '발행 중…';
+  try {
+    const j = await post({ action: 'saveReport', caseNo: R.caseNo, report: payload(), publish: true });
+    const link = SITE + 'report.html?id=' + j.token;
+    $('bottom').hidden = true;
+    $('app').innerHTML = `<div class="done"><b>리포트를 발행했습니다</b><p style="opacity:.7;margin:6px 0 0">운영팀에 알림이 갔습니다. 결제한 신청자에게 아래 링크가 전달됩니다.</p>
+      <input value="${esc(link)}" readonly onclick="this.select()"><div style="display:flex;gap:8px;margin-top:12px">
+      <a class="btn btn-lime" href="${esc(link)}" target="_blank">리포트 보기</a><button class="btn btn-gray" id="again">다른 물건 작성</button></div></div>`;
+    $('again').onclick = () => loadItems();
+  } catch (e) { toast('발행하지 못했습니다'); b.disabled = false; b.textContent = '리포트 발행'; }
+};
+
+if (KEY) loadItems(); else login();
+</script>
+</body>
+</html>

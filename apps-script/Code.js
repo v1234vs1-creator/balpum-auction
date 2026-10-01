@@ -20,6 +20,9 @@ const BIG = 1000000000;                      // 감정가 10억 이상 +5만
 function setup() {
   sheet_();
   itemSheet_();
+  reportSheet_();
+  ensure_(PARTNER_SHEET, PARTNER_HEAD);
+  folder_(DriveApp.getRootFolder(), PHOTO_FOLDER); // 드라이브 권한 승인용
   rebuild_();
   MailApp.sendEmail(recipients_(), '[발품옥션] 신청 알림 연결 완료', '앞으로 사이트에 신청이 들어오면 이 메일로 알려드립니다.');
 }
@@ -34,6 +37,9 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents || '{}');
     if (d.action === 'addItems') return out(addItems_(d));
+    if (d.action === 'partnerApply') return out(partnerApply_(d));
+    if (d.action === 'uploadPhoto') return out(uploadPhoto_(d));
+    if (d.action === 'saveReport') return out(saveReport_(d));
     if (d.website) return out({ ok: true }); // 스팸봇용 숨은 칸
 
     const phone = String(d.phone || '').replace(/[^0-9]/g, '');
@@ -61,7 +67,10 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  if (e && e.parameter && e.parameter.action === 'items') return out({ ok: true, items: items_() });
+  const p = (e && e.parameter) || {};
+  if (p.action === 'items') return out({ ok: true, items: items_() });
+  if (p.action === 'partnerItems') return out(partnerItems_(p.key));
+  if (p.action === 'report') return out(getReport_(p));
   return out({ ok: true, service: 'balpum' });
 }
 
