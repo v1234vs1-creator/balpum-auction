@@ -38,6 +38,9 @@ select.st{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 8
 .btn.red{background:#fff;color:var(--red);border:1px solid #efc9c1}
 .links{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;font-size:14px}
 tr.hidden td{opacity:.5}
+.bm{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;text-decoration:none;font-weight:700;border-radius:8px;padding:11px 18px;cursor:grab;user-select:none}
+.bm::before{content:"";width:10px;height:10px;border-radius:50%;background:#c8f03c}
+.got{background:#eef7d2;border-radius:8px;padding:10px 14px;margin-top:12px;font-weight:600;font-size:14.5px}
 .msg.ok{color:var(--green)}.msg.err{color:var(--red)}
 a{color:var(--green)}
 </style>
@@ -46,6 +49,18 @@ a{color:var(--green)}
 <div class="wrap">
   <h1>발품옥션 관리</h1>
   <div class="links"><a href="https://docs.google.com/spreadsheets/d/1HoNs8gFBo5GEMyfAQCWDVck1Qzsr1DYz_vkO40Jul4U/edit" target="_blank" rel="noopener">시트 열기</a><a href="./" target="_blank">사이트 보기</a><a href="field.html" target="_blank">현장 리포트 작성</a></div>
+
+  <details class="box" id="bm-box">
+    <summary style="cursor:pointer;font-weight:700;font-size:17px">원클릭 담기 버튼 설치 (처음 한 번)</summary>
+    <ol style="margin-top:14px">
+      <li>크롬에서 <b>Ctrl+Shift+B</b>를 눌러 즐겨찾기 막대를 켭니다.</li>
+      <li>아래 검은 버튼을 마우스로 <b>즐겨찾기 막대에 끌어다 놓습니다.</b> (누르지 말고 끌어다 놓기)</li>
+      <li><a href="https://www.courtauction.go.kr" target="_blank" rel="noopener">법원경매정보</a>에서 물건 검색 결과나 물건 상세 화면을 연 채로 막대의 <b>발품옥션에 담기</b>를 누르면, 이 페이지가 열리면서 바로 분석됩니다.</li>
+      <li>여러 화면에서 계속 누르면 차곡차곡 쌓입니다. 일부만 담고 싶으면 그 부분을 드래그로 선택한 뒤 누르세요.</li>
+    </ol>
+    <p style="margin:16px 0 4px"><a class="bm" id="bm" href="#">발품옥션에 담기</a></p>
+    <p class="muted" style="font-size:13px;margin:8px 0 0">보고 있는 화면의 글자만 읽어서 넘깁니다. 법원 사이트에 요청을 따로 보내지 않습니다. 컴퓨터 크롬에서만 쓸 수 있습니다.</p>
+  </details>
 
   <div class="box">
     <h2>관리자 비밀번호</h2>
@@ -68,7 +83,8 @@ a{color:var(--green)}
   <p class="muted" style="margin:0">법원경매정보 검색 결과를 붙여넣으면 사이트 목록에 올릴 물건을 자동으로 골라 드립니다. 자동으로 법원 사이트를 조회하지 않습니다.</p>
 
   <div class="box">
-    <h2>1. 법원 사이트에서 복사하기</h2>
+    <h2>1. 법원 사이트에서 가져오기</h2>
+    <p class="muted" style="margin:0 0 10px">원클릭 담기 버튼을 설치했다면 법원 화면에서 버튼만 누르면 아래 칸이 자동으로 채워집니다. 버튼 없이 할 때는:</p>
     <ol>
       <li><a href="https://www.courtauction.go.kr" target="_blank" rel="noopener">법원경매정보</a> → <b>경매물건 → 물건상세검색</b></li>
       <li>법원 선택(서울·경기·인천 법원을 하나씩), 용도 <b>건물 → 주거용건물 → 아파트</b>, 검색</li>
@@ -76,7 +92,8 @@ a{color:var(--green)}
       <li>아래 칸에 <b>Ctrl+V</b>. 여러 법원 결과를 이어서 붙여넣어도 됩니다.</li>
     </ol>
     <textarea id="src" placeholder="여기에 붙여넣기"></textarea>
-    <div class="row"><button class="btn" id="run">분석하기</button><span class="muted" id="found"></span></div>
+    <div class="row"><button class="btn" id="run">분석하기</button><button class="btn line" id="clear">비우기</button><span class="muted" id="found"></span></div>
+    <div class="got" id="got" hidden></div>
   </div>
 
   <div class="box" id="result" hidden>
@@ -215,6 +232,29 @@ $('clean').onclick = async () => {
   $('clean').disabled = false;
 };
 if ($('key').value) loadManaged();
+
+// 원클릭 담기: 법원 사이트에서 보고 있는 화면 글자를 이 페이지로 넘긴다
+const ADMIN_URL = location.href.split('#')[0];
+const BM = `(()=>{const t=(getSelection().toString()||document.body.innerText).slice(0,400000);if(!/타경/.test(t)){alert('경매 물건 검색 결과나 상세 화면에서 눌러 주세요');return}window.open('${ADMIN_URL}#paste='+encodeURIComponent(t),'balpum_admin')})()`;
+$('bm').href = 'javascript:' + encodeURIComponent(BM);
+$('bm').onclick = e => { e.preventDefault(); alert('누르지 말고 즐겨찾기 막대로 끌어다 놓아 주세요.'); };
+$('clear').onclick = () => { $('src').value = ''; $('result').hidden = true; $('found').textContent = ''; $('got').hidden = true; };
+function takePaste() {
+  if (!location.hash.startsWith('#paste=')) return;
+  let t = '';
+  try { t = decodeURIComponent(location.hash.slice(7)); } catch (_) {}
+  history.replaceState(null, '', location.pathname);
+  if (!t) return;
+  const before = parseCourtText($('src').value).length;
+  $('src').value = ($('src').value ? $('src').value + '\n\n' : '') + t;
+  $('run').click();
+  const added = items.length - before;
+  $('got').hidden = false;
+  $('got').textContent = added > 0 ? `법원 화면에서 ${added}건을 담았습니다. 지금까지 ${items.length}건입니다.` : '담을 물건을 찾지 못했습니다. 검색 결과나 물건 상세 화면에서 눌러 주세요.';
+  $('got').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+addEventListener('hashchange', takePaste);
+takePaste();
 </script>
 </body>
 </html>

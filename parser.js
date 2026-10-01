@@ -21,6 +21,15 @@
         last.lastIdx = h.idx; if (h.no) last.no = h.no;
       } else groups.push({ ...h, lastIdx: h.idx });
     });
+    // 물건 상세 화면: 법원 이름과 사건번호가 떨어져 있으면 화면 전체를 한 물건으로 본다
+    if (!groups.length) {
+      const cm = text.match(/(\d{4}\s*타경\s*\d+)/);
+      const ct = text.match(/((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)/);
+      if (cm) {
+        const it = one(text.slice(Math.max(0, cm.index - 200)), { caseNo: cm[1].replace(/\s/g, ''), court: ct ? ct[1] : '', no: 0 });
+        return it ? [it] : [];
+      }
+    }
     const out = [];
     groups.forEach((g, i) => {
       const chunk = text.slice(g.idx, i + 1 < groups.length ? groups[i + 1].idx : g.idx + 1500);
