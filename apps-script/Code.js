@@ -72,6 +72,7 @@ function doGet(e) {
   if (p.action === 'items') return out({ ok: true, items: items_() });
   if (p.action === 'partnerItems') return out(partnerItems_(p.key));
   if (p.action === 'report') return out(getReport_(p));
+  if (p.action === 'myReport') return out(myReport_(p));
   if (p.action === 'adminItems') return out(adminItems_(p.key));
   return out({ ok: true, service: 'balpum' });
 }
@@ -171,6 +172,7 @@ function items_() {
   });
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
+  const teasers = reportTeasers_();
   return itemSheet_().getDataRange().getValues().slice(1)
     .filter(r => r[0] && r[12] !== '숨김')
     .map(r => {
@@ -185,7 +187,7 @@ function items_() {
         date: Utilities.formatDate(date, 'Asia/Seoul', 'yyyy-MM-dd'), interest: Number(r[11]) || 0,
         status, count, sold: sold[cs] || 0,
         visited: r[14] instanceof Date ? Utilities.formatDate(r[14], 'Asia/Seoul', 'yyyy-MM-dd') : String(r[14] || ''),
-        photo: String(r[15] || ''),
+        photo: String(r[15] || ''), teaser: teasers[cs] || null,
       };
     })
     .filter(it => new Date(it.date) >= today);

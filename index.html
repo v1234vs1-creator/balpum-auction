@@ -767,7 +767,27 @@ function toItem(r, i) {
     type: r.type || '아파트', size: r.size, appr: Math.round(r.appr / 10000), min: Math.round(r.min / 10000), fail: r.fail,
     date, off: Math.round((date - today) / DAY), status: STATUS_CODE[r.status] || 'rec', count: r.count || 0, sold: r.sold || 0,
     visited: r.visited ? new Date(r.visited + 'T00:00:00') : null, photo: r.photo || PHOTOS[hash(r.caseNo) % PHOTOS.length],
-    sample: !!r.sample, report: r.report || '',
+    sample: !!r.sample, report: r.report || '', teaser: r.teaser || null,
+  };
+}
+
+// 결제한 손님이 휴대폰 번호로 리포트를 연다
+const viewBlock = (v, phone = '') => v.sample ? '' : `<div class="note" style="background:#fff;border:1.5px solid var(--line)"><b>이미 결제하셨나요?</b>
+  <p>신청할 때 쓴 휴대폰 번호를 넣으면 리포트가 바로 열립니다.</p>
+  <div class="pf"><input id="v-phone" type="tel" placeholder="010-0000-0000" autocomplete="tel" value="${esc(phone)}"></div>
+  <button class="btn btn-ink" id="v-go" type="button" style="width:100%;margin-top:10px">결제한 리포트 보기</button><p class="err" id="v-err" role="alert"></p></div>`;
+function bindView(v) {
+  const b = $('v-go'); if (!b) return;
+  b.onclick = async () => {
+    const phone = $('v-phone').value;
+    if (!phoneOk(phone)) { $('v-err').textContent = '휴대폰 번호를 다시 확인해 주세요.'; return; }
+    b.disabled = true; b.textContent = '확인 중…'; $('v-err').textContent = '';
+    try {
+      const j = await (await fetch(`${ENDPOINT}?action=myReport&caseNo=${encodeURIComponent(v.caseNo)}&phone=${encodeURIComponent(phone)}`)).json();
+      if (j.ok) { location.href = 'report.html?id=' + encodeURIComponent(j.token); return; }
+      $('v-err').textContent = { none: '이 번호로 이 물건에 신청한 기록이 없습니다.', unpaid: '결제가 확인되면 볼 수 있습니다. 결제 안내 문자를 확인해 주세요.', notready: '리포트가 아직 발행되지 않았습니다.' }[j.error] || '확인하지 못했습니다.';
+    } catch (_) { $('v-err').textContent = '연결하지 못했습니다. 잠시 뒤 다시 시도해 주세요.'; }
+    b.disabled = false; b.textContent = '결제한 리포트 보기';
   };
 }
 async function loadItems() {
@@ -955,20 +975,30 @@ function openItem(id) {
       <p>${v.sample ? '예시 물건이라 실제로 접수되지는 않았습니다. 신청하면 아래 순서로 진행됩니다.' : '진행 상황은 문자로 알려드립니다.'}</p></div>
       <ol class="tl">${steps.map((st, i) => `<li class="${i < cur ? 'on' : i === cur ? 'on now' : ''}">${st[0]}${st[1] ? `<small>${st[1]}</small>` : ''}</li>`).join('')}</ol>
       ${v.report && (isReport || v.status === 'done') ? `<a class="btn btn-ink" href="${v.report}" style="width:100%;margin-top:24px">샘플 리포트 보기</a>` : ''}
+      ${!v.sample && v.status === 'done' ? viewBlock(v, v.joined.phone || '') : ''}
       ${isReport && !v.sample ? '' : `<button class="btn btn-gray" style="width:100%;margin-top:10px" data-cancel>${v.sample ? '예시 신청 되돌리기' : '신청 취소'}</button>`}`;
   } else if (v.status === 'done') {
+    const T = v.teaser, ST = { ok: '확인', warn: '주의', na: '미확인' };
+    const box = (bg, fg, n, t) => `<div style="background:${bg};color:${fg};border-radius:12px;padding:12px;font-size:12.5px"><b style="display:block;font-family:var(--head);font-size:24px;line-height:1.2">${n}</b>${t}</div>`;
     html += `<div class="blk"><h4>현장 확인 리포트${v.visited ? ' · ' + fmt(v.visited) + ' 확인' : ''}</h4>
-      <div class="rrow"><div>점유 상태<small>거주 중으로 보임</small></div><span class="st ok">확인</span></div>
+      ${T ? `<div class="num" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 8px">${box('var(--ok-bg)', 'var(--ok)', T.ok, '이상 없음')}${box('var(--warn-bg)', 'var(--warn)', T.warn, '주의')}${box('var(--gray)', 'var(--muted)', T.na, '미확인')}</div>
+        ${(T.lines || []).slice(0, 1).map(l => `<div class="rrow"><div>${esc(l.t)}</div><span class="st ${l.st === 'warn' ? 'warn' : 'ok'}">${ST[l.st] || '확인'}</span></div>`).join('')}
+        <div class="locked"><div class="blur">
+          <div class="rrow"><div>관리비 체납 금액<small>약 000만 원</small></div><span class="st warn">주의</span></div>
+          <div class="rrow"><div>외관·공용부<small>외벽 상태</small></div><span class="st ok">확인</span></div>
+        </div><div class="lk">열람하면 전체 항목과 사진 ${T.photos}장${T.videos ? `, 영상 ${T.videos}편` : ''}을 볼 수 있습니다</div></div>`
+      : `<div class="rrow"><div>점유 상태<small>거주 중으로 보임</small></div><span class="st ok">확인</span></div>
       <div class="rrow"><div>관리비<small>체납 있음</small></div><span class="st warn">주의</span></div>
       <div class="locked"><div class="blur">
         <div class="rrow"><div>체납 금액<small>약 000만 원</small></div><span class="st warn">주의</span></div>
         <div class="rrow"><div>외관·공용부<small>외벽 균열 일부</small></div><span class="st ok">확인</span></div>
         <div class="rrow"><div>인근 시세<small>0억 0천 ~ 0억 0천</small></div><span class="st ok">확인</span></div>
-      </div><div class="lk">열람하면 전체 항목과 사진 26장, 영상 2편을 볼 수 있습니다</div></div>
+      </div><div class="lk">열람하면 전체 항목과 사진 26장, 영상 2편을 볼 수 있습니다</div></div>`}
       ${v.report ? `<a class="btn btn-gray" href="${v.report}" style="width:100%;margin-top:14px">샘플 리포트 전체 보기 (무료)</a>` : ''}</div>
       ${v.sold >= REPORT_MAX ? `<div class="note"><b>열람이 마감되었습니다</b><p>경쟁이 지나치게 늘지 않도록 나중 열람은 물건당 ${REPORT_MAX}명까지만 받습니다.</p></div>`
       : `<p class="spec" style="margin:16px 0 0">남은 열람 ${REPORT_MAX - v.sold}자리 · 결제 금액 중 ${won(SHARE)}은 먼저 신청한 분들께 적립됩니다.</p>
-      <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 열람 신청 · ${won(cost(v.p.report))}</button></form>`}`;
+      <form id="m-form">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">리포트 열람 신청 · ${won(cost(v.p.report))}</button></form>`}
+      ${viewBlock(v)}`;
   } else if (v.status === 'closed') {
     html += `<div class="note"><b>함께 신청이 마감되었습니다</b><p>매각기일이 ${CUTOFF}일 안으로 남아 모집을 마감했습니다. 긴급 단독 임장(${won(cost(v.p.urgent))})이 가능한지 확인해 드립니다.</p></div>
       <form id="m-form" data-kind="urgent">${contact}<button class="btn btn-ink" style="width:100%;margin-top:20px">긴급 임장 문의</button></form>`;
@@ -1004,6 +1034,7 @@ function openItem(id) {
     if (kind === 'group') ITEMS.find(i => i.id === v.id).count++;
     saveMine(); renderBoard(); renderList(); openItem(v.id);
   });
+  bindView(v);
   const c = document.querySelector('[data-cancel]');
   if (c) c.onclick = async () => {
     c.disabled = true; c.textContent = '취소 중…';

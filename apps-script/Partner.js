@@ -104,6 +104,36 @@ function getReport_(p) {
   return { ok: true, status: r[2], report: JSON.parse(r[5] || '{}') };
 }
 
+// 손님 화면용 맛보기: 발행된 리포트의 개수와 요약 첫 줄만 (내용 전체는 주지 않는다)
+function reportTeasers_() {
+  const out = {};
+  reportSheet_().getDataRange().getValues().slice(1).forEach(r => {
+    if (r[2] !== '공개') return;
+    let R = {};
+    try { R = JSON.parse(r[5] || '{}'); } catch (_) { return; }
+    const rows = (R.sections || []).flatMap(s => (s.rows || []).filter(x => String(x.v || '').trim()));
+    const n = st => rows.filter(x => x.st === st).length;
+    out[String(r[0])] = { ok: n('ok'), warn: n('warn'), na: n('na'), photos: (R.photos || []).length, videos: (R.videos || []).length,
+      lines: (R.summary || []).slice(0, 2).map(s => ({ st: s.st, t: String(s.t || '').slice(0, 60) })) };
+  });
+  return out;
+}
+
+// 결제한 손님이 휴대폰 번호로 리포트 열기: 그 번호로 이 물건에 '결제 완료'된 신청이 있으면 링크를 준다
+function myReport_(p) {
+  const phone = String(p.phone || '').replace(/[^0-9]/g, '');
+  const cs = String(p.caseNo || '').replace(/\s/g, '');
+  if (!/^01\d{8,9}$/.test(phone) || !cs) return { ok: false, error: 'input' };
+  const tel = phone.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
+  const mine = sheet_().getDataRange().getValues().slice(1).filter(r =>
+    String(r[C.caseNo]).replace(/\s/g, '') === cs && String(r[C.phone]).replace(/^'/, '') === tel && r[C.kind] !== '신청 취소' && r[C.status] !== '취소');
+  if (!mine.length) return { ok: false, error: 'none' };
+  if (!mine.some(r => r[C.status] === '결제 완료')) return { ok: false, error: 'unpaid' };
+  const rep = reportSheet_().getDataRange().getValues().slice(1).find(r => String(r[0]) === cs && r[2] === '공개');
+  if (!rep) return { ok: false, error: 'notready' };
+  return { ok: true, token: rep[1] };
+}
+
 function reportSheet_() {
   return ensure_(REPORT_SHEET, REPORT_HEAD);
 }
