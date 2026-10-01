@@ -127,7 +127,8 @@ function reasons(it) {
   const r = [];
   if (it.region === '지방') r.push('지방');
   if (it.type !== '아파트') r.push(it.type || '용도 불명');
-  if (!it.date || dday(it.date) <= CUTOFF) r.push('매각기일 임박');
+  if (!it.date || dday(it.date) < 0) r.push('다음 매각기일 없음 (지난 날짜만 있음)');
+  else if (dday(it.date) <= CUTOFF) r.push('매각기일 임박');
   if (it.fail > 2) r.push(`유찰 ${it.fail}회`);
   return r;
 }
@@ -167,7 +168,7 @@ $('save').onclick = async () => {
     try { sessionStorage.setItem('balpum_admin', key); } catch (_) {}
     $('msg').className = 'msg ok';
     loadManaged();
-    $('msg').textContent = `새로 ${j.added}개를 올리고, 이미 있던 ${j.updated || 0}개는 정보를 새로 고쳤습니다.${j.skipped ? ` (매각기일을 못 읽은 ${j.skipped}개는 건너뜀)` : ''} 사이트에 바로 반영됩니다.`;
+    $('msg').textContent = `새로 ${j.added}개를 올리고, 이미 있던 ${j.updated || 0}개는 정보를 새로 고쳤습니다.${j.skipped ? ` (매각기일을 못 읽었거나 이미 지난 ${j.skipped}개는 건너뜀)` : ''} 사이트에 바로 반영됩니다.`;
   } catch (e) {
     $('msg').className = 'msg err';
     $('msg').textContent = e.message === 'key' ? '비밀번호가 맞지 않습니다.' : '올리지 못했습니다. 잠시 뒤 다시 시도해 주세요.';

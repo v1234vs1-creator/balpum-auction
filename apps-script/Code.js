@@ -202,7 +202,8 @@ function addItems_(d) {
   let added = 0, updated = 0, skipped = 0;
   list.forEach(it => {
     const cs = String(it.caseNo || '').replace(/\s/g, '');
-    if (!/^\d{4}타경\d+(\(\d+\))?$/.test(cs) || !it.date) { skipped++; return; }
+    const today = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+    if (!/^\d{4}타경\d+(\(\d+\))?$/.test(cs) || !it.date || String(it.date) < today) { skipped++; return; }   // 지난 날짜는 받지 않는다
     // 법원·지역·주소·단지·용도·면적·감정가·최저가·유찰·매각기일·관심수 (2~12번째 칸)
     const info = [clean(it.court), clean(it.region), clean(it.addr), clean(it.name), clean(it.type), clean(it.size),
       Number(it.appr) || 0, Number(it.min) || 0, Number(it.fail) || 0, clean(it.date), Number(it.interest) || 0];

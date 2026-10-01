@@ -53,9 +53,10 @@
     const all = [...chunk.matchAll(DATE)];
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const toDate = m => new Date(+m[1], +m[2] - 1, +m[3]);
-    // 이름표가 없으면: 오늘 이후 날짜 중 가장 가까운 것, 없으면 첫 날짜
-    const dm = labeled ? Object.assign(labeled.slice(0, 4), { index: labeled.index + labeled[0].lastIndexOf(labeled[1]) })
-      : (all.filter(m => toDate(m) >= today).sort((a, b) => toDate(a) - toDate(b))[0] || all[0]);
+    // 기일 내역에 지난 날짜(유찰된 날)가 함께 나오므로, 오늘 이후 가장 가까운 날짜를 매각기일로 본다.
+    // 앞으로 잡힌 날짜가 없으면 '매각기일' 이름표 옆 날짜(또는 첫 날짜)를 쓰고, 관리 화면에서 지난 기일로 표시된다.
+    const future = all.filter(m => toDate(m) >= today).sort((a, b) => toDate(a) - toDate(b))[0];
+    const dm = future || (labeled ? Object.assign(labeled.slice(0, 4), { index: labeled.index + labeled[0].lastIndexOf(labeled[1]) }) : all[0]);
     const date = dm ? `${dm[1]}-${String(dm[2]).padStart(2, '0')}-${String(dm[3]).padStart(2, '0')}` : '';
     let interest = 0;
     if (dm) {
@@ -91,7 +92,7 @@
     const bdong = (base.match(/(\S+동)\s*\d+층/) || [])[1] || '';
     let dong = '', name = '';
     if (paren) {
-      const ps = paren.split(',').map(x => x.trim());
+      const ps = paren.split(/[,，]/).map(x => x.trim()).filter(Boolean);
       dong = ps[0] || '';
       name = ps.slice(1).join(' ');
     } else {
@@ -103,7 +104,7 @@
     return {
       region,
       addr: [(SHORT[sido] || sido.replace(/(특별시|광역시|특별자치시|특별자치도|도)$/, '')), sigu, dong].filter(Boolean).join(' '),
-      name: [name || '아파트', bdong && !/^\d+동$/.test(dong) ? bdong : bdong].filter(Boolean).join(' '),
+      name: [(name || '아파트').replace(/[\s,.·]+$/, ''), bdong].filter(Boolean).join(' '),
     };
   }
 
