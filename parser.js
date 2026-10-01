@@ -44,8 +44,19 @@
     if (!am) return null;
     const full = am[0].trim();
     const amounts = (chunk.match(/\b\d{1,3}(?:,\d{3}){2,}\b/g) || []).map(v => +v.replace(/,/g, ''));
-    const dm = chunk.match(/(\d{4})\.(\d{2})\.(\d{2})/);
-    const date = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : '';
+    // 상세 화면에는 금액·날짜가 여러 개라서, 이름표 바로 옆 값을 먼저 쓴다
+    const money = re => { const m = chunk.match(re); return m ? +m[1].replace(/,/g, '') : 0; };
+    const apprL = money(/감정\s*(?:평가)?\s*(?:액|가)[^\d]{0,30}(\d{1,3}(?:,\d{3}){2,})/);
+    const minL = money(/최저\s*(?:매각)?\s*(?:가격|가)[^\d]{0,30}(\d{1,3}(?:,\d{3}){2,})/);
+    const DATE = /(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/g;
+    const labeled = chunk.match(/매각\s*기일[^\d]{0,40}(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/);
+    const all = [...chunk.matchAll(DATE)];
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const toDate = m => new Date(+m[1], +m[2] - 1, +m[3]);
+    // 이름표가 없으면: 오늘 이후 날짜 중 가장 가까운 것, 없으면 첫 날짜
+    const dm = labeled ? Object.assign(labeled.slice(0, 4), { index: labeled.index + labeled[0].lastIndexOf(labeled[1]) })
+      : (all.filter(m => toDate(m) >= today).sort((a, b) => toDate(a) - toDate(b))[0] || all[0]);
+    const date = dm ? `${dm[1]}-${String(dm[2]).padStart(2, '0')}-${String(dm[3]).padStart(2, '0')}` : '';
     let interest = 0;
     if (dm) {
       const after = chunk.slice(dm.index + 10, dm.index + 40);
@@ -62,7 +73,7 @@
       caseNo: g.no > 1 ? `${g.caseNo}(${g.no})` : g.caseNo,
       court: g.court, region: a.region, addr: a.addr, name: a.name, fullAddr: full,
       type: tm ? tm[1] : '', size: area ? Math.round(+area) + '㎡' : '',
-      appr: amounts[0] || 0, min: amounts[1] || amounts[0] || 0,
+      appr: apprL || amounts[0] || 0, min: minL || amounts[1] || amounts[0] || 0,
       fail: fm ? +fm[1] : 0, date, interest, flags,
     };
   }

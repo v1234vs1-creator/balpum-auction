@@ -196,21 +196,26 @@ function addItems_(d) {
   const key = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
   if (!key || d.key !== key) return { ok: false, error: 'key' };
   const sh = itemSheet_();
-  const have = new Set(sh.getDataRange().getValues().slice(1).map(r => String(r[0]).replace(/\s/g, '')));
+  const at = {};
+  sh.getDataRange().getValues().forEach((r, i) => { if (i > 0) at[String(r[0]).replace(/\s/g, '')] = i + 1; });
   const list = (d.items || []).slice(0, 50);
-  let added = 0;
+  let added = 0, updated = 0, skipped = 0;
   list.forEach(it => {
     const cs = String(it.caseNo || '').replace(/\s/g, '');
-    if (!/^\d{4}타경\d+(\(\d+\))?$/.test(cs) || have.has(cs)) return;
-    sh.appendRow([
-      cs, clean(it.court), clean(it.region), clean(it.addr), clean(it.name), clean(it.type), clean(it.size),
-      Number(it.appr) || 0, Number(it.min) || 0, Number(it.fail) || 0, clean(it.date), Number(it.interest) || 0,
-      '모집', 0, '', clean(it.photo), new Date(),
-    ]);
-    have.add(cs);
+    if (!/^\d{4}타경\d+(\(\d+\))?$/.test(cs) || !it.date) { skipped++; return; }
+    // 법원·지역·주소·단지·용도·면적·감정가·최저가·유찰·매각기일·관심수 (2~12번째 칸)
+    const info = [clean(it.court), clean(it.region), clean(it.addr), clean(it.name), clean(it.type), clean(it.size),
+      Number(it.appr) || 0, Number(it.min) || 0, Number(it.fail) || 0, clean(it.date), Number(it.interest) || 0];
+    if (at[cs]) {   // 이미 있으면 정보만 새로 덮어쓴다 (상태·리포트 기록은 그대로)
+      sh.getRange(at[cs], 2, 1, info.length).setValues([info]);
+      updated++;
+      return;
+    }
+    sh.appendRow([cs, ...info, '모집', 0, '', clean(it.photo), new Date()]);
+    at[cs] = sh.getLastRow();
     added++;
   });
-  return { ok: true, added, skipped: list.length - added };
+  return { ok: true, added, updated, skipped };
 }
 
 function clean(v, max) {
