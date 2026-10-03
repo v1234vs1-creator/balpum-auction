@@ -72,7 +72,7 @@ a{color:var(--green)}
   </div>
 
   <div class="box" id="manage" hidden>
-    <h2>등록된 물건</h2>
+    <h2>등록된 물건 <span class="muted" id="subs" style="font-size:14px;font-weight:400"></span></h2>
     <p class="muted" style="margin:0">상태를 바꾸면 사이트에 바로 반영됩니다. 숨김은 사이트에서만 내리고, 삭제는 물건·리포트 줄을 지우고 사진 폴더를 휴지통으로 옮깁니다.</p>
     <div class="tablewrap"><table>
       <thead><tr><th>사건번호</th><th>물건</th><th>매각기일</th><th>신청</th><th>열람</th><th>상태</th><th>리포트</th><th></th></tr></thead>
@@ -173,7 +173,7 @@ $('save').onclick = async () => {
     try { sessionStorage.setItem('balpum_admin', key); } catch (_) {}
     $('msg').className = 'msg ok';
     loadManaged();
-    $('msg').textContent = `새로 ${j.added}개를 올리고, 이미 있던 ${j.updated || 0}개는 정보를 새로 고쳤습니다.${j.skipped ? ` (매각기일을 못 읽었거나 이미 지난 ${j.skipped}개는 건너뜀)` : ''} 사이트에 바로 반영됩니다.`;
+    $('msg').textContent = `새로 ${j.added}개를 올리고, 이미 있던 ${j.updated || 0}개는 정보를 새로 고쳤습니다.${j.skipped ? ` (매각기일을 못 읽었거나 이미 지난 ${j.skipped}개는 건너뜀)` : ''} 사이트에 바로 반영됩니다.${j.notified ? ` 조건이 맞는 구독자 ${j.notified}명에게 알림 메일을 보냈습니다.` : ''}`;
   } catch (e) {
     $('msg').className = 'msg err';
     $('msg').textContent = e.message === 'key' ? '비밀번호가 맞지 않습니다.' : '올리지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
@@ -199,6 +199,7 @@ async function loadManaged() {
     if (!j.ok) throw new Error(j.error);
     try { sessionStorage.setItem('balpum_admin', key); } catch (_) {}
     managed = j.items; $('manage').hidden = false; $('mmsg').textContent = '';
+    fetch(`${ENDPOINT}?action=subCount&key=${encodeURIComponent(key)}`).then(r => r.json()).then(s => { if (s.ok) $('subs').textContent = `· 새 물건 알림 구독 ${s.count}명`; }).catch(() => {});
     $('mrows').innerHTML = managed.length ? managed.map((it, i) => `<tr class="${it.status === '숨김' ? 'hidden' : ''}">
       <td class="num">${it.photo ? `<img src="${esc(it.photo)}" alt="" style="width:64px;height:48px;object-fit:cover;border-radius:6px;display:block;margin-bottom:4px">` : ''}${esc(it.caseNo)}<small>${esc(it.court)}</small></td>
       <td>${esc(it.addr)} ${esc(it.name)}${it.status === '숨김' ? '<small>사이트에 안 보임 · 숨김</small>' : !(dday(it.date) >= 0) ? '<small style="color:var(--red)">사이트에 안 보임 · 매각기일이 지났거나 날짜를 잘못 읽음. 다시 담아서 올리면 고쳐집니다</small>' : ''}</td>

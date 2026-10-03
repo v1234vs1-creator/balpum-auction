@@ -340,6 +340,26 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .err{color:#ff9b85;font-size:14px;margin:8px 0 0}
 .ok-box h3{font-size:32px;font-weight:620;margin:0 0 10px}
 
+/* 새 물건 알림 */
+.alert{margin-top:64px;background:var(--gray);border-radius:24px;padding:36px;display:grid;grid-template-columns:1fr 1.25fr;gap:32px;align-items:start}
+@media (max-width:900px){.alert{grid-template-columns:1fr;padding:28px 22px;gap:22px}}
+.alert h3{font-family:var(--head);font-size:26px;font-weight:650;letter-spacing:-.035em;line-height:1.3;margin:0 0 10px}
+.alert .sub{margin:0;font-size:15px}
+.alert form{display:grid;gap:14px}
+.alert .lbl{font-size:13px;color:var(--muted);margin:0 0 7px 2px;display:block}
+.alert .region button{background:#fff}
+.alert .region button.on{background:var(--ink)}
+.alert .row2{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+@media (max-width:640px){.alert .row2{grid-template-columns:1fr}}
+.alert select,.alert input[type=email]{width:100%;height:52px;border:1.5px solid transparent;border-radius:14px;padding:0 16px;background:#fff;outline:0;font-size:16px;transition:border-color 150ms ease}
+.alert select:focus,.alert input[type=email]:focus{border-color:var(--ink)}
+.alert .agree{color:var(--muted);font-size:13.5px}
+.alert .err{color:var(--red)}
+.alert .done{background:#fff;border-radius:16px;padding:22px}
+.alert .done b{display:block;font-size:18px;margin-bottom:4px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,16px);opacity:0;background:var(--ink);color:#fff;padding:14px 20px;border-radius:14px;font-size:15px;z-index:90;transition:opacity 200ms ease,transform 260ms var(--ease-out);max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
 /* 자주 묻는 질문 */
 .faq{margin-top:44px;display:grid;gap:8px}
 .q{background:var(--gray);border-radius:18px}
@@ -544,6 +564,24 @@ footer{padding:64px 0 48px;font-size:14px;color:var(--muted);background:var(--gr
     </div>
     <div class="seg" id="tabs"></div>
     <div class="grid" id="items"><div class="empty">물건을 불러오는 중입니다…</div></div>
+    <div class="alert" id="alert" data-reveal>
+      <div>
+        <h3>원하는 물건이 올라오면<br>메일로 알려드립니다</h3>
+        <p class="sub">지역과 가격대를 정해 두면, 조건에 맞는 물건이 목록에 올라오는 날 바로 보내드립니다. 모집은 매각기일 5일 전에 마감되니 먼저 아는 게 유리합니다.</p>
+      </div>
+      <form id="alert-form" novalidate>
+        <div><span class="lbl">지역 (여러 개 선택, 안 고르면 전체)</span>
+          <div class="region" id="a-region"><button type="button" data-r="서울">서울</button><button type="button" data-r="경기">경기</button><button type="button" data-r="인천">인천</button><button type="button" data-r="지방">지방</button></div></div>
+        <div class="row2">
+          <div><label class="lbl" for="a-max">최저가</label>
+            <select id="a-max"><option value="0">제한 없음</option><option value="300000000">3억 이하</option><option value="500000000">5억 이하</option><option value="700000000">7억 이하</option><option value="1000000000">10억 이하</option><option value="1500000000">15억 이하</option></select></div>
+          <div><label class="lbl" for="a-email">이메일</label><input id="a-email" type="email" required placeholder="name@example.com" autocomplete="email" maxlength="100"></div>
+        </div>
+        <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <label class="agree"><input type="checkbox" id="a-agree"><span>새 물건 알림 메일 수신과 개인정보(이메일·관심 지역·가격대) 수집에 동의합니다. 알림 발송에만 쓰고, 메일 아래 링크로 해지하면 즉시 지웁니다.</span></label>
+        <div><button class="btn btn-ink" type="submit" style="width:100%">알림 받기</button><p class="err" role="alert"></p></div>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -1132,6 +1170,42 @@ $('req-form').addEventListener('submit', async e => {
   $('req-wrap').innerHTML = `<div class="ok-box"><h3>요청을 받았습니다</h3>
     <p class="sub" style="margin:0">${esc(title)} · ${esc(modeText)}<br>담당자가 2시간 안에 연락드립니다.${days < CUTOFF ? ' 매각기일이 5일 안이라 긴급 임장 가능 여부부터 확인하겠습니다.' : ''}</p></div>`;
 });
+
+// 새 물건 알림
+$('a-region').addEventListener('click', e => { const b = e.target.closest('button'); if (b) b.classList.toggle('on'); });
+$('alert-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target, err = f.querySelector('.err');
+  const email = $('a-email').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) { err.textContent = '이메일 주소를 다시 확인해 주세요.'; $('a-email').focus(); return; }
+  if (!$('a-agree').checked) { err.textContent = '수신 동의에 체크해 주세요.'; return; }
+  const regions = [...$('a-region').querySelectorAll('button.on')].map(b => b.dataset.r);
+  const max = +$('a-max').value;
+  let updated = false;
+  const ok = await submitting(f, async () => {
+    const res = await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'subscribe', email, regions, max, agree: true, website: f.website.value }) });
+    const j = await res.json();
+    if (!j.ok) throw new Error(j.error || 'fail');
+    updated = !!j.updated;
+  });
+  if (!ok) return;
+  const cond = `${regions.length ? regions.join('·') : '전체 지역'} · ${max ? $('a-max').selectedOptions[0].text : '가격 제한 없음'}`;
+  f.outerHTML = `<div class="done"><b>${updated ? '조건을 바꿨습니다' : '알림을 신청했습니다'}</b><p class="sub" style="margin:0">${esc(cond)}<br>${esc(email)}${updated ? '' : ' 로 안내 메일을 보냈습니다. 받은편지함에 없으면 스팸함도 확인해 주세요.'}</p></div>`;
+});
+function toast(msg) {
+  const t = document.createElement('div'); t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t); requestAnimationFrame(() => t.classList.add('on'));
+  setTimeout(() => { t.classList.remove('on'); setTimeout(() => t.remove(), 300); }, 4200);
+}
+(async () => {
+  const t = new URLSearchParams(location.search).get('unsub');
+  if (!t) return;
+  history.replaceState(null, '', location.pathname);
+  try {
+    const j = await (await fetch(`${ENDPOINT}?action=unsub&t=${encodeURIComponent(t)}`)).json();
+    toast(j.ok ? (j.removed ? '알림을 해지하고 이메일 주소를 지웠습니다.' : '이미 해지된 알림입니다.') : '해지하지 못했습니다. 잠시 뒤 다시 눌러 주세요.');
+  } catch (_) { toast('해지하지 못했습니다. 잠시 뒤 다시 눌러 주세요.'); }
+})();
 
 renderMyCount(); loadItems();
 </script>

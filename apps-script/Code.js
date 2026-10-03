@@ -42,6 +42,7 @@ function doPost(e) {
     if (d.action === 'saveReport') return out(saveReport_(d));
     if (d.action === 'adminUpdate') return out(adminUpdate_(d));
     if (d.website) return out({ ok: true }); // 스팸봇용 숨은 칸
+    if (d.action === 'subscribe') return out(subscribe_(d));
 
     const phone = String(d.phone || '').replace(/[^0-9]/g, '');
     if (!/^01\d{8,9}$/.test(phone)) return out({ ok: false, error: 'phone' });
@@ -74,6 +75,8 @@ function doGet(e) {
   if (p.action === 'report') return out(getReport_(p));
   if (p.action === 'myReport') return out(myReport_(p));
   if (p.action === 'adminItems') return out(adminItems_(p.key));
+  if (p.action === 'unsub') return out(unsubscribe_(p.t));
+  if (p.action === 'subCount') return out(subCount_(p.key));
   return out({ ok: true, service: 'balpum' });
 }
 
@@ -202,6 +205,7 @@ function addItems_(d) {
   sh.getDataRange().getValues().forEach((r, i) => { if (i > 0) at[String(r[0]).replace(/\s/g, '')] = i + 1; });
   const list = (d.items || []).slice(0, 50);
   let added = 0, updated = 0, skipped = 0;
+  const fresh = [];
   list.forEach(it => {
     const cs = String(it.caseNo || '').replace(/\s/g, '');
     const today = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
@@ -217,8 +221,11 @@ function addItems_(d) {
     sh.appendRow([cs, ...info, '모집', 0, '', clean(it.photo), new Date()]);
     at[cs] = sh.getLastRow();
     added++;
+    fresh.push({ caseNo: cs, court: info[0], region: info[1], addr: info[2], name: info[3], type: info[4], size: info[5], appr: info[6], min: info[7], date: info[9] });
   });
-  return { ok: true, added, updated, skipped };
+  let notified = 0;
+  try { notified = notifySubscribers_(fresh); } catch (err) { console.error(err); }
+  return { ok: true, added, updated, skipped, notified };
 }
 
 function clean(v, max) {
