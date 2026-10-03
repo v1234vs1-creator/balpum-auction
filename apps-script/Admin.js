@@ -23,7 +23,9 @@ function adminItems_(key) {
     const cs = String(r[0]).replace(/\s/g, '');
     return { caseNo: cs, court: r[1], region: r[2], addr: r[3], name: r[4], type: r[5], size: r[6], appr: Number(r[7]) || 0, min: Number(r[8]) || 0, fail: Number(r[9]) || 0, photo: String(r[15] || ''),
       date: r[10] instanceof Date ? Utilities.formatDate(r[10], 'Asia/Seoul', 'yyyy-MM-dd') : String(r[10]),
-      status: r[12] || '모집', count: counts[cs] || 0, sold: sold[cs] || 0, report: reports[cs] || null };
+      status: r[12] || '모집', count: counts[cs] || 0, sold: sold[cs] || 0, report: reports[cs] || null,
+      visited: r[14] ? String(r[14] instanceof Date ? Utilities.formatDate(r[14], 'Asia/Seoul', 'yyyy-MM-dd') : r[14]) : '',
+      result: String(r[R_COL - 1] || ''), price: Number(r[R_COL]) || 0, bidders: Number(r[R_COL + 1]) || 0 };
   });
   return { ok: true, items };
 }
@@ -54,6 +56,7 @@ function adminUpdate_(d) {
         v('appr', 7, 1), v('min', 8, 1), v('fail', 9, 1), v('date', 10), v('interest', 11, 1)]]);
       return { ok: true };
     }
+    if (d.op === 'result') return setResult_(is, k, d);   // 매각 결과 (Records.js)
     if (d.op === 'photo') {  // 썸네일 사진 주소 (드라이브에 올린 사진)
       is.getRange(k + 1, 16).setValue(clean(d.url, 300));
       return { ok: true };

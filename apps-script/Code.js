@@ -7,7 +7,7 @@ const C = { time: 0, kind: 1, caseNo: 4, mode: 6, phone: 7, status: 10, amount: 
 const STATUSES = ['신규', '연락 완료', '결제 완료', '취소'];
 const ITEM_SHEET = '물건';
 // 상태: 모집(함께 신청 받는 중) · 확정(출발 확정) · 리포트(열람 판매 중) · 숨김
-const ITEM_HEAD = ['사건번호', '법원', '지역', '주소', '단지명', '용도', '면적', '감정가', '최저가', '유찰', '매각기일', '관심수', '상태', '리포트 열람수', '현장 확인일', '사진', '등록 시각'];
+const ITEM_HEAD = ['사건번호', '법원', '지역', '주소', '단지명', '용도', '면적', '감정가', '최저가', '유찰', '매각기일', '관심수', '상태', '리포트 열람수', '현장 확인일', '사진', '등록 시각', '매각 결과', '낙찰가', '응찰자 수', '결과 입력일'];
 const CREDIT_SHEET = '적립금';
 const CREDIT_HEAD = ['연락처', '적립', '사용', '잔액', '내역'];
 const GOAL = 3;
@@ -75,6 +75,7 @@ function doGet(e) {
   if (p.action === 'report') return out(getReport_(p));
   if (p.action === 'myReport') return out(myReport_(p));
   if (p.action === 'adminItems') return out(adminItems_(p.key));
+  if (p.action === 'records') return out(records_());
   if (p.action === 'unsub') return out(unsubscribe_(p.t));
   if (p.action === 'subCount') return out(subCount_(p.key));
   return out({ ok: true, service: 'balpum' });
@@ -246,7 +247,10 @@ function sheet_() {
 }
 
 function itemSheet_() {
-  return ensure_(ITEM_SHEET, ITEM_HEAD);
+  const sh = ensure_(ITEM_SHEET, ITEM_HEAD);
+  // 예전 시트에 새 칸(매각 결과 등) 머리글을 붙인다
+  if (sh.getLastColumn() < ITEM_HEAD.length) sh.getRange(1, 1, 1, ITEM_HEAD.length).setValues([ITEM_HEAD]).setFontWeight('bold');
+  return sh;
 }
 
 function creditSheet_() {

@@ -40,6 +40,7 @@ select.st{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 8
 tr.hidden td{opacity:.5}
 .ef{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;align-items:end;background:var(--bg);border-radius:8px;padding:12px}
 .ef label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.ef select{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 6px;font:inherit;font-size:14px;color:var(--ink);background:#fff}
 .ef input{height:36px;border:1px solid var(--line);border-radius:6px;padding:0 8px;font:inherit;font-size:14px;color:var(--ink)}
 .bm{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;text-decoration:none;font-weight:700;border-radius:8px;padding:11px 18px;cursor:grab;user-select:none}
 .bm::before{content:"";width:10px;height:10px;border-radius:50%;background:#c8f03c}
@@ -202,16 +203,22 @@ async function loadManaged() {
     fetch(`${ENDPOINT}?action=subCount&key=${encodeURIComponent(key)}`).then(r => r.json()).then(s => { if (s.ok) $('subs').textContent = `· 새 물건 알림 구독 ${s.count}명`; }).catch(() => {});
     $('mrows').innerHTML = managed.length ? managed.map((it, i) => `<tr class="${it.status === '숨김' ? 'hidden' : ''}">
       <td class="num">${it.photo ? `<img src="${esc(it.photo)}" alt="" style="width:64px;height:48px;object-fit:cover;border-radius:6px;display:block;margin-bottom:4px">` : ''}${esc(it.caseNo)}<small>${esc(it.court)}</small></td>
-      <td>${esc(it.addr)} ${esc(it.name)}${it.status === '숨김' ? '<small>사이트에 안 보임 · 숨김</small>' : !(dday(it.date) >= 0) ? '<small style="color:var(--red)">사이트에 안 보임 · 매각기일이 지났거나 날짜를 잘못 읽음. 다시 담아서 올리면 고쳐집니다</small>' : ''}</td>
-      <td class="num">${esc(it.date)}<small>${dday(it.date) >= 0 ? 'D-' + dday(it.date) : '지남'}</small></td>
+      <td>${esc(it.addr)} ${esc(it.name)}${it.status === '숨김' ? '<small>사이트에 안 보임 · 숨김</small>' : !(dday(it.date) >= 0) && it.result ? `<small>매각기일 지남 · ${it.report?.status === '공개' || it.visited ? '물건 기록에 공개 중' : '현장 리포트가 없어 기록에는 안 보임'}</small>` : !(dday(it.date) >= 0) ? '<small style="color:var(--red)">사이트에 안 보임 · 매각기일이 지났거나 날짜를 잘못 읽음. 다시 담아서 올리면 고쳐집니다</small>' : ''}</td>
+      <td class="num">${esc(it.date)}<small>${dday(it.date) >= 0 ? 'D-' + dday(it.date) : '지남'}</small>${it.result ? `<small style="color:var(--ink);font-weight:600">${esc(it.result)}${it.price ? ' ' + eok(it.price).trim() + (it.appr ? ` (${(it.price / it.appr * 100).toFixed(1)}%)` : '') : ''}${it.bidders ? ` · ${it.bidders}명` : ''}</small>` : ''}</td>
       <td class="num">${it.count}명</td><td class="num">${it.sold}건</td>
       <td><select class="st" data-i="${i}">${['모집', '확정', '리포트', '숨김'].map(s => `<option ${s === it.status ? 'selected' : ''}>${s}</option>`).join('')}</select></td>
       <td>${it.report ? `<a href="${SITE}report.html?id=${esc(it.report.token)}" target="_blank">${it.report.status === '공개' ? '링크' : '초안'}</a> <button class="btn sm line" data-copy="${esc(it.report.token)}">복사</button>` : '<span class="muted">-</span>'}</td>
-      <td style="white-space:nowrap"><button class="btn sm line" data-edit="${i}">수정</button> <button class="btn sm line" data-photo="${i}">사진</button> <button class="btn sm red" data-del="${i}">삭제</button></td></tr>
+      <td style="white-space:nowrap"><button class="btn sm line" data-res="${i}">결과</button> <button class="btn sm line" data-edit="${i}">수정</button> <button class="btn sm line" data-photo="${i}">사진</button> <button class="btn sm red" data-del="${i}">삭제</button></td></tr>
       <tr class="editrow" id="er-${i}" hidden><td colspan="8"><div class="ef">
         ${[['court', '법원'], ['addr', '주소(시·구·동)'], ['name', '단지·동'], ['type', '용도'], ['size', '면적'], ['appr', '감정가(원)'], ['min', '최저가(원)'], ['fail', '유찰'], ['date', '매각기일(2026-10-13)']]
           .map(([k, l]) => `<label>${l}<input data-f="${k}" value="${esc(it[k] ?? '')}"></label>`).join('')}
-        <button class="btn sm" data-save="${i}">저장</button></div></td></tr>`).join('') : '<tr><td colspan="8" class="muted">등록된 물건이 없습니다.</td></tr>';
+        <button class="btn sm" data-save="${i}">저장</button></div></td></tr>
+      <tr class="editrow" id="rr-${i}" hidden><td colspan="8"><div class="ef">
+        <label>매각 결과<select data-r="result"><option value="">(입력 안 함)</option>${['낙찰', '유찰', '취하', '변경', '기각', '정지'].map(s => `<option ${s === it.result ? 'selected' : ''}>${s}</option>`).join('')}</select></label>
+        <label>낙찰가(원)<input data-r="price" inputmode="numeric" value="${it.price || ''}" placeholder="낙찰일 때만"></label>
+        <label>응찰자 수<input data-r="bidders" inputmode="numeric" value="${it.bidders || ''}"></label>
+        <button class="btn sm" data-rsave="${i}">결과 저장</button>
+        <p class="muted" style="margin:0;grid-column:1/-1;font-size:13px">법원 사이트의 매각 결과를 직접 보고 옮겨 적어 주세요. 리포트를 발행했거나 현장 확인일이 있는 물건만 손님 사이트 '물건 기록'에 공개됩니다.</p></div></td></tr>`).join('') : '<tr><td colspan="8" class="muted">등록된 물건이 없습니다.</td></tr>';
   } catch (e) { $('manage').hidden = false; $('mmsg').className = 'msg err'; $('mmsg').textContent = e.message === 'key' ? '비밀번호가 맞지 않습니다.' : '불러오지 못했습니다.'; }
 }
 async function adminPost(data) {
@@ -237,6 +244,18 @@ $('mrows').addEventListener('click', async e => {
     sv.disabled = true; sv.textContent = '저장 중…';
     try { await adminPost({ op: 'edit', caseNo: it.caseNo, fields }); $('mmsg').className = 'msg ok'; $('mmsg').textContent = `${it.caseNo} 정보를 고쳤습니다. 사이트에 바로 반영됩니다.`; loadManaged(); }
     catch (_) { sv.disabled = false; sv.textContent = '저장'; $('mmsg').className = 'msg err'; $('mmsg').textContent = '저장하지 못했습니다.'; }
+    return;
+  }
+  const rs = e.target.closest('[data-res]');
+  if (rs) { const r = $('rr-' + rs.dataset.res); r.hidden = !r.hidden; return; }
+  const rv = e.target.closest('[data-rsave]');
+  if (rv) {
+    const it = managed[+rv.dataset.rsave], f = {};
+    $('rr-' + rv.dataset.rsave).querySelectorAll('[data-r]').forEach(x => { f[x.dataset.r] = x.value.trim(); });
+    if (f.result === '낙찰' && !/\d/.test(f.price)) { $('mmsg').className = 'msg err'; $('mmsg').textContent = '낙찰이면 낙찰가를 넣어 주세요.'; return; }
+    rv.disabled = true; rv.textContent = '저장 중…';
+    try { await adminPost({ op: 'result', caseNo: it.caseNo, ...f }); $('mmsg').className = 'msg ok'; $('mmsg').textContent = f.result ? `${it.caseNo} 매각 결과(${f.result})를 저장했습니다.` : `${it.caseNo} 매각 결과를 지웠습니다.`; loadManaged(); }
+    catch (_) { rv.disabled = false; rv.textContent = '결과 저장'; $('mmsg').className = 'msg err'; $('mmsg').textContent = '결과를 저장하지 못했습니다.'; }
     return;
   }
   const ph = e.target.closest('[data-photo]');
