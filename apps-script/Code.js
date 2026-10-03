@@ -76,6 +76,7 @@ function doGet(e) {
   if (p.action === 'myReport') return out(myReport_(p));
   if (p.action === 'adminItems') return out(adminItems_(p.key));
   if (p.action === 'records') return out(records_());
+  if (p.action === 'blogFeed') return out(blogFeed_());
   if (p.action === 'unsub') return out(unsubscribe_(p.t));
   if (p.action === 'subCount') return out(subCount_(p.key));
   return out({ ok: true, service: 'balpum' });
