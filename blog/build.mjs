@@ -192,6 +192,9 @@ fs.writeFileSync(path.join(DIR, 'index.html'), page({
 <div class="grid">${list}</div></div>`,
 }));
 
+// 첫 화면 '경매가 처음이라면' 칸에서 읽는 최신 글 목록
+fs.writeFileSync(path.join(DIR, 'posts.json'), JSON.stringify(posts.map(p => ({ slug: p.slug, title: p.title, tag: p.tag || '', date: p.date, cover: p.cover || '' }))));
+
 // RSS
 const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel><title>${BRAND} 임장 노트</title><link>${SITE}blog/</link><description>경매 물건 현장 확인 기록</description><language>ko</language>

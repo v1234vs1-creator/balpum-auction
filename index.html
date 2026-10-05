@@ -70,6 +70,9 @@ section{padding:140px 0}
 .my b{background:var(--lime);color:var(--ink);border-radius:8px;font-size:11.5px;min-width:20px;height:20px;display:grid;place-items:center;padding:0 5px}
 .my b[hidden]{display:none}
 @media (max-width:900px){.menu{display:none}.top .wrap{justify-content:space-between}}
+.tr{display:flex;gap:6px;align-items:center}
+.my.bl{display:none}
+@media (max-width:900px){.my.bl{display:flex}}
 
 /* 첫 화면: 한강 사진을 액자에 담아 천천히 다가오게 */
 .hero{padding:12px 12px 0}
@@ -198,7 +201,21 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 
 /* 물건 목록 */
 .list-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-.seg{display:flex;gap:4px;background:var(--gray);border-radius:14px;padding:4px;margin-top:40px;width:max-content;max-width:100%;overflow-x:auto;position:relative}
+.types{display:flex;gap:8px;margin:36px -28px 0;padding:0 28px 4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.types::-webkit-scrollbar{display:none}
+@media (max-width:640px){.types{margin:28px -20px 0;padding:0 20px 4px}}
+.types button{flex:none;display:flex;align-items:center;gap:6px;height:44px;padding:0 16px;border-radius:14px;border:1.5px solid var(--line);background:#fff;font-size:15px;font-weight:550;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:transform 160ms var(--ease-out),background-color 150ms ease,border-color 150ms ease,color 150ms ease}
+.types button:active{transform:scale(.96)}
+.types button span{font-size:13px;color:var(--faint);font-weight:500}
+.types button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.types button.on span{color:rgba(255,255,255,.55)}
+@media (hover:hover) and (pointer:fine){.types button:not(.on):hover{border-color:var(--faint)}}
+.tinfo{margin-top:14px;background:var(--gray);border-radius:16px;padding:16px 18px;font-size:14.5px;color:var(--ink2);display:grid;gap:4px}
+.tinfo b{color:var(--ink);font-size:15.5px}
+.tinfo .pt{color:var(--muted)}
+.tinfo .pt em{font-style:normal;color:var(--ink);font-weight:600}
+.tinfo a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--faint);justify-self:start;margin-top:4px}
+.seg{display:flex;gap:4px;background:var(--gray);border-radius:14px;padding:4px;margin-top:20px;width:max-content;max-width:100%;overflow-x:auto;position:relative}
 .seg button{position:relative;z-index:1;border:0;background:none;height:40px;padding:0 16px;border-radius:10px;font-size:14.5px;color:var(--muted);cursor:pointer;white-space:nowrap;transition:color 200ms ease}
 .seg button.on{color:var(--ink);font-weight:600}
 .seg button span{color:var(--faint);margin-left:5px}
@@ -362,6 +379,17 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 .rec-nums .hl span{color:rgba(255,255,255,.6)}
 .rec-nums .hl i{font-style:normal;color:var(--lime);font-size:12.5px}
 
+/* 임장 노트 최신 글 */
+.ngrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+@media (max-width:900px){.ngrid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:78%;overflow-x:auto;scroll-snap-type:x mandatory;margin:28px -20px 0;padding:0 20px 6px;scrollbar-width:none}.ngrid::-webkit-scrollbar{display:none}.ncard{scroll-snap-align:start}}
+.ncard{display:block;background:#fff;border-radius:20px;overflow:hidden;transition:transform 160ms var(--ease-out)}
+.ncard:active{transform:scale(.985)}
+.ncard img{width:100%;aspect-ratio:16/10;object-fit:cover;background:var(--gray2)}
+.ncard div{padding:16px 18px 20px}
+.ncard small{font-size:12.5px;font-weight:600;color:var(--muted)}
+.ncard b{display:block;font-size:17px;line-height:1.45;font-weight:620;margin-top:4px;letter-spacing:-.03em}
+@media (hover:hover) and (pointer:fine){.ncard:hover b{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}}
+
 /* 새 물건 알림 */
 .alert{margin-top:64px;background:var(--gray);border-radius:24px;padding:36px;display:grid;grid-template-columns:1fr 1.25fr;gap:32px;align-items:start}
 @media (max-width:900px){.alert{grid-template-columns:1fr;padding:28px 22px;gap:22px}}
@@ -489,7 +517,7 @@ footer{padding:64px 0 48px;font-size:14px;color:var(--muted);background:var(--gr
     <nav class="menu">
       <a href="#how">이용 방법</a><a href="#list">물건</a><a href="#report">리포트</a><a href="#price">요금</a><a href="blog/">임장 노트</a><a href="partner.html">파트너</a>
     </nav>
-    <button class="my" id="my-open" type="button">내 신청 <b id="my-count" hidden>0</b></button>
+    <div class="tr"><a class="my bl" href="blog/">임장 노트</a><button class="my" id="my-open" type="button">내 신청 <b id="my-count" hidden>0</b></button></div>
   </div>
 </header>
 
@@ -584,6 +612,8 @@ footer{padding:64px 0 48px;font-size:14px;color:var(--muted);background:var(--gr
         <button data-r="" class="on">전체</button><button data-r="서울">서울</button><button data-r="경기">경기</button><button data-r="인천">인천</button><button data-r="지방">지방</button>
       </div>
     </div>
+    <div class="types" id="types" role="tablist" aria-label="물건 종류"></div>
+    <div class="tinfo" id="tinfo" hidden></div>
     <div class="seg" id="tabs"></div>
     <div class="grid" id="items"><div class="empty">물건을 불러오는 중입니다…</div></div>
     <div class="alert" id="alert" data-reveal>
@@ -651,6 +681,19 @@ footer{padding:64px 0 48px;font-size:14px;color:var(--muted);background:var(--gr
       </ul>
       <a class="btn btn-ink" href="report.html" style="margin-top:32px">샘플 리포트 전체 보기<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
+  </div>
+</section>
+
+<section id="notes" style="background:var(--gray)" hidden>
+  <div class="wrap">
+    <div class="list-head">
+      <div>
+        <h2 class="h2" data-reveal>경매가 처음이라면<br>먼저 읽어 보세요</h2>
+        <p class="sub" data-reveal style="margin-top:12px">입찰 당일 순서부터 낙찰 후 절차, 실제로 드는 돈까지. 현장에서 배운 것을 정리했습니다.</p>
+      </div>
+      <a class="btn btn-ink" href="blog/" style="height:48px">임장 노트 전체 보기</a>
+    </div>
+    <div class="ngrid" id="ngrid"></div>
   </div>
 </section>
 
@@ -884,7 +927,34 @@ const SAMPLES = [
   { sample: true, caseNo: '2026타경2○○○2', court: '성남지원', region: '경기', addr: '경기 성남시 분당구 정자동', name: '○○마을 205동', type: '아파트', size: '84㎡', appr: 1240000000, min: 868000000, fail: 1, date: ymd(9), status: '확정', count: 4, photo: '1691071102169-1b821a252f0e' },
   { sample: true, caseNo: '2026타경5○○○○', court: '고양지원', region: '경기', addr: '경기 고양시 덕양구 행신동', name: '○○마을 3단지 703동', type: '아파트', size: '59㎡', appr: 376000000, min: 263200000, fail: 1, date: ymd(6), status: '리포트', count: 3, sold: 6, visited: ymd(-2), photo: '1706534272739-3ee946364de0', report: 'report.html' },
   { sample: true, caseNo: '2026타경3○○○3', court: '인천지방법원', region: '인천', addr: '인천 연수구 송도동', name: '○○파크 302동', type: '아파트', size: '84㎡', appr: 690000000, min: 483000000, fail: 1, date: ymd(13), status: '모집', count: 0, photo: '1587830343816-09edcc513e57' },
+  { sample: true, caseNo: '2026타경4○○○4', court: '서울남부지방법원', region: '서울', addr: '서울 강서구 화곡동', name: '○○빌라 3층', type: '다세대', size: '49㎡', appr: 260000000, min: 208000000, fail: 1, date: ymd(12), status: '모집', count: 1, photo: '1680384477004-d355a5f99888' },
+  { sample: true, caseNo: '2026타경6○○○6', court: '서울서부지방법원', region: '서울', addr: '서울 은평구 불광동', name: '○○연립 가동', type: '연립', size: '66㎡', appr: 390000000, min: 312000000, fail: 1, date: ymd(15), status: '모집', count: 0, photo: '1785502875154-17f4beeb37ee' },
+  { sample: true, caseNo: '2026타경7○○○7', court: '수원지방법원', region: '경기', addr: '경기 수원시 영통구 이의동', name: '○○오피스텔 1208호', type: '오피스텔', size: '28㎡', appr: 185000000, min: 148000000, fail: 1, date: ymd(10), status: '확정', count: 3, photo: '1623912253007-df82ef63169f' },
+  { sample: true, caseNo: '2026타경8○○○8', court: '인천지방법원', region: '인천', addr: '인천 부평구 부평동', name: '○○하우스', type: '도시형생활주택', size: '21㎡', appr: 120000000, min: 84000000, fail: 1, date: ymd(14), status: '모집', count: 1, photo: '1781400197748-998709783593' },
+  { sample: true, caseNo: '2026타경9○○○9', court: '부천지원', region: '경기', addr: '경기 부천시 원미구 심곡동', name: '○○주택 (다가구 8가구)', type: '다가구', size: '198㎡', appr: 980000000, min: 686000000, fail: 1, date: ymd(18), status: '모집', count: 0, photo: '1590769225926-38fc4cb47123' },
+  { sample: true, caseNo: '2026타경1○○○0', court: '의정부지방법원', region: '경기', addr: '경기 의정부시 가능동', name: '○○주택', type: '단독주택', size: '132㎡', appr: 540000000, min: 432000000, fail: 1, date: ymd(16), status: '모집', count: 1, photo: '1761199664666-11a69c70d995' },
 ];
+
+// 물건 종류: 법원 표기를 손님이 찾기 쉬운 분류로 묶는다 (탱크옥션·지지옥션의 주거용 분류 참고)
+const TYPES = [
+  ['아파트', '아파트', '주택으로 쓰는 층이 5개 층 이상인 공동주택입니다. 시세 자료가 많아 입찰가를 잡기 쉽지만 그만큼 경쟁도 많습니다.', '체납 관리비, 단지 공지(공사·분담금), 밤 주차'],
+  ['다세대', '다세대(빌라)', '흔히 빌라라고 부르는 집입니다. 4개 층 이하, 한 동 바닥면적 합계 660㎡ 이하인 공동주택입니다.', '시세 자료가 적어 중개사무소 탐문이 중요, 누수·결로, 주차, 불법 증축'],
+  ['연립', '연립주택', '4개 층 이하이면서 한 동 바닥면적 합계가 660㎡를 넘는 공동주택입니다. 다세대보다 큰 빌라라고 보면 됩니다.', '건물 노후도, 재건축·재개발 움직임, 공용부 관리 상태'],
+  ['오피스텔', '오피스텔', '건축법상 업무시설입니다. 주거용으로 쓰면 세금에서 주택으로 볼 수 있어 보유 주택 수를 함께 따져야 합니다.', '관리비 수준, 주거용 사용 여부, 난방 방식, 주차'],
+  ['도시형', '도시형생활주택', '300세대 미만의 소형 공동주택(주택법)입니다. 원룸형이 많고 주차 기준이 완화되어 지어진 곳이 많습니다.', '주차 대수, 소음·환기, 관리 주체, 주변 임대 수요'],
+  ['다가구', '다가구주택', '단독주택의 한 종류로 3개 층 이하, 19가구 이하입니다. 호실별로 등기가 안 돼 건물 전체를 통째로 낙찰받습니다.', '세입자가 여러 명이라 점유·명도가 복잡, 호실별 거주 여부, 건물 하자'],
+  ['단독', '단독주택', '한 가구가 사는 독립된 주택입니다. 건물과 토지를 함께 봐야 합니다.', '도로에 접한 폭, 노후도·누수, 담장·경계, 주변 개발'],
+  ['기타', '상가·기타', '상가, 토지 등 주거용이 아닌 물건입니다. 발품옥션은 주거용 위주로 임장하며 다른 용도는 문의로 받습니다.', ''],
+];
+const catOf = t => { t = String(t || '');
+  if (/아파트/.test(t)) return '아파트';
+  if (/도시형/.test(t)) return '도시형';
+  if (/오피스텔/.test(t)) return '오피스텔';
+  if (/연립/.test(t)) return '연립';
+  if (/다세대|빌라/.test(t)) return '다세대';
+  if (/다가구/.test(t)) return '다가구';
+  if (/단독|주택/.test(t)) return '단독';
+  return '기타'; };
 
 let ITEMS = [], loaded = false;
 function toItem(r, i) {
@@ -894,7 +964,7 @@ function toItem(r, i) {
     type: r.type || '아파트', size: r.size, appr: Math.round(r.appr / 10000), min: Math.round(r.min / 10000), fail: r.fail,
     date, off: Math.round((date - today) / DAY), status: STATUS_CODE[r.status] || 'rec', count: r.count || 0, sold: r.sold || 0,
     visited: r.visited ? new Date(r.visited + 'T00:00:00') : null, photo: r.photo || PHOTOS[hash(r.caseNo) % PHOTOS.length],
-    sample: !!r.sample, report: r.report || '', teaser: r.teaser || null,
+    sample: !!r.sample, report: r.report || '', teaser: r.teaser || null, cat: catOf(r.type || '아파트'),
   };
 }
 
@@ -956,9 +1026,20 @@ $('board').addEventListener('keydown', e => { if (e.key === 'Enter') { const r =
 
 // 목록
 const TABS = [['all', '전체'], ['rec', '모집 중'], ['go', '출발 확정'], ['done', '리포트 열람']];
-let filter = 'all', region = '';
+let filter = 'all', region = '', cat = new URLSearchParams(location.search).get('type') || '';
+if (!TYPES.some(t => t[0] === cat)) cat = '';
+function renderTypes() {
+  const all = ITEMS.map(view).filter(v => !region || v.region === region);
+  const n = k => all.filter(v => v.cat === k).length;
+  const list = TYPES.filter(t => t[0] !== '기타' || n('기타'));
+  $('types').innerHTML = `<button role="tab" data-c="" class="${!cat ? 'on' : ''}" aria-selected="${!cat}">전체<span>${all.length}</span></button>` +
+    list.map(([k, label]) => `<button role="tab" data-c="${k}" class="${cat === k ? 'on' : ''}" aria-selected="${cat === k}">${label}<span>${n(k)}</span></button>`).join('');
+  const t = TYPES.find(x => x[0] === cat);
+  $('tinfo').hidden = !t;
+  if (t) $('tinfo').innerHTML = `<b>${t[1]}</b><span>${t[2]}</span>${t[3] ? `<span class="pt"><em>임장 때 꼭 볼 것</em> · ${t[3]}</span>` : ''}<a href="blog/">경매 기초부터 읽기 · 임장 노트</a>`;
+}
 function renderTabs() {
-  const all = ITEMS.map(view);
+  const all = ITEMS.map(view).filter(v => (!region || v.region === region) && (!cat || v.cat === cat));
   const count = k => k === 'all' ? all.length : all.filter(v => v.status === k).length;
   if ($('tabs').querySelector('button')) { $('tabs').querySelectorAll('button').forEach(b => { b.querySelector('span').textContent = count(b.dataset.f); }); return; }
   $('tabs').innerHTML = '<i class="pill"></i>' + TABS.map(([k, t]) => `<button data-f="${k}" class="${filter === k ? 'on' : ''}">${t}<span>${count(k)}</span></button>`).join('');
@@ -976,7 +1057,7 @@ addEventListener('resize', () => movePill(false));
 
 function renderList(enter = false) {
   if (!loaded) return;
-  const rows = sorted().filter(v => (filter === 'all' || v.status === filter) && (!region || v.region === region));
+  const rows = sorted().filter(v => (filter === 'all' || v.status === filter) && (!region || v.region === region) && (!cat || v.cat === cat));
   const intro = ITEMS.some(i => !i.sample) ? '' : '<p class="intro">실제 물건은 법원 공고에 맞춰 올라옵니다. 아래는 화면을 보여드리기 위한 예시입니다.</p>';
   $('items').innerHTML = rows.length ? intro + rows.map((v, i) => {
     let prog;
@@ -1000,14 +1081,22 @@ function renderList(enter = false) {
         <div class="money num"><span>감정가<b>${eok(v.appr)}</b></span><span>최저가<b>${eok(v.min)}</b></span><span>${v.fail}회 유찰</span></div>
         <div class="prog">${prog}</div>
       </div></article>`;
-  }).join('') : `<div class="empty">조건에 맞는 물건이 없습니다. 아래에서 사건번호로 직접 요청해 주세요.</div>`;
-  renderTabs();
+  }).join('') : `<div class="empty">조건에 맞는 물건이 없습니다. 아래에서 사건번호로 직접 요청하거나, 새 물건 알림을 받아 보세요.</div>`;
+  renderTabs(); renderTypes();
 }
 $('tabs').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   filter = b.dataset.f;
   $('tabs').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
   movePill(); renderList(true);
+});
+$('types').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  cat = b.dataset.c;
+  const u = new URL(location.href); cat ? u.searchParams.set('type', cat) : u.searchParams.delete('type');
+  history.replaceState(null, '', u.pathname + u.search + u.hash);
+  renderList(true);
+  b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduce ? 'auto' : 'smooth' });
 });
 $('region').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -1229,6 +1318,18 @@ async function loadRecords() {
   }).join('');
   $('records').hidden = false;
 }
+
+// 임장 노트 최신 글 (blog/posts.json, 블로그를 만들 때 함께 생성)
+(async () => {
+  try {
+    const posts = await (await fetch('blog/posts.json', { cache: 'no-cache' })).json();
+    if (!posts.length) return;
+    $('ngrid').innerHTML = posts.slice(0, 6).map(p => `<a class="ncard" href="blog/${esc(p.slug)}/">
+      ${p.cover ? `<img src="${esc(p.cover.replace(/w=\d+/, 'w=700'))}" alt="" loading="lazy">` : ''}
+      <div><small>${esc(p.tag || '임장 노트')}</small><b>${esc(p.title)}</b></div></a>`).join('');
+    $('notes').hidden = false;
+  } catch (_) {}
+})();
 
 // 새 물건 알림
 $('a-region').addEventListener('click', e => { const b = e.target.closest('button'); if (b) b.classList.toggle('on'); });
