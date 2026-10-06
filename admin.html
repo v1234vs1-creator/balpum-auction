@@ -309,6 +309,8 @@ function takePaste() {
   try { t = decodeURIComponent(location.hash.slice(7)); } catch (_) {}
   history.replaceState(null, '', location.pathname);
   if (!t) return;
+  // 담기 원문을 이 브라우저에 최근 5개까지 남긴다 (읽기 오류를 고칠 때 확인용, 법원 공개 화면 글자만)
+  try { const log = JSON.parse(localStorage.getItem('balpum_paste_log') || '[]'); log.unshift({ at: new Date().toISOString(), text: t.slice(0, 200000) }); localStorage.setItem('balpum_paste_log', JSON.stringify(log.slice(0, 5))); } catch (_) {}
   const before = parseCourtText($('src').value).length;
   $('src').value = ($('src').value ? $('src').value + '\n\n' : '') + t;
   $('run').click();
