@@ -151,7 +151,20 @@ function score(p) {
 }
 
 const arg = k => (process.argv.find(x => x.startsWith(`--${k}=`)) || '').split('=').slice(1).join('=');
-const items = arg('in') ? JSON.parse(fs.readFileSync(arg('in'), 'utf8')) : ((await (await fetch(ENDPOINT + '?action=pool')).json()).items || []);
+// 후보 목록: 서버가 잠깐 오류를 내면 세 번까지 다시 묻고, 그래도 안 되면 마지막에 받아 둔 목록을 쓴다
+async function loadPool() {
+  const file = path.join(CACHE, 'pool.json');
+  for (let i = 0; i < 3; i++) {
+    try {
+      const j = JSON.parse(await (await fetch(ENDPOINT + '?action=pool')).text());
+      if (j.ok) { fs.mkdirSync(CACHE, { recursive: true }); fs.writeFileSync(file, JSON.stringify(j.items)); return j.items; }
+    } catch (_) {}
+    await new Promise(r => setTimeout(r, 3000));
+  }
+  if (fs.existsSync(file)) { console.log('(서버 응답이 없어 마지막에 받아 둔 물건 목록을 씁니다)'); return JSON.parse(fs.readFileSync(file, 'utf8')); }
+  throw new Error('물건 목록을 받지 못했습니다');
+}
+const items = arg('in') ? JSON.parse(fs.readFileSync(arg('in'), 'utf8')) : await loadPool();
 const out = [];
 for (const it of items) {
   try { const p = await price(it); out.push({ ...p, score: score(p) }); }
