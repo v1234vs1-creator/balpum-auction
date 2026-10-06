@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>공동투자 장부 | 발품옥션</title>
+<meta name="description" content="경매 공동투자, 약정서부터 납입 기록·비용 분담·임대수익·매각 정산까지 한 곳에서. 단톡방과 엑셀 대신 장부 하나로. 출시 알림을 신청하세요.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="경매 공동투자, 약정서부터 정산까지 | 발품옥션 공동투자 장부">
+<meta property="og:description" content="누가 얼마 냈는지, 수리비는 누구 몫인지, 팔 때 얼마씩 돌려받는지. 장부 하나로 정리합니다.">
+<link rel="canonical" href="https://v1234vs1-creator.github.io/balpum-auction/co-invest/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230e1116'/%3E%3Cpath d='M20 44c6-2 9-8 9-14s5-10 15-10' stroke='%23c8f03c' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css">
+<style>
+:root{--bg:#fff;--gray:#f4f5f7;--gray2:#eaecef;--ink:#0e1116;--ink2:#333d4b;--muted:#6b7684;--faint:#b0b8c1;--line:#e5e8eb;--navy:#0b1220;--navy2:#141d2e;--lime:#c8f03c;--ok:#12a46b;--red:#f04452;
+--ease-out:cubic-bezier(.23,1,.32,1);--head:"Wanted Sans Variable","Wanted Sans",Pretendard,system-ui,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;font-size:16px;line-height:1.65;letter-spacing:-.012em;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+@media (max-width:640px){.wrap{padding:0 20px}}
+.top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:saturate(1.6) blur(16px);box-shadow:0 1px 0 var(--line)}
+.top .wrap{height:62px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:9px;font-family:var(--head);font-weight:700;font-size:18px;letter-spacing:-.045em}
+.logo small{font-family:inherit;font-weight:600;color:var(--muted);font-size:14px;margin-left:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 24px;border:0;border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 150ms ease}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-lime{background:var(--lime);color:var(--ink)}
+.btn-sm{height:42px;padding:0 16px;font-size:14.5px}
+section{padding:96px 0}
+@media (max-width:760px){section{padding:72px 0}}
+.h1{font-family:var(--head);font-size:clamp(34px,5.4vw,58px);line-height:1.18;letter-spacing:-.045em;font-weight:720;margin:0;text-wrap:balance}
+.h2{font-family:var(--head);font-size:clamp(28px,3.6vw,42px);line-height:1.25;letter-spacing:-.04em;font-weight:700;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:18px;margin:18px 0 0;max-width:600px}
+.hl{background:linear-gradient(transparent 62%,var(--lime) 62%)}
+.hero{padding:84px 0 72px}
+.hero .tag{display:inline-block;font-size:13.5px;font-weight:700;color:var(--ink2);background:var(--gray);border-radius:9px;padding:4px 11px;margin-bottom:18px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.hero .note{font-size:14px;color:var(--muted);margin-top:14px}
+.pains{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:40px}
+@media (max-width:900px){.pains{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.pains{grid-template-columns:1fr}}
+.pain{background:var(--gray);border-radius:18px;padding:20px}
+.pain b{display:block;font-size:17px;margin-bottom:6px}
+.pain p{margin:0;font-size:14.5px;color:var(--ink2)}
+.pain q{display:block;font-size:14px;color:var(--muted);margin-top:10px;quotes:none}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:28px 24px;margin-top:44px}
+@media (max-width:900px){.feats{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.feats{grid-template-columns:1fr}}
+.feat{border-top:1.5px solid var(--ink);padding-top:16px}
+.feat b{display:block;font-family:var(--head);font-size:19px;letter-spacing:-.03em;margin-bottom:6px}
+.feat p{margin:0;font-size:15px;color:var(--ink2)}
+.dark{background:var(--navy);color:#fff}
+.dark .sub{color:rgba(255,255,255,.6)}
+.calc{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;margin-top:40px;align-items:start}
+@media (max-width:900px){.calc{grid-template-columns:1fr}}
+.calc > *{min-width:0}
+.panel{background:var(--navy2);border-radius:22px;padding:24px}
+.panel h3{margin:0 0 14px;font-size:15px;color:rgba(255,255,255,.6);font-weight:600}
+.row{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;align-items:center;margin-bottom:10px}
+.row label{font-size:14.5px;color:rgba(255,255,255,.75)}
+.dark input,.dark select{width:100%;height:46px;border:1px solid transparent;border-radius:12px;background:#1b2538;color:#fff;padding:0 14px;outline:0;font-size:16px;text-align:right;transition:border-color 150ms ease}
+.dark select{text-align:left}
+.dark input:focus,.dark select:focus{border-color:var(--lime)}
+.split{margin-top:16px;border-top:1px solid rgba(255,255,255,.1);padding-top:16px}
+.res table{width:100%;border-collapse:collapse;font-size:15px}
+.res th,.res td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.1);text-align:right;white-space:nowrap}
+.res th:first-child,.res td:first-child{text-align:left}
+.res th{font-size:13px;color:rgba(255,255,255,.55);font-weight:600}
+.res tr.total td{font-weight:700;color:var(--lime);border-bottom:0}
+.res p{font-size:13.5px;color:rgba(255,255,255,.55);margin:12px 0 0}
+.tw{overflow-x:auto}
+.line{display:flex;gap:16px;flex-wrap:wrap;margin-top:28px}
+.line div{flex:1 1 260px;background:var(--gray);border-radius:18px;padding:20px}
+.line b{display:block;margin-bottom:4px}
+.line p{margin:0;font-size:15px;color:var(--ink2)}
+.form{display:grid;gap:16px;max-width:640px;margin-top:36px}
+.field label,.field .lbl{display:block;font-size:14px;color:var(--muted);margin:0 0 7px 2px}
+.field input[type=email],.field select,.field textarea{width:100%;height:52px;border:1.5px solid var(--line);border-radius:14px;padding:0 16px;background:#fff;outline:0;font-size:16px;transition:border-color 150ms ease}
+.field textarea{height:88px;padding:12px 16px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{height:40px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:14.5px;cursor:pointer;transition:transform 160ms var(--ease-out),background-color 150ms ease,border-color 150ms ease,color 150ms ease}
+.chips button:active{transform:scale(.96)}
+.chips button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.two{grid-template-columns:1fr}}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);cursor:pointer}
+.agree input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--ink);flex:none}
+.err{color:var(--red);font-size:14px;margin:8px 0 0}
+.done{background:var(--gray);border-radius:18px;padding:24px;margin-top:36px;max-width:640px}
+.done b{display:block;font-size:20px;margin-bottom:6px}
+.faq{display:grid;gap:8px;margin-top:32px;max-width:760px}
+.faq details{background:var(--gray);border-radius:16px;padding:16px 20px}
+.faq summary{cursor:pointer;font-weight:600;list-style:none}
+.faq summary::-webkit-details-marker{display:none}
+.faq p{margin:10px 0 0;color:var(--ink2);font-size:15px}
+footer{border-top:1px solid var(--line);padding:32px 0 48px;font-size:13px;color:var(--muted)}
+footer a{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="logo" href="../"><svg viewBox="0 0 64 64" width="26" height="26" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#0e1116"/><path d="M20 44c6-2 9-8 9-14s5-10 15-10" stroke="#c8f03c" stroke-width="7" fill="none" stroke-linecap="round"/></svg>발품옥션<small>공동투자 장부</small></a>
+  <a class="btn btn-ink btn-sm" href="#signup">출시 알림 받기</a>
+</div></header>
+
+<div class="wrap hero">
+  <span class="tag">준비 중 · 사전 신청 받는 중</span>
+  <h1 class="h1">경매 공동투자,<br><span class="hl">약정서부터 정산까지</span><br>장부 하나로</h1>
+  <p class="sub">누가 얼마 냈는지, 수리비는 누구 몫인지, 팔 때 얼마씩 돌려받는지. 단톡방과 엑셀에 흩어진 기록을 한 곳에 모읍니다.</p>
+  <div class="cta"><a class="btn btn-ink" href="#signup">출시 알림 받기</a><a class="btn" style="background:var(--gray)" href="#calc">정산 미리 계산해 보기</a></div>
+  <p class="note">사전 신청자는 출시 후 첫 물건 1건을 무료로 쓰실 수 있습니다.</p>
+</div>
+
+<section style="padding-top:24px">
+  <div class="wrap">
+    <h2 class="h2">공동투자가 깨지는 건<br>보통 이 네 가지 때문입니다</h2>
+    <div class="pains">
+      <div class="pain"><b>약정서가 대충이다</b><p>"비용은 협의한다", "매각은 상의한다". 막상 그때가 되면 협의가 안 됩니다.</p><q>기한과 계산식이 없는 약정서</q></div>
+      <div class="pain"><b>납입 기록이 흩어져 있다</b><p>보증금, 잔금, 취득세를 누가 언제 냈는지 단톡방과 통장 내역을 뒤져야 합니다.</p><q>"내가 그때 더 냈잖아"</q></div>
+      <div class="pain"><b>비용 분담을 안 정했다</b><p>수리비, 중개보수, 공실 기간 관리비와 대출이자. 누구 몫에서 뺄지 정하지 않았습니다.</p><q>매달 생기는 작은 돈이 쌓여 큰 다툼으로</q></div>
+      <div class="pain"><b>출구 합의가 없다</b><p>한 명은 지금 팔고 싶고 한 명은 더 갖고 싶습니다. 지분을 누가 얼마에 사 줄지 정해 두지 않았습니다.</p><q>결국 공유물분할 소송까지</q></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--gray)">
+  <div class="wrap">
+    <h2 class="h2">이렇게 정리해 드립니다</h2>
+    <div class="feats">
+      <div class="feat"><b>약정서 만들기</b><p>지분, 납입 기한, 비용 분담 공식, 매각·지분 인수 조건을 빈칸 없이 채우게 안내하고 PDF로 출력합니다.</p></div>
+      <div class="feat"><b>자금 장부</b><p>보증금부터 수리비까지 누가 얼마 냈는지 기록하고 이체 증빙을 붙입니다. 각자 더 내거나 덜 낸 금액이 바로 보입니다.</p></div>
+      <div class="feat"><b>비용 자동 분배</b><p>공동 비용이 생기면 정해 둔 방식(지분 비례, 균등, 특정인 부담)대로 각자 몫을 계산합니다.</p></div>
+      <div class="feat"><b>임대수익·매각 정산</b><p>월세는 지분대로 나누고, 팔 때 각자 돌려받을 원금과 수익을 계산합니다.</p></div>
+      <div class="feat"><b>합의 기록</b><p>"매각 찬성 3/4"처럼 중요한 결정을 날짜와 함께 남깁니다. 나중에 말이 달라지지 않게.</p></div>
+      <div class="feat"><b>기한 알림</b><p>잔금 납부 기한, 취득세 신고, 인도명령 신청 기한(잔금 후 6개월)처럼 놓치면 안 되는 날짜를 알려 드립니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="calc">
+  <div class="wrap">
+    <h2 class="h2">팔 때 각자 얼마를 받을까<br>미리 계산해 보세요</h2>
+    <p class="sub">예시 숫자가 들어 있습니다. 바꾸면 바로 다시 계산합니다. 세금은 사람마다 달라 넣지 않았습니다.</p>
+    <div class="calc">
+      <div class="panel">
+        <h3>각자 낸 돈 (보증금·잔금·취득세 등 합계)</h3>
+        <div class="row"><label for="p1">투자자 A</label><input id="p1" class="num" inputmode="numeric" value="100,000,000"></div>
+        <div class="row"><label for="p2">투자자 B</label><input id="p2" class="num" inputmode="numeric" value="60,000,000"></div>
+        <div class="row"><label for="p3">투자자 C</label><input id="p3" class="num" inputmode="numeric" value="40,000,000"></div>
+        <div class="split">
+          <div class="row"><label for="cost">공동 비용 (수리비 등)</label><input id="cost" class="num" inputmode="numeric" value="12,000,000"></div>
+          <div class="row"><label for="how">공동 비용 분담</label><select id="how"><option value="share">지분 비례</option><option value="equal">균등</option><option value="a">투자자 A가 부담</option></select></div>
+          <div class="row"><label for="sale">매각 금액 (중개보수 뺀 금액)</label><input id="sale" class="num" inputmode="numeric" value="248,000,000"></div>
+          <div class="row"><label for="loan">갚을 대출 잔액</label><input id="loan" class="num" inputmode="numeric" value="0"></div>
+        </div>
+      </div>
+      <div class="panel res">
+        <h3>정산 결과</h3>
+        <div class="tw"><table class="num" aria-live="polite">
+          <thead><tr><th>투자자</th><th>지분</th><th>비용 몫</th><th>돌려받을 돈</th><th>수익</th></tr></thead>
+          <tbody id="out"></tbody>
+        </table></div>
+        <p>지분은 각자 낸 돈의 비율로 계산했습니다. 실제 장부에서는 약정서에 정한 지분과 분담 방식을 그대로 씁니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="h2">지키는 선</h2>
+    <div class="line">
+      <div><b>투자자를 모으거나 연결하지 않습니다</b><p>이미 함께하기로 한 사람들이 쓰는 장부입니다. 투자 권유나 모집 기능은 만들지 않습니다.</p></div>
+      <div><b>약정서는 양식입니다</b><p>빠뜨리기 쉬운 항목을 채우도록 돕는 양식이며 법률 자문이 아닙니다. 금액이 큰 계약은 법무사·변호사 검토를 권합니다.</p></div>
+      <div><b>돈을 맡지 않습니다</b><p>돈은 각자 계좌에서 오가고, 장부는 기록과 계산만 합니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--gray)" id="signup">
+  <div class="wrap">
+    <h2 class="h2">출시 알림 받기</h2>
+    <p class="sub">출시되면 메일로 알려 드리고, 첫 물건 1건을 무료로 드립니다. 아래 질문에 답해 주시면 가장 필요한 기능부터 만듭니다.</p>
+    <div id="form-wrap">
+    <form class="form" id="co-form" novalidate>
+      <div class="field"><label for="email">이메일</label><input id="email" type="email" required placeholder="name@example.com" autocomplete="email" maxlength="100"></div>
+      <div class="two">
+        <div class="field"><label for="exp">공동투자 경험</label><select id="exp"><option value="">선택</option><option>해 봤음</option><option>하는 중</option><option>계획 중</option><option>관심만</option></select></div>
+        <div class="field"><label for="size">보통 몇 명이서</label><select id="size"><option value="">선택</option><option>2명</option><option>3~4명</option><option>5명 이상</option></select></div>
+      </div>
+      <div class="field"><span class="lbl">가장 귀찮거나 걱정되는 것 (여러 개 선택)</span>
+        <div class="chips" id="pains"><button type="button">약정서 작성</button><button type="button">납입 기록</button><button type="button">비용 분담</button><button type="button">임대수익 분배</button><button type="button">매각 정산</button><button type="button">의견 합의</button><button type="button">일정 관리</button></div></div>
+      <div class="field"><label for="price">이 정도면 쓰겠다</label><select id="price"><option value="">선택</option><option>무료만</option><option>약정서 1건 1~2만 원</option><option>물건당 월 9,900원</option><option>월 2만 원 이상도 괜찮음</option></select></div>
+      <div class="field"><label for="memo">하고 싶은 말 (선택)</label><textarea id="memo" maxlength="300" placeholder="예: 지난번 공동투자 때 이게 제일 힘들었어요"></textarea></div>
+      <input name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+      <label class="agree"><input type="checkbox" id="agree"><span>출시 알림 메일 수신과 개인정보(이메일, 설문 답변) 수집에 동의합니다. 출시 안내와 기능 개발에만 쓰고, 요청하시면 바로 지웁니다.</span></label>
+      <div><button class="btn btn-ink" type="submit" style="width:100%">출시 알림 신청</button><p class="err" role="alert"></p></div>
+    </form>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="h2">자주 묻는 질문</h2>
+    <div class="faq">
+      <details><summary>지금 바로 쓸 수 있나요?</summary><p>아직 준비 중입니다. 사전 신청을 받아 필요한 기능 순서를 정하고 있습니다. 출시되면 메일로 알려 드립니다.</p></details>
+      <details><summary>경매가 아니어도 쓸 수 있나요?</summary><p>네. 일반 매매로 함께 산 집이나 가족 공동명의 부동산도 같은 방식으로 장부를 쓸 수 있게 만들 예정입니다.</p></details>
+      <details><summary>함께 투자할 사람을 찾아 주나요?</summary><p>아니요. 투자자 모집이나 연결은 하지 않습니다. 이미 함께하기로 한 분들이 기록과 정산을 편하게 하도록 돕는 도구입니다.</p></details>
+      <details><summary>공동명의로 등기해야 하나요?</summary><p>장부는 등기 방식과 관계없이 쓸 수 있습니다. 다만 한 사람 명의로만 등기하면 나머지 투자자의 권리를 지키기 어려울 수 있어, 공동명의 등기나 근저당 설정 같은 방법을 전문가와 상의하시길 권합니다.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">발품옥션 공동투자 장부(준비 중) · 문의는 <a href="../">발품옥션</a> 사이트를 이용해 주세요. 이 페이지의 계산과 안내는 일반적인 정보이며 투자·법률·세무 자문이 아닙니다.</div></footer>
+
+<script>
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzHqw1TadGxsVEYpnsnaBl2ZzXr0Ohn5uJ7bSRHe6LDLrDCNOPXfknYazCJImYj7QnvXQ/exec';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = el => Number(String(el.value).replace(/[^\d]/g, '')) || 0;
+const won = n => (n < 0 ? '−' : '') + Math.abs(Math.round(n)).toLocaleString() + '원';
+
+// 정산 미리보기
+function calc() {
+  const paid = [num($('p1')), num($('p2')), num($('p3'))];
+  const total = paid.reduce((a, b) => a + b, 0);
+  const cost = num($('cost')), sale = num($('sale')), loan = num($('loan'));
+  const share = paid.map(p => total ? p / total : 0);
+  const costShare = $('how').value === 'equal' ? [cost / 3, cost / 3, cost / 3] : $('how').value === 'a' ? [cost, 0, 0] : share.map(s => cost * s);
+  // 매각 대금(대출 상환 후)은 지분대로 나누고, 공동 비용은 정한 방식대로 각자 따로 부담한 것으로 본다
+  const net = sale - loan;
+  const back = share.map(s => net * s);
+  const rows = ['A', 'B', 'C'].map((n, i) => `<tr><td>투자자 ${n}</td><td>${(share[i] * 100).toFixed(1)}%</td><td>${won(costShare[i])}</td><td>${won(back[i])}</td><td>${won(back[i] - paid[i] - costShare[i])}</td></tr>`).join('');
+  const sum = back.reduce((a, b) => a + b, 0);
+  $('out').innerHTML = rows + `<tr class="total"><td>합계</td><td>100%</td><td>${won(cost)}</td><td>${won(sum)}</td><td>${won(sum - total - cost)}</td></tr>`;
+}
+['p1', 'p2', 'p3', 'cost', 'sale', 'loan'].forEach(id => {
+  $(id).addEventListener('input', e => { const v = num(e.target); e.target.value = v ? v.toLocaleString() : ''; calc(); });
+});
+$('how').addEventListener('change', calc);
+calc();
+
+// 사전 신청
+$('pains').addEventListener('click', e => { const b = e.target.closest('button'); if (b) b.classList.toggle('on'); });
+$('co-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = e.target, err = f.querySelector('.err'), btn = f.querySelector('button[type=submit]');
+  const email = $('email').value.trim();
+  err.textContent = '';
+  if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) { err.textContent = '이메일 주소를 다시 확인해 주세요.'; $('email').focus(); return; }
+  if (!$('agree').checked) { err.textContent = '수신 동의에 체크해 주세요.'; return; }
+  const pains = [...$('pains').querySelectorAll('button.on')].map(b => b.textContent);
+  btn.disabled = true; btn.textContent = '신청 중…';
+  try {
+    const j = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'coSignup', email, exp: $('exp').value, size: $('size').value, pains, price: $('price').value, memo: $('memo').value, agree: true, website: f.website.value }) })).json();
+    if (!j.ok) throw new Error(j.error);
+    $('form-wrap').innerHTML = `<div class="done"><b>${j.updated ? '답변을 고쳤습니다' : '신청했습니다'}</b><p style="margin:0;color:var(--ink2)">${esc(email)}로 출시 소식을 보내 드리겠습니다. 첫 물건 1건 무료 혜택도 함께 드립니다.</p></div>`;
+  } catch (x) {
+    err.textContent = x.message === 'email' ? '이메일 주소를 다시 확인해 주세요.' : '신청하지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+    btn.disabled = false; btn.textContent = '출시 알림 신청';
+  }
+});
+</script>
+</body>
+</html>

@@ -43,6 +43,7 @@ function doPost(e) {
     if (d.action === 'adminUpdate') return out(adminUpdate_(d));
     if (d.website) return out({ ok: true }); // 스팸봇용 숨은 칸
     if (d.action === 'subscribe') return out(subscribe_(d));
+    if (d.action === 'coSignup') return out(coSignup_(d));
 
     const phone = String(d.phone || '').replace(/[^0-9]/g, '');
     if (!/^01\d{8,9}$/.test(phone)) return out({ ok: false, error: 'phone' });
@@ -76,6 +77,7 @@ function doGet(e) {
   if (p.action === 'myReport') return out(myReport_(p));
   if (p.action === 'adminItems') return out(adminItems_(p.key));
   if (p.action === 'records') return out(records_());
+  if (p.action === 'coStats') return out(coStats_());
   if (p.action === 'pool') return out(pool_());
   if (p.action === 'blogFeed') return out(blogFeed_());
   if (p.action === 'unsub') return out(unsubscribe_(p.t));

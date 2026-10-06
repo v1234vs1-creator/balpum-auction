@@ -205,7 +205,7 @@ fs.writeFileSync(path.join(DIR, 'feed.xml'), rss);
 
 // 사이트맵 (서치 콘솔·네이버 서치어드바이저에 제출)
 const today = new Date().toISOString().slice(0, 10);
-const urls = [[SITE, today], [SITE + 'report.html', today], [SITE + 'blog/', posts[0]?.date || today], ...posts.map(p => [`${SITE}blog/${p.slug}/`, p.updated || p.date])];
+const urls = [[SITE, today], [SITE + 'report.html', today], [SITE + 'blog/', posts[0]?.date || today], [SITE + 'co-invest/', today], ...posts.map(p => [`${SITE}blog/${p.slug}/`, p.updated || p.date])];
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(([u, d]) => `<url><loc>${u}</loc><lastmod>${d}</lastmod></url>`).join('\n')}
