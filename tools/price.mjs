@@ -93,7 +93,7 @@ const cleanName = s => String(s || '').replace(/\(.*?\)/g, '').replace(/제?\s*\
 const median = a => { if (!a.length) return 0; const s = [...a].sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
 async function price(it) {
-  const res = { caseNo: it.caseNo, addr: it.addr, name: it.name, type: it.type, size: it.size, appr: it.appr, min: it.min, date: it.date };
+  const res = { caseNo: it.caseNo, court: it.court, addr: it.addr, name: it.name, type: it.type, size: it.size, appr: it.appr, min: it.min, date: it.date };
   if (!/아파트/.test(it.type || '')) return { ...res, note: '아파트가 아님 → 시세 자료 부족, 현장 탐문 필요' };
   const s = sggOf(it.addr);
   if (!s) return { ...res, note: '시군구 코드 없음 (수도권 목록 밖이거나 새로 바뀐 구)' };
@@ -158,6 +158,10 @@ for (const it of items) {
   catch (e) { out.push({ caseNo: it.caseNo, addr: it.addr, name: it.name, note: e.message, score: -1 }); }
 }
 out.sort((a, b) => b.score - a.score);
+// 명세서 판정(tools/spec.py 결과)을 붙인다: 통과 / 제외 / 확인 필요 / 명세서 없음
+const SPECS = path.join(CACHE, 'specs.json');
+const specs = fs.existsSync(SPECS) ? Object.fromEntries(JSON.parse(fs.readFileSync(SPECS, 'utf8')).map(x => [x.key, x])) : {};
+out.forEach(p => { const sp = specs[p.caseNo]; p.spec = sp ? sp.verdict : '명세서 없음'; p.specWhy = sp ? sp.reasons.join(' / ') : ''; });
 fs.mkdirSync(CACHE, { recursive: true });
 fs.writeFileSync(path.join(CACHE, 'result.json'), JSON.stringify(out, null, 1));
 console.log(`물건 ${items.length}건 시세 계산 (최근 ${MONTHS}개월 실거래)\n`);
@@ -168,5 +172,18 @@ out.forEach((p, i) => {
   console.log(`   최저가 ${eok(p.min)} | 시세(중간값) ${eok(p.saleMedian)} (${p.saleCount}건, ${p.level}) | 할인율 ${p.discount ?? '-'}%`);
   console.log(`   전세 ${p.jeonseMedian ? eok(p.jeonseMedian) : '-'} (${p.jeonseCount}건) | 전세가율 ${p.jeonseRatio ?? '-'}% | 최저가-전세 ${p.gap != null ? eok(p.gap) : '-'} | 점수 ${p.score}`);
   if (p.recent?.length) console.log(`   최근 거래: ${p.recent.join(' / ')}`);
+  console.log(`   명세서: ${p.spec}${p.specWhy ? ' — ' + p.specWhy : ''}`);
   console.log('');
 });
+
+// 요약: 서류상 위험 신호 없음 + 시세보다 싼 물건
+const ranked = out.filter(p => p.score >= 0);
+const pass = ranked.filter(p => p.spec === '통과');
+const need = ranked.filter(p => p.spec === '명세서 없음').slice(0, 15);
+console.log('==================================================');
+console.log(`서류상 위험 신호 없음 + 시세 대비 할인 (명세서 통과 ${pass.length}건)`);
+pass.slice(0, 10).forEach((p, i) => console.log(`${i + 1}. ${p.caseNo} ${p.addr} ${p.name} · 최저 ${eok(p.min)} · 시세 ${eok(p.saleMedian)} · 할인 ${p.discount}% · 전세율 ${p.jeonseRatio ?? '-'}%`));
+const excl = ranked.filter(p => p.spec === '제외');
+if (excl.length) { console.log(`\n명세서에서 제외된 상위 물건 ${excl.length}건`); excl.slice(0, 10).forEach(p => console.log(`- ${p.caseNo} ${p.addr} ${p.name}: ${p.specWhy.slice(0, 90)}`)); }
+console.log(`\n다음에 명세서를 받아 볼 후보 (점수 순, 명세서 없음):`);
+need.forEach((p, i) => console.log(`${i + 1}. ${p.court || ''} ${p.caseNo} · ${p.date} · ${p.addr} ${p.name} · 할인 ${p.discount}%`));
