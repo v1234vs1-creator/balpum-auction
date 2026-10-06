@@ -29,14 +29,22 @@ const SGG = {
   '경기 과천시': '41290', '경기 구리시': '41310', '경기 남양주시': '41360', '경기 오산시': '41370', '경기 시흥시': '41390', '경기 군포시': '41410',
   '경기 의왕시': '41430', '경기 하남시': '41450', '경기 용인시 처인구': '41461', '경기 용인시 기흥구': '41463', '경기 용인시 수지구': '41465',
   '경기 파주시': '41480', '경기 이천시': '41500', '경기 안성시': '41550', '경기 김포시': '41570', '경기 광주시': '41610', '경기 양주시': '41630', '경기 포천시': '41650',
-  '인천 미추홀구': '28177', '인천 연수구': '28185', '인천 남동구': '28200', '인천 부평구': '28237', '인천 계양구': '28245',
+  '경기 화성시': '41590', '경기 부천시 원미구': '41192', '경기 부천시 소사구': '41194', '경기 부천시 오정구': '41196', '경기 연천군': '41800', '경기 가평군': '41820', '경기 양평군': '41830', '경기 여주시': '41670', '경기 동두천시': '41250',
+  '인천 제물포구': '28125', '인천 영종구': '28155', '인천 서해구': '28275', '인천 검단구': '28290',
+  '인천 중구': '28125', '인천 동구': '28125', '인천 서구': '28275', '인천 미추홀구': '28177', '인천 연수구': '28185', '인천 남동구': '28200', '인천 부평구': '28237', '인천 계양구': '28245',
 };
 const norm = s => String(s || '').replace(/특별시|광역시|특별자치시/g, '').replace(/경기도/, '경기').replace(/\s+/g, ' ').trim();
 function sggOf(addr) {
   const a = norm(addr).replace(/^서울특별시/, '서울');
   const keys = Object.keys(SGG).sort((x, y) => y.length - x.length);
   const k = keys.find(k => a.startsWith(k));
-  return k ? { name: k, code: SGG[k], dong: a.slice(k.length).trim().split(' ')[0] } : null;
+  if (!k) return null;
+  const dong = a.slice(k.length).trim().split(' ')[0];
+  let code = SGG[k];
+  // 인천 개편(2026.7): 예전 중구의 영종도 → 영종구, 예전 서구의 검단 → 검단구 (국토부 API로 확인한 코드)
+  if (k === '인천 중구' && /^(운서|중산|운남|운북|을왕|덕교|무의|남북|덕교)동$/.test(dong)) code = '28155';
+  if (k === '인천 서구' && /^(원당|당하|마전|불로|백석|왕길|오류|금곡|대곡)동$/.test(dong)) code = '28290';
+  return { name: k, code, dong };
 }
 
 const ym = back => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - back); return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}`; };
@@ -52,7 +60,11 @@ async function fetchMonth(kind, code, month) {
   const rows = [];
   for (let page = 1; page < 30; page++) {
     const url = `https://apis.data.go.kr/1613000/${p}?serviceKey=${encodeURIComponent(KEY)}&LAWD_CD=${code}&DEAL_YMD=${month}&numOfRows=1000&pageNo=${page}`;
-    const t = await (await fetch(url)).text();
+    let t = '';
+    for (let tryN = 0; tryN < 4; tryN++) {
+      try { t = await (await fetch(url)).text(); if (/<resultCode>/.test(t)) break; } catch (_) {}
+      await new Promise(r => setTimeout(r, 1500 * (tryN + 1)));
+    }
     const rc = (t.match(/<resultCode>([^<]*)/) || [])[1];
     if (rc !== '000') throw new Error(`실거래 API 오류 ${kind} ${code} ${month}: ${(t.match(/<(?:resultMsg|errMsg)>([^<]*)/) || [])[1] || t.slice(0, 80)}`);
     const items = [...t.matchAll(/<item>([\s\S]*?)<\/item>/g)].map(m => Object.fromEntries([...m[1].matchAll(/<(\w+)>([^<]*)<\/\1>/g)].map(x => [x[1], x[2].trim()])));
@@ -63,14 +75,21 @@ async function fetchMonth(kind, code, month) {
   fs.writeFileSync(file, JSON.stringify(rows));
   return rows;
 }
+const MEMO = {};
 async function recent(kind, code, months) {
+  const mk = kind + code + months;
+  if (MEMO[mk]) return MEMO[mk];
+  return (MEMO[mk] = recent0(kind, code, months));
+}
+async function recent0(kind, code, months) {
   const out = [];
-  for (let b = 0; b < months; b++) out.push(...(await fetchMonth(kind, code, ym(b))).map(r => ({ ...r, _ym: ym(b) })));
+  const all = await Promise.all(Array.from({ length: months }, (_, b) => fetchMonth(kind, code, ym(b)).then(rows => rows.map(r => ({ ...r, _ym: ym(b) })))));
+  all.forEach(rows => out.push(...rows));
   return out;
 }
 
 // 단지명 비교: 공백·'아파트'·동 번호·괄호를 지우고 포함 관계로
-const cleanName = s => String(s || '').replace(/\(.*?\)/g, '').replace(/\d+\s*동.*$/, '').replace(/아파트|APT|apt|단지/g, '').replace(/[\s·.,-]/g, '');
+const cleanName = s => String(s || '').replace(/\(.*?\)/g, '').replace(/제?\s*\d+\s*동.*$/, '').replace(/\s[A-Za-z가-힣]동(\s.*)?$/, '').replace(/아파트|APT|apt|단지/g, '').replace(/[\s·.,-]/g, '');
 const median = a => { if (!a.length) return 0; const s = [...a].sort((x, y) => x - y); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
 async function price(it) {
@@ -87,13 +106,30 @@ async function price(it) {
   const valid = r => !String(r.cdealType || '').trim() && r.dealingGbn !== '직거래';   // 해제(취소)된 거래와 직거래(가족 간 등 특수 거래 가능) 제외
   let t = trades.filter(r => valid(r) && sameDong(r) && sameApt(r) && sameSize(r));
   let level = '같은 단지·평형';
-  if (!t.length) { t = trades.filter(r => valid(r) && sameDong(r) && sameSize(r)); level = t.length ? '같은 동 비슷한 면적 (단지 못 찾음)' : '자료 없음'; }
-  const j = rents.filter(r => num(r.monthlyRent) === 0 && sameDong(r) && sameSize(r) && (level.startsWith('같은 단지') ? sameApt(r) : true));
-  const sale = median(t.map(r => num(r.dealAmount) * 10000));
-  const jeonse = median(j.map(r => num(r.deposit) * 10000));
+  let perM2 = 0, nearby = 0;
+  // 같은 평형 거래가 적으면 12개월까지 넓힌다
+  let long = null;
+  if (t.length < 2) {
+    long = await recent('trade', s.code, 12);
+    const t12 = long.filter(r => valid(r) && sameDong(r) && sameApt(r) && sameSize(r));
+    if (t12.length > t.length) { t = t12; level = '같은 단지·평형 (12개월)'; }
+  }
+  // 그래도 없으면 같은 단지 다른 평형의 ㎡당 가격으로 환산 (면적 차이 ±40% 안쪽)
+  if (!t.length && area) {
+    const other = (long || trades).filter(r => valid(r) && sameDong(r) && sameApt(r) && num(r.excluUseAr) / area > 0.6 && num(r.excluUseAr) / area < 1.4);
+    if (other.length >= 2) { perM2 = median(other.map(r => num(r.dealAmount) * 10000 / num(r.excluUseAr))); t = other; level = '같은 단지 다른 평형 (㎡당 환산)'; }
+  }
+  if (!t.length) {
+    const n = trades.filter(r => valid(r) && sameDong(r) && sameSize(r));
+    nearby = median(n.map(r => num(r.dealAmount) * 10000));
+    level = '단지 거래 없음';
+  }
+  const j = rents.filter(r => num(r.monthlyRent) === 0 && sameDong(r) && sameApt(r) && (level.includes('환산') ? true : sameSize(r)));
+  const sale = perM2 ? Math.round(perM2 * area / 1e5) * 1e5 : median(t.map(r => num(r.dealAmount) * 10000));
+  const jeonse = level.includes('환산') && j.length ? Math.round(median(j.map(r => num(r.deposit) * 10000 / num(r.excluUseAr))) * area / 1e5) * 1e5 : median(j.map(r => num(r.deposit) * 10000));
   return {
     ...res, sgg: s.name, level, apt: t[0]?.aptNm || '',
-    saleMedian: sale, saleCount: t.length, jeonseMedian: jeonse, jeonseCount: j.length,
+    saleMedian: sale, saleCount: t.length, jeonseMedian: jeonse, jeonseCount: j.length, nearby, perM2: Math.round(perM2),
     discount: sale && it.min ? Math.round((1 - it.min / sale) * 1000) / 10 : null,
     jeonseRatio: jeonse && it.min ? Math.round(jeonse / it.min * 1000) / 10 : null,
     gap: jeonse && it.min ? it.min - jeonse : null,
@@ -105,11 +141,12 @@ async function price(it) {
 const eok = won => { const v = Math.round((Number(won) || 0) / 10000), e = Math.floor(v / 10000), m = v % 10000; return (e ? e + '억' : '') + (m ? (e ? ' ' : '') + m.toLocaleString() + '만' : '') || '0'; };
 // 점수: 할인율 중심 + 전세가율 보너스 + 거래량(자료 신뢰도). 같은 단지를 못 찾으면 감점
 function score(p) {
-  if (p.discount == null) return -1;
+  if (p.discount == null || p.saleCount < 2) return -1;   // 단지 거래 2건 미만은 순위에서 뺀다
   let s = p.discount;
   if (p.jeonseRatio) s += Math.max(0, Math.min(p.jeonseRatio, 100) - 60) * 0.3;
   s += Math.min(p.saleCount, 10) * 0.5;
-  if (!p.level.startsWith('같은 단지')) s -= 10;
+  if (p.level.includes('환산')) s -= 5;
+  if (p.level.includes('12개월')) s -= 2;
   return Math.round(s * 10) / 10;
 }
 
@@ -127,6 +164,7 @@ console.log(`물건 ${items.length}건 시세 계산 (최근 ${MONTHS}개월 실
 out.forEach((p, i) => {
   console.log(`${i + 1}. ${p.addr} ${p.name} · ${p.type || ''} ${p.size || ''} · ${p.caseNo}`);
   if (p.note) { console.log(`   ${p.note}\n`); return; }
+  if (p.level === '단지 거래 없음') { console.log(`   최근 ${MONTHS}개월 이 단지 거래 없음 → 시세 없음, 현장 탐문 필요${p.nearby ? ` (같은 동 비슷한 면적 참고 ${eok(p.nearby)})` : ''}\n`); return; }
   console.log(`   최저가 ${eok(p.min)} | 시세(중간값) ${eok(p.saleMedian)} (${p.saleCount}건, ${p.level}) | 할인율 ${p.discount ?? '-'}%`);
   console.log(`   전세 ${p.jeonseMedian ? eok(p.jeonseMedian) : '-'} (${p.jeonseCount}건) | 전세가율 ${p.jeonseRatio ?? '-'}% | 최저가-전세 ${p.gap != null ? eok(p.gap) : '-'} | 점수 ${p.score}`);
   if (p.recent?.length) console.log(`   최근 거래: ${p.recent.join(' / ')}`);
