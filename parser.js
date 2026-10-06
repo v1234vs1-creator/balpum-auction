@@ -1,6 +1,6 @@
 // 법원경매정보 검색 결과(화면 전체 복사한 글)를 물건 목록으로 정리한다.
 (function (root) {
-  const COURT = /((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)\s*(\d{4}\s*타경\s*\d+)/g;
+  const COURT = /((?:서울(?:중앙|동부|서부|남부|북부)|의정부|인천|수원|춘천|청주|대전|대구|부산|울산|창원|광주|전주|제주)지방법원|[가-힣]{2,4}지원)\s*(\d{4}\s*타경\s*\d+?)(?=\d{4}\s*타경|\D|$)/g;
   const SIDO = /(서울특별시|경기도|인천광역시|부산광역시|대구광역시|광주광역시|대전광역시|울산광역시|세종특별자치시|강원특별자치도|강원도|충청북도|충청남도|전북특별자치도|전라북도|전라남도|경상북도|경상남도|제주특별자치도)\s[^\n\[\t]+/;
   const SHORT = { 서울특별시: '서울', 경기도: '경기', 인천광역시: '인천' };
   const TYPES = /(아파트|오피스텔|도시형생활주택|다세대|연립|빌라|다가구|단독주택|근린|상가|대지|임야|공장|창고|기타)/;
@@ -25,8 +25,8 @@
     text = dropCourtLists(String(text || '').replace(/\r/g, ''));
     text = String(text || '').replace(/\r/g, '').replace(/ /g, ' ');
     const hits = [...text.matchAll(COURT)].map(m => {
-      const after = text.slice(m.index + m[0].length, m.index + m[0].length + 12);
-      const n = (after.match(/^\s*(\d{1,3})\s/) || [])[1];
+      const after = text.slice(m.index + m[0].length, m.index + m[0].length + 80);
+      const n = (after.match(/^(?:\s*\d{4}\s*타경\s*\d+|\s*\(중복\))*\s*(\d{1,3})\s/) || [])[1];
       return { idx: m.index, end: m.index + m[0].length, court: m[1], caseNo: m[2].replace(/\s/g, ''), no: n ? +n : 0 };
     });
     // 같은 사건이 연달아 나오면(표 머리 + 칸) 하나로 합친다
