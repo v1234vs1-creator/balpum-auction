@@ -76,6 +76,7 @@ function doGet(e) {
   if (p.action === 'myReport') return out(myReport_(p));
   if (p.action === 'adminItems') return out(adminItems_(p.key));
   if (p.action === 'records') return out(records_());
+  if (p.action === 'pool') return out(pool_());
   if (p.action === 'blogFeed') return out(blogFeed_());
   if (p.action === 'unsub') return out(unsubscribe_(p.t));
   if (p.action === 'subCount') return out(subCount_(p.key));
@@ -205,7 +206,7 @@ function addItems_(d) {
   const sh = itemSheet_();
   const at = {};
   sh.getDataRange().getValues().forEach((r, i) => { if (i > 0) at[String(r[0]).replace(/\s/g, '')] = i + 1; });
-  const list = (d.items || []).slice(0, 50);
+  const list = (d.items || []).slice(0, 300);
   let added = 0, updated = 0, skipped = 0;
   const fresh = [];
   list.forEach(it => {
@@ -220,13 +221,13 @@ function addItems_(d) {
       updated++;
       return;
     }
-    sh.appendRow([cs, ...info, '모집', 0, '', clean(it.photo), new Date()]);
+    sh.appendRow([cs, ...info, d.hidden ? '숨김' : '모집', 0, '', clean(it.photo), new Date()]);   // 숨김: 시세 계산용 후보로만 저장
     at[cs] = sh.getLastRow();
     added++;
     fresh.push({ caseNo: cs, court: info[0], region: info[1], addr: info[2], name: info[3], type: info[4], size: info[5], appr: info[6], min: info[7], date: info[9] });
   });
   let notified = 0;
-  try { notified = notifySubscribers_(fresh); } catch (err) { console.error(err); }
+  if (!d.hidden) try { notified = notifySubscribers_(fresh); } catch (err) { console.error(err); }
   return { ok: true, added, updated, skipped, notified };
 }
 

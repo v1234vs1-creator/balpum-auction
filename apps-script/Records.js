@@ -41,3 +41,14 @@ function records_() {
   const avgRate = sold.length ? Math.round(sold.reduce((s, x) => s + x.rate, 0) / sold.length * 10) / 10 : 0;
   return { ok: true, records: list, summary: { count: list.length, sold: sold.length, avgRate } };
 }
+
+// 시세 계산 도구(tools/price.mjs)용 후보 목록: 숨김 포함, 매각기일이 지나지 않은 물건 (법원 공개 정보만)
+function pool_() {
+  const today = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+  const ymd = v => v instanceof Date ? Utilities.formatDate(v, 'Asia/Seoul', 'yyyy-MM-dd') : String(v || '').replace(/\./g, '-').slice(0, 10);
+  const items = itemSheet_().getDataRange().getValues().slice(1).filter(r => r[0] && ymd(r[10]) >= today).map(r => ({
+    caseNo: String(r[0]), court: r[1], region: r[2], addr: r[3], name: r[4], type: r[5], size: r[6],
+    appr: Number(r[7]) || 0, min: Number(r[8]) || 0, fail: Number(r[9]) || 0, date: ymd(r[10]), status: r[12] || '모집',
+  }));
+  return { ok: true, items };
+}

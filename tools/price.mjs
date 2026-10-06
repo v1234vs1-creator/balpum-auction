@@ -1,5 +1,5 @@
 // 경매 물건에 실거래 시세 붙이기: 같은 단지·비슷한 면적의 최근 매매가·전세가 → 할인율·전세가율·거래량
-// 실행: node tools/price.mjs            (사이트에 올라간 물건)
+// 실행: node tools/price.mjs            (관리자 화면에 올린 물건 전부, 숨김 포함)
 //       node tools/price.mjs --in=파일.json (시험용 물건 목록)
 // 키: Windows 사용자 환경변수 DATA_GO_KR_KEY (공공데이터포털 국토교통부 아파트 매매·전월세 실거래가). 키는 출력하지 않는다.
 import fs from 'node:fs';
@@ -114,7 +114,7 @@ function score(p) {
 }
 
 const arg = k => (process.argv.find(x => x.startsWith(`--${k}=`)) || '').split('=').slice(1).join('=');
-const items = arg('in') ? JSON.parse(fs.readFileSync(arg('in'), 'utf8')) : ((await (await fetch(ENDPOINT + '?action=items')).json()).items || []);
+const items = arg('in') ? JSON.parse(fs.readFileSync(arg('in'), 'utf8')) : ((await (await fetch(ENDPOINT + '?action=pool')).json()).items || []);
 const out = [];
 for (const it of items) {
   try { const p = await price(it); out.push({ ...p, score: score(p) }); }

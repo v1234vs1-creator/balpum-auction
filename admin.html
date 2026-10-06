@@ -110,6 +110,7 @@ a{color:var(--green)}
       <tbody id="rows"></tbody>
     </table></div>
     <div class="row">
+      <label style="display:flex;gap:8px;align-items:center;font-size:14px;margin:0 0 10px"><input type="checkbox" id="pub" checked> 사이트에 바로 공개 (끄면 숨김으로 저장해 시세 계산에만 사용, 알림 메일도 안 나감)</label>
       <button class="btn" id="save">선택한 물건 올리기</button>
     </div>
     <p class="msg" id="msg"></p>
@@ -169,7 +170,7 @@ $('save').onclick = async () => {
   const pick = items.filter(i => i.pick).map(({ flags, pick, fullAddr, ...rest }) => rest);
   $('save').disabled = true; $('msg').className = 'msg'; $('msg').textContent = '올리는 중…';
   try {
-    const j = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'addItems', key, items: pick }) })).json();
+    const j = await (await fetch(ENDPOINT, { method: 'POST', body: JSON.stringify({ action: 'addItems', key, items: pick, hidden: !$('pub').checked }) })).json();
     if (!j.ok) throw new Error(j.error);
     try { sessionStorage.setItem('balpum_admin', key); } catch (_) {}
     $('msg').className = 'msg ok';
